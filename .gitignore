@@ -3,4 +3,6 @@
 .idea
 node_modules
 coverage
+lib
+dist
 npm-debug.log
