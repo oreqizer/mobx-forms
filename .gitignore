@@ -5,4 +5,5 @@ node_modules
 coverage
 lib
 dist
+bundle.js
 npm-debug.log

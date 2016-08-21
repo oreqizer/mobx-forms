@@ -1,14 +1,15 @@
 import React, { Component, PropTypes } from 'react';
-import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
 import R from 'ramda';
 
 import FormStore from './containers/FormStore';
 import { separateProps, valueFromEv } from './utils/helpers';
 
+@observer
 export default class Field extends Component {
   static propTypes = {
-    component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
     name: PropTypes.string.isRequired,
+    component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
     // ---
     key: PropTypes.string,
     validate: PropTypes.func,
@@ -32,13 +33,17 @@ export default class Field extends Component {
   }
 
   componentWillMount() {
-    const { name, key, defaultValue } = this.props;
+    const { name, key, defaultValue, validate } = this.props;
     this.form = this.context._mobxForm; // eslint-disable-line no-underscore-dangle
     this.form.addField(name + key);
     this.field = this.form.fields[name + key];
 
     if (defaultValue) {
       this.field.defaultValue = defaultValue;
+    }
+
+    if (validate) {
+      this.field.validate = validate;
     }
   }
 
@@ -48,10 +53,7 @@ export default class Field extends Component {
   }
 
   handleChange(ev) {
-    const { validate } = this.props;
-
     this.field.value = valueFromEv(ev);
-    this.field.error = validate(this.field.value);
   }
 
   handleFocus() {
@@ -64,20 +66,16 @@ export default class Field extends Component {
   }
 
   render() {
-    const {
-      component,
-      validate, // eslint-disable-line no-unused-vars
-      ...props,
-    } = this.props;
+    const { component, ...props } = this.props;
 
     props.onChange = this.handleChange;
     props.onFocus = this.handleFocus;
     props.onBlur = this.handleBlur;
 
-    const { input, meta, custom } = separateProps(R.merge(props, toJS(this.field)));
+    const { input, meta, custom } = separateProps(R.merge(props, this.field.props));
 
     if (typeof component === 'string') {
-      return React.createElement(component, R.merge(input, custom));
+      return React.createElement(component, R.merge(custom, input));
     }
 
     return React.createElement(component, {

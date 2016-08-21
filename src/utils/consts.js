@@ -26,3 +26,11 @@ export const META_PROPS = [
   'active',
   'touched',
 ];
+
+export const IGNORE_PROPS = [
+  ...INPUT_PROPS,
+  ...META_PROPS,
+  'component',
+  'validate',
+  'normalize',
+];
