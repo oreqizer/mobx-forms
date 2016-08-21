@@ -6,7 +6,7 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oreqizer/mobx-form.git"
+    "url": "git+https://github.com/oreqizer/mobx-forms.git"
   },
   "keywords": [
     "form",
@@ -16,9 +16,9 @@
   "author": "oreqizer",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/oreqizer/mobx-form/issues"
+    "url": "https://github.com/oreqizer/mobx-forms/issues"
   },
-  "homepage": "https://github.com/oreqizer/mobx-form#readme",
+  "homepage": "https://github.com/oreqizer/mobx-forms#readme",
   "devDependencies": {
     "babel-cli": "^6.11.4",
     "babel-eslint": "^6.1.2",
