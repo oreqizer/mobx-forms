@@ -6,7 +6,8 @@
   "scripts": {
     "build": "babel src --out-dir lib",
     "build:umd": "webpack src/index.js dist/mobx-forms.js",
-    "build:umd:min": "NODE_ENV=production webpack src/index.js dist/mobx-forms.min.js"
+    "build:umd:min": "NODE_ENV=production webpack src/index.js dist/mobx-forms.min.js",
+    "build:examples": "webpack examples/index.jsx examples/bundle.js"
   },
   "repository": {
     "type": "git",

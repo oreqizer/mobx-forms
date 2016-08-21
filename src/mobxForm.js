@@ -17,41 +17,35 @@ const mobxForm = options => {
   invariant(options.form, '[mobxForms] "form" option is required on the "mobxForm" decorator.');
 
   return WrappedComponent => {
-    WrappedComponent.contextTypes = { // eslint-disable-line no-param-reassign
-      _mobxForm: PropTypes.string.isRequired,
-    };
-
     class FormWrap extends Component {
       getChildContext() {
         return {
-          _mobxForm: this.props.mobxForm[options.form],
+          _mobxForm: this.props.mobxForms[options.form],
         };
       }
 
       componentWillMount() {
-        this.props.mobxForm.addForm(options.form);
+        this.props.mobxForms.addForm(options.form);
       }
 
       componentWillUnmount() {
         if (options.cleanup) {
-          this.props.mobxForm.removeForm(options.form);
+          this.props.mobxForms.removeForm(options.form);
         }
       }
 
       render() {
         const props = R.omit([MOBX_FORMS], this.props);
 
-        props[options.form] = this.props.mobxForm[options.form];
+        props[options.form] = this.props.mobxForms[options.form];
 
-        return (
-          <WrappedComponent {...props} />
-        );
+        return React.createElement(WrappedComponent, props);
       }
     }
 
     FormWrap.propTypes = {
       onSubmit: PropTypes.func.isRequired,
-      mobxForm: PropTypes.instanceOf(FormStore).isRequired,
+      mobxForms: PropTypes.instanceOf(FormStore).isRequired,
     };
 
     FormWrap.childContextTypes = {

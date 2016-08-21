@@ -6,7 +6,7 @@ import FieldStore from './FieldStore';
 export default class FormStore {
   @observable fields = {};
 
-  @computed get allValues() {
+  @computed get values() {
     return R.map(R.prop('value'), this.fields);
   }
 
