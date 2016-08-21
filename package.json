@@ -43,5 +43,9 @@
     "react": "^15.3.1",
     "mobx": "^2.4.3",
     "mobx-react": "^3.5.5"
+  },
+  "dependencies": {
+    "invariant": "^2.2.1",
+    "ramda": "^0.22.1"
   }
 }
