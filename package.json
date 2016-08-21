@@ -1,0 +1,25 @@
+{
+  "name": "mobx-form",
+  "version": "0.0.1",
+  "description": "simple form management for mobx",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oreqizer/mobx-form.git"
+  },
+  "keywords": [
+    "form",
+    "mobx",
+    "react"
+  ],
+  "author": "oreqizer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oreqizer/mobx-form/issues"
+  },
+  "homepage": "https://github.com/oreqizer/mobx-form#readme",
+  "devDependencies": {
+    "babel-cli": "^6.11.4"
+  }
+}

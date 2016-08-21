@@ -1,0 +1,6 @@
+.git
+.atom
+.idea
+node_modules
+.babelrc
+src

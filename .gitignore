@@ -1,0 +1,6 @@
+.DS_Store
+.atom
+.idea
+node_modules
+coverage
+npm-debug.log
