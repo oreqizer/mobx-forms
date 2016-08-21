@@ -1,7 +1,9 @@
+import { observable } from 'mobx';
+
 import Form from './containers/FormStore';
 
 export default class FormsStore {
-  forms = {};
+  @observable forms = {};
 
   /**
    * @protected

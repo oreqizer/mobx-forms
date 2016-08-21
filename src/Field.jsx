@@ -1,49 +1,54 @@
 import React, { Component, PropTypes } from 'react';
+import { observer } from 'mobx-react';
 
+import FieldComponent from './components/FieldComponent';
 import FormStore from './containers/FormStore';
 
-class Field extends Component {
+export default class Field extends Component {
+  static propTypes = {
+    name: PropTypes.string.isRequired,
+    key: PropTypes.string,
+    defaultValue: PropTypes.string,
+  };
+
+  static defaultProps = {
+    key: '',
+  };
+
+  static contextTypes = {
+    _mobxForm: PropTypes.instanceOf(FormStore).isRequired,
+  };
+
   componentWillMount() {
-    const { name, key } = this.props;
-    this.context._mobxForm.addField(name + key); // eslint-disable-line no-underscore-dangle
+    const { name, key, defaultValue } = this.props;
+    this.form = this.context._mobxForm; // eslint-disable-line no-underscore-dangle
+    this.form.addField(name + key);
+    this.field = this.form.fields[name + key];
+
+    if (defaultValue) {
+      this.field.defaultValue = defaultValue;
+    }
   }
 
   componentWillUnmount() {
     const { name, key } = this.props;
-    this.context._mobxForm.removeField(name + key); // eslint-disable-line no-underscore-dangle
+    this.form.removeField(name + key);
   }
 
   render() {
-    const { component } = this.props;
-
-    if (!component) {
-      // render a bare input
-      return (
-        <input type="text" />
-      );
-    }
+    const { props, field } = this;
 
     return (
-      <component />
+      <FieldComponent
+        {...props}
+        value={field.value}
+        valid={!field.error}
+        error={field.error}
+        pristine={field.pristine}
+        dirty={!field.pristine}
+        active={field.active}
+        touched={field.touched}
+      />
     );
   }
 }
-
-Field.propTypes = {
-  name: PropTypes.string.isRequired,
-  key: PropTypes.string,
-  component: PropTypes.oneOfType([
-    PropTypes.instanceOf(Component),
-    PropTypes.func,
-  ]),
-};
-
-Field.defaultProps = {
-  key: '',
-};
-
-Field.contextTypes = {
-  _mobxForm: PropTypes.instanceOf(FormStore).isRequired,
-};
-
-export default Field;

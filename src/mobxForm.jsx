@@ -4,7 +4,7 @@ import invariant from 'invariant';
 import R from 'ramda';
 
 import FormStore from './containers/FormStore';
-import { MOBX_FORMS } from './consts/accessors';
+import { MOBX_FORMS } from './utils/consts';
 
 /**
  * Decorator for a component that will be the root of a form.

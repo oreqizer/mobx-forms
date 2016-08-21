@@ -1,9 +1,14 @@
-import { observable } from 'mobx';
+import { observable, computed } from 'mobx';
+import R from 'ramda';
 
 import FieldStore from './FieldStore';
 
 export default class FormStore {
-  @observable fields: {};
+  @observable fields = {};
+
+  @computed get allValues() {
+    return R.map(R.prop('value'), this.fields);
+  }
 
   /**
    * @protected
