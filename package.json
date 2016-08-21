@@ -1,7 +1,7 @@
 {
   "name": "mobx-forms",
-  "version": "0.0.1",
-  "description": "simple form management for mobx",
+  "version": "0.0.0",
+  "description": "A simple form management for Mobx & React.",
   "main": "index.js",
   "scripts": {},
   "repository": {
