@@ -1,6 +1,6 @@
 import { observable, computed } from 'mobx';
 
-export default class Field {
+export default class FieldStore {
   @observable value = '';
   @observable touched = false;
   validator = '';

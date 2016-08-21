@@ -1,6 +1,6 @@
-import Form from './containers/Form';
+import Form from './containers/FormStore';
 
-export default class FormStore {
+export default class FormsStore {
   forms = {};
 
   /**

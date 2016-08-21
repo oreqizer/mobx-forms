@@ -3,7 +3,7 @@ import { inject } from 'mobx-react';
 import invariant from 'invariant';
 import R from 'ramda';
 
-import Form from './containers/Form';
+import FormStore from './containers/FormStore';
 import { MOBX_FORMS } from './consts/accessors';
 
 /**
@@ -51,11 +51,11 @@ const mobxForm = options => {
 
     FormWrap.propTypes = {
       onSubmit: PropTypes.func.isRequired,
-      mobxForm: PropTypes.instanceOf(Form).isRequired,
+      mobxForm: PropTypes.instanceOf(FormStore).isRequired,
     };
 
     FormWrap.childContextTypes = {
-      _mobxForm: PropTypes.instanceOf(Form).isRequired,
+      _mobxForm: PropTypes.instanceOf(FormStore).isRequired,
     };
 
     return inject(MOBX_FORMS)(FormWrap);

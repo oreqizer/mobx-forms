@@ -5,8 +5,11 @@ const env = process.env.NODE_ENV;
 const config = {
   module: {
     loaders: [
-      { test: /\.js$/, loaders: ['babel-loader'], exclude: /node_modules/ },
+      { test: /\.jsx?$/, loaders: ['babel-loader'], exclude: /node_modules/ },
     ],
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx'],
   },
   output: {
     library: 'MobxForms',

@@ -1,8 +1,8 @@
 import { observable } from 'mobx';
 
-import Field from './Field';
+import FieldStore from './FieldStore';
 
-export default class From {
+export default class FormStore {
   @observable fields: {};
 
   /**
@@ -11,7 +11,7 @@ export default class From {
    */
   addField(name) {
     if (!this.fields[name]) {
-      this.fields[name] = new Field();
+      this.fields[name] = new FieldStore();
     }
   }
 

@@ -1,7 +1,7 @@
-import FormStore from './FormStore';
+import FormsStore from './FormsStore';
 import mobxForm from './mobxForm';
 
 export {
-  FormStore,
+  FormsStore,
   mobxForm,
 };
