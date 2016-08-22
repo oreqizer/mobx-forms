@@ -8,4 +8,17 @@ export const separateProps = all => ({
   custom: R.omit(IGNORE_PROPS, all),
 });
 
-export const valueFromEv = ev => ev.target.value; // TODO react native support
+export const valueFromEv = ev =>
+  ev.target.value ||
+  ev.target.checked; // TODO react native support
+
+export const normalizeInput = (component, input) => { // TODO check
+  switch (component) {
+    case 'input':
+      return input;
+    case 'checkbox':
+      return R.merge(input, { checked: input.value });
+    default:
+      return input;
+  }
+};

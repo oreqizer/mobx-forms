@@ -2,19 +2,29 @@ import React from 'react';
 
 import { mobxForm, Field } from '../src';
 
-const Form = () =>
+const Form = props =>
   <div>
     <h2>My form 2 (native inputs):</h2>
-    fist field
+    input
     <Field
       id="test"
       component="input"
     />
-    second field
+    textarea
     <Field
       id="test2"
-      component="input"
+      component="textarea"
     />
+    checkbox
+    <Field
+      id="test3"
+      component="input"
+      type="checkbox"
+    />
+    <div>---</div>
+    <button onClick={() => console.log(props.second.values)}>
+      values -> console
+    </button>
   </div>;
 
 export default mobxForm({
