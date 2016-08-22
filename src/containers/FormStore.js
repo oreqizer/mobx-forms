@@ -10,6 +10,10 @@ export default class FormStore {
     return R.map(R.prop('value'), this.fields);
   }
 
+  @computed get errors() {
+    return R.map(R.prop('error'), this.fields);
+  }
+
   /**
    * @protected
    * @param name: string - name of the field

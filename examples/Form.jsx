@@ -2,19 +2,39 @@ import React from 'react';
 
 import { mobxForm, Field } from '../src';
 
-const Form = () =>
+import Input from './Input';
+
+const array = ['lol', 'kek', 'bur'];
+
+const Form = props =>
   <div>
     <h2>My form:</h2>
-    fist field
+    <h4>first field</h4>
     <Field
-      name="test"
-      component="input"
+      id="test"
+      component={Input}
     />
-    second field
+    <h4>second field</h4>
     <Field
-      name="test2"
-      component="input"
+      id="test2"
+      validate={value => value.length < 5 ? 'too short' : null}
+      component={Input}
     />
+    <h4>field array:</h4>
+    {array.map((word, i) =>
+      <Field
+        key={i}
+        id={`array-${i}-${word}`}
+        component={Input}
+      />
+    )}
+    <div>---</div>
+    <button onClick={() => console.log(props.first.values)}>
+      values -> console
+    </button>
+    <button onClick={() => console.log(props.first.errors)}>
+      errors -> console
+    </button>
   </div>;
 
 export default mobxForm({

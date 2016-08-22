@@ -19,8 +19,8 @@ export const INPUT_PROPS = [
 ];
 
 export const META_PROPS = [
-  'valid',
   'error',
+  'valid',
   'pristine',
   'dirty',
   'active',

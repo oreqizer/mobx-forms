@@ -38,7 +38,7 @@ const mobxForm = options => {
       render() {
         const props = R.omit([MOBX_FORMS], this.props);
 
-        props[options.form] = this.props.mobxForms[options.form];
+        props[options.form] = this.props.mobxForms.forms[options.form];
 
         return React.createElement(WrappedComponent, props);
       }

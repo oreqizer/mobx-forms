@@ -11,6 +11,10 @@ export default class FieldStore {
     return this.validate(this.value);
   }
 
+  @computed get valid() {
+    return !this.error;
+  }
+
   @computed get pristine() {
     return this.value === this.defaultValue;
   }
@@ -25,6 +29,7 @@ export default class FieldStore {
       touched: this.touched,
       active: this.active,
       error: this.error,
+      valid: this.valid,
       pristine: this.pristine,
       dirty: this.dirty,
     };

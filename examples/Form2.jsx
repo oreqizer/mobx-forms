@@ -4,15 +4,15 @@ import { mobxForm, Field } from '../src';
 
 const Form = () =>
   <div>
-    <h2>My form 2:</h2>
+    <h2>My form 2 (native inputs):</h2>
     fist field
     <Field
-      name="test"
+      id="test"
       component="input"
     />
     second field
     <Field
-      name="test2"
+      id="test2"
       component="input"
     />
   </div>;

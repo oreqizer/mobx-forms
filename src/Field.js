@@ -8,16 +8,11 @@ import { separateProps, valueFromEv } from './utils/helpers';
 @observer
 export default class Field extends Component {
   static propTypes = {
-    name: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
     // ---
-    key: PropTypes.string,
     validate: PropTypes.func,
     defaultValue: PropTypes.string,
-  };
-
-  static defaultProps = {
-    key: '',
   };
 
   static contextTypes = {
@@ -33,10 +28,10 @@ export default class Field extends Component {
   }
 
   componentWillMount() {
-    const { name, key, defaultValue, validate } = this.props;
+    const { id, defaultValue, validate } = this.props;
     this.form = this.context._mobxForm; // eslint-disable-line no-underscore-dangle
-    this.form.addField(name + key);
-    this.field = this.form.fields[name + key];
+    this.form.addField(id);
+    this.field = this.form.fields[id];
 
     if (defaultValue) {
       this.field.defaultValue = defaultValue;
@@ -48,8 +43,8 @@ export default class Field extends Component {
   }
 
   componentWillUnmount() {
-    const { name, key } = this.props;
-    this.form.removeField(name + key);
+    const { id } = this.props;
+    this.form.removeField(id);
   }
 
   handleChange(ev) {
