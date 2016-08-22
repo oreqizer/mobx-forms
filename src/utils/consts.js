@@ -5,6 +5,7 @@ export const INPUT_PROPS = [
   'height',
   'name',
   'pattern',
+  'placeholder',
   'readonly',
   'required',
   'size',

@@ -34,6 +34,7 @@ export default class Field extends Component {
     this.field = this.form.fields[id];
 
     if (defaultValue) {
+      this.field.value = defaultValue;
       this.field.defaultValue = defaultValue;
     }
 

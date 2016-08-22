@@ -12,12 +12,14 @@ const Form = props =>
     <h4>first field</h4>
     <Field
       id="test"
+      defaultValue="default"
       component={Input}
     />
     <h4>second field</h4>
     <Field
       id="test2"
       validate={value => value.length < 5 ? 'too short' : null}
+      placeholder="longer than 5 chars"
       component={Input}
     />
     <h4>field array:</h4>
