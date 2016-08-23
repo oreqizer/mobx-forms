@@ -4,6 +4,10 @@
   "description": "A simple form management for Mobx & React.",
   "main": "index.js",
   "scripts": {
+    "test": "jest --verbose",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint \"src/**\"",
     "build": "babel src --out-dir lib",
     "build:umd": "webpack src/index.js dist/mobx-forms.js",
     "build:umd:min": "NODE_ENV=production webpack src/index.js dist/mobx-forms.min.js",
