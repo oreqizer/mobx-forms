@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import R from 'ramda';
 
 import FormStore from './containers/FormStore';
-import { separateProps, valueFromEv, normalizeInput } from './utils/helpers';
+import { separateProps, valueFromEv, valueFromType, normalizeInput } from './utils/helpers';
 
 @observer
 export default class Field extends Component {
@@ -11,6 +11,7 @@ export default class Field extends Component {
     id: PropTypes.string.isRequired,
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
     // ---
+    type: PropTypes.string,
     validate: PropTypes.func,
     defaultValue: PropTypes.string,
   };
@@ -49,7 +50,11 @@ export default class Field extends Component {
   }
 
   handleChange(ev) {
-    console.log(ev.target.checked);
+    const { component, type } = this.props;
+    if (typeof component === 'string') {
+      this.field.value = valueFromType(type, ev);
+    }
+
     this.field.value = valueFromEv(ev);
   }
 
@@ -78,10 +83,6 @@ export default class Field extends Component {
       );
     }
 
-    return React.createElement(component, {
-      ...custom,
-      input,
-      meta,
-    });
+    return React.createElement(component, R.merge(custom, { input, meta }));
   }
 }
