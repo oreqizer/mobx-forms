@@ -23,7 +23,7 @@ export default class Field extends Component {
   };
 
   componentWillMount() {
-    const { id, type, defaultValue, validate } = this.props;
+    const { id, defaultValue, validate } = this.props;
     this.form = this.context._mobxForm; // eslint-disable-line no-underscore-dangle
     this.form.addField(id);
     this.field = this.form.fields[id];
