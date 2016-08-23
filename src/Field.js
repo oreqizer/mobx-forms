@@ -3,7 +3,9 @@ import { observer } from 'mobx-react';
 import R from 'ramda';
 
 import FormStore from './containers/FormStore';
-import { separateProps, valueFromEv, valueFromType, normalizeInput } from './utils/helpers';
+
+import prepareProps from './utils/prepareProps';
+import getValue from './utils/getValue';
 
 @observer
 export default class Field extends Component {
@@ -20,16 +22,8 @@ export default class Field extends Component {
     _mobxForm: PropTypes.instanceOf(FormStore).isRequired,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleFocus = this.handleFocus.bind(this);
-    this.handleBlur = this.handleBlur.bind(this);
-  }
-
   componentWillMount() {
-    const { id, defaultValue, validate } = this.props;
+    const { id, type, defaultValue, validate } = this.props;
     this.form = this.context._mobxForm; // eslint-disable-line no-underscore-dangle
     this.form.addField(id);
     this.field = this.form.fields[id];
@@ -50,12 +44,7 @@ export default class Field extends Component {
   }
 
   handleChange(ev) {
-    const { component, type } = this.props;
-    if (typeof component === 'string') {
-      this.field.value = valueFromType(type, ev);
-    }
-
-    this.field.value = valueFromEv(ev);
+    this.field.value = getValue(ev);
   }
 
   handleFocus() {
@@ -70,17 +59,14 @@ export default class Field extends Component {
   render() {
     const { component, ...props } = this.props;
 
-    props.onChange = this.handleChange;
-    props.onFocus = this.handleFocus;
-    props.onBlur = this.handleBlur;
+    props.onChange = ev => this.handleChange(ev);
+    props.onFocus = ev => this.handleFocus(ev);
+    props.onBlur = ev => this.handleBlur(ev);
 
-    const { input, meta, custom } = separateProps(R.merge(props, this.field.props));
+    const { input, meta, custom } = prepareProps(R.merge(props, this.field.props));
 
     if (typeof component === 'string') {
-      return React.createElement(
-        component,
-        R.merge(custom, normalizeInput(component, input))
-      );
+      return React.createElement(component, R.merge(custom, input));
     }
 
     return React.createElement(component, R.merge(custom, { input, meta }));

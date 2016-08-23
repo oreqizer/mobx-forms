@@ -21,6 +21,17 @@ const Form = props =>
       component="input"
       type="checkbox"
     />
+    radio
+    <Field
+      id="test4"
+      component="input"
+      type="radio"
+    />
+    select
+    <Field
+      id="test5"
+      component="select"
+    />
     <div>---</div>
     <button onClick={() => console.log(props.second.values)}>
       values -> console

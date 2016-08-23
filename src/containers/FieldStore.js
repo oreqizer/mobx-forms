@@ -4,6 +4,9 @@ export default class FieldStore {
   @observable value = '';
   @observable touched = false;
   @observable active = false;
+
+  // Only for initialization
+  // ---
   defaultValue = '';
   validate = () => null;
 
