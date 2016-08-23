@@ -3,8 +3,6 @@ export const MOBX_FORMS = 'mobxForms';
 export const INPUT_PROPS = [
   'autocomplete',
   'checked',
-  'defaultChecked',
-  'defaultValue',
   'height',
   'name',
   'pattern',
