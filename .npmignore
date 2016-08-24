@@ -1,7 +1,12 @@
 .git
 .atom
 .idea
+coverage
+examples
 node_modules
 .babelrc
+.eslintrc
+.eslintignore
 .flowconfig
+webpack.config.js
 src

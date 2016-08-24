@@ -1,8 +1,9 @@
 {
   "name": "mobx-forms",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A simple form management for Mobx & React.",
-  "main": "index.js",
+  "main": "./lib/index.js",
+  "jsnext:main": "./src/index.js",
   "scripts": {
     "test": "jest --verbose",
     "test:watch": "jest --watch",
