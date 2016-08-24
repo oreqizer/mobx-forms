@@ -1,6 +1,6 @@
 {
   "name": "mobx-forms",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A simple form management for Mobx & React.",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,8 @@
     "build": "babel src --out-dir lib",
     "build:umd": "webpack src/index.js dist/mobx-forms.js",
     "build:umd:min": "NODE_ENV=production webpack src/index.js dist/mobx-forms.min.js",
-    "build:examples": "webpack examples/index.jsx examples/bundle.js"
+    "build:examples": "webpack examples/index.jsx examples/bundle.js",
+    "prepublish": "npm test && npm run lint && npm run build"
   },
   "repository": {
     "type": "git",
