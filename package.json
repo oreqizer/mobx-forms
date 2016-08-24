@@ -1,5 +1,5 @@
 {
-  "name": "mobx-forms",
+  "name": "mobx-forms2",
   "version": "0.0.3",
   "description": "A simple form management for Mobx & React.",
   "main": "./lib/index.js",
@@ -9,7 +9,8 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "eslint \"src/**\"",
-    "build": "babel src --out-dir lib",
+    "build": "npm run build:lib && npm run build:umd && npm run umd:min",
+    "build:lib": "babel src --out-dir lib",
     "build:umd": "webpack src/index.js dist/mobx-forms.js",
     "build:umd:min": "NODE_ENV=production webpack src/index.js dist/mobx-forms.min.js",
     "build:examples": "webpack examples/index.jsx examples/bundle.js",
@@ -54,6 +55,12 @@
   },
   "dependencies": {
     "invariant": "^2.2.1",
+    "mobx-forms": "0.0.3",
     "ramda": "^0.22.1"
-  }
+  },
+  "npmName": "mobx-forms",
+  "npmFileMap": [{
+    "basePath": "/dist/",
+    "files": ["*.js"]
+  }]
 }
