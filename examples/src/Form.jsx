@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { mobxForm, Field } from '../src';
+import { mobxForm, Field } from 'mobx-forms';
 
 import Input from './Input';
 
