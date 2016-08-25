@@ -1,6 +1,6 @@
 {
   "name": "mobx-forms",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A simple form management for Mobx & React.",
   "main": "lib/index.js",
   "scripts": {
