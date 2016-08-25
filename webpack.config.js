@@ -1,8 +1,19 @@
+/* eslint-disable import/no-extraneous-dependencies */
 const webpack = require('webpack');
 
 const env = process.env.NODE_ENV;
 
+const reactExternal = {
+  root: 'React',
+  commonjs2: 'react',
+  commonjs: 'react',
+  amd: 'react',
+};
+
 const config = {
+  externals: {
+    react: reactExternal,
+  },
   module: {
     loaders: [
       { test: /\.jsx?$/, loaders: ['babel-loader'], exclude: /node_modules/ },

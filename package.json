@@ -1,9 +1,8 @@
 {
-  "name": "mobx-forms2",
+  "name": "mobx-forms",
   "version": "0.0.3",
   "description": "A simple form management for Mobx & React.",
-  "main": "./lib/index.js",
-  "jsnext:main": "./src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "jest --verbose",
     "test:watch": "jest --watch",
@@ -14,7 +13,8 @@
     "build:umd": "webpack src/index.js dist/mobx-forms.js",
     "build:umd:min": "NODE_ENV=production webpack src/index.js dist/mobx-forms.min.js",
     "build:examples": "webpack examples/index.jsx examples/bundle.js",
-    "prepublish": "npm test && npm run lint && npm run build"
+    "clean": "rimraf lib dist",
+    "prepublish": "npm run clean && npm test && npm run lint && npm run build"
   },
   "repository": {
     "type": "git",
@@ -45,11 +45,11 @@
     "eslint-plugin-import": "^1.13.0",
     "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-react": "^6.1.2",
+    "semver": "^5.3.0",
     "webpack": "^2.1.0-beta.21"
   },
   "peerDependencies": {
     "react": "^15.3.1",
-    "react-dom": "^15.3.1",
     "mobx": "^2.4.3",
     "mobx-react": "^3.5.5"
   },
@@ -58,9 +58,10 @@
     "mobx-forms": "0.0.3",
     "ramda": "^0.22.1"
   },
-  "npmName": "mobx-forms",
-  "npmFileMap": [{
-    "basePath": "/dist/",
-    "files": ["*.js"]
-  }]
+  "files": [
+    "dist",
+    "lib",
+    "README.md",
+    "LICENSE"
+  ]
 }
