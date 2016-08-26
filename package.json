@@ -12,7 +12,7 @@
     "build:lib": "babel src --out-dir lib",
     "build:umd": "webpack src/index.js dist/mobx-forms.js",
     "build:umd:min": "NODE_ENV=production webpack src/index.js dist/mobx-forms.min.js",
-    "build:examples": "webpack examples/index.jsx examples/bundle.js",
+    "build:examples": "webpack examples/index.jsx examples/bundle.js --config examples/webpack.config.js",
     "clean": "rimraf lib dist",
     "prepublish": "npm run clean && npm test && npm run lint && npm run build"
   },
@@ -45,6 +45,7 @@
     "eslint-plugin-import": "^1.13.0",
     "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-react": "^6.1.2",
+    "react-dom": "^15.3.1",
     "semver": "^5.3.0",
     "webpack": "^2.1.0-beta.21"
   },
