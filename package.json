@@ -9,7 +9,7 @@
     "test:coverage": "jest --coverage",
     "lint": "eslint src/",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
-    "build:lib": "babel src --out-dir lib",
+    "build:lib": "babel src --out-dir lib --ignore **/__tests__/",
     "build:umd": "webpack src/index.js dist/mobx-forms.js",
     "build:umd:min": "NODE_ENV=production webpack src/index.js dist/mobx-forms.min.js",
     "build:examples": "webpack examples/index.jsx examples/bundle.js --config examples/webpack.config.js",
