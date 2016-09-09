@@ -71,14 +71,14 @@ describe('#traverse', () => {
   });
 });
 
-describe('#traverseTail', () => {
+describe('#traverseInit', () => {
   it('should not find a field in flat fields', () => {
     const result = traverseInit(flat, 'people[1]');
 
     expect(result).toBeNull();
   });
 
-  it('should find a field in fields', () => {
+  it('should find a field in deep fields', () => {
     const result = traverseInit(deep, 'doges[0].foods[0].nutrition[1]');
 
     expect(result).toEqual({
@@ -91,7 +91,7 @@ describe('#traverseTail', () => {
     });
   });
 
-  it('should not find a field in fields', () => {
+  it('should not find a field in deep fields', () => {
     const result = traverseInit(deep, 'doges[0].people[0].nutrition[1]');
 
     expect(result).toBeNull();
