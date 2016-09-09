@@ -2,7 +2,10 @@ import R from 'ramda';
 
 import mapDeep from '../mapDeep';
 
+import FieldStore from '../../containers/FieldStore'; // TODO mock this + add values
+
 jest.unmock('../mapDeep');
+jest.unmock('../../containers/FieldStore');
 jest.unmock('ramda');
 
 const flat = {
@@ -16,6 +19,10 @@ const medium = {
     { field: { value: 'medium0' } },
     { field: { value: 'medium1' } },
   ],
+  flatArray: [
+    new FieldStore(),
+    new FieldStore(),
+  ],
 };
 
 const deep = {
@@ -25,8 +32,7 @@ const deep = {
     {
       field: { value: 'medium1' },
       nested: [
-        { deepField: { value: 'deep0' } },
-        { deepField: { value: 'deep1' } },
+        new FieldStore(),
       ],
     },
   ],
@@ -46,6 +52,8 @@ describe('#mapDeep', () => {
     expect(result.field1).toBe('test');
     expect(result.fieldArray[0].field).toBe('medium0');
     expect(result.fieldArray[1].field).toBe('medium1');
+    expect(result.flatArray[0]).toBe('');
+    expect(result.flatArray[1]).toBe('');
   });
 
   it('should map a deep form', () => {
@@ -54,7 +62,6 @@ describe('#mapDeep', () => {
     expect(result.field1).toBe('test');
     expect(result.fieldArray[0].field).toBe('medium0');
     expect(result.fieldArray[1].field).toBe('medium1');
-    expect(result.fieldArray[1].nested[0].deepField).toBe('deep0');
-    expect(result.fieldArray[1].nested[1].deepField).toBe('deep1');
+    expect(result.fieldArray[1].nested[0]).toBe('');
   });
 });

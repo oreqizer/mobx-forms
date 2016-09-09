@@ -7,23 +7,21 @@ jest.unmock('../../utils/mapDeep');
 jest.unmock('ramda');
 jest.unmock('mobx');
 
-const fields = {
-  field1: { value: 'test' },
-  fieldArray: [
-    { value: 'array1' },
-  ],
-  fieldSections: [
-    { field: { value: 'medium0' } },
-    { field: { value: 'medium1' } },
-  ],
-};
-
 describe('#FormStore', () => {
   let form = null;
 
   beforeEach(() => {
     form = new FormStore();
-    form.fields = fields;
+    form.fields = {
+      field1: { value: 'test' },
+      fieldArray: [
+        { value: 'array1' },
+      ],
+      fieldSections: [
+        { field: { value: 'medium0' } },
+        { field: { value: 'medium1' } },
+      ],
+    };
   });
 
   // TODO: add 'values' and 'errors'
@@ -41,16 +39,45 @@ describe('#FormStore', () => {
   });
 
   it('should push a field', () => {
-    form.pushField('fieldArray');
+    form.push('fieldArray');
 
     expect(form.fields.fieldArray.length).toBe(2);
+    expect(form.fields.fieldArray[1].value).toBe('');
   });
 
-  it('should push a section', () => {
-    form.pushSection('fieldSections');
+  it('should push a field section', () => {
+    form.push('fieldSections', true);
 
     expect(form.fields.fieldSections.length).toBe(3);
     expect(form.fields.fieldSections[2]).toEqual({});
+  });
+
+  it('should pop a field', () => {
+    form.pop('fieldSections');
+
+    expect(form.fields.fieldSections.length).toBe(1);
+    expect(form.fields.fieldSections[0].field.value).toBe('medium0');
+  });
+
+  it('should unshift a field', () => {
+    form.unshift('fieldArray');
+
+    expect(form.fields.fieldArray.length).toBe(2);
+    expect(form.fields.fieldArray[0].value).toBe('');
+  });
+
+  it('should unshift a field section', () => {
+    form.unshift('fieldSections', true);
+
+    expect(form.fields.fieldSections.length).toBe(3);
+    expect(form.fields.fieldSections[0]).toEqual({});
+  });
+
+  it('should shift a field', () => {
+    form.shift('fieldSections');
+
+    expect(form.fields.fieldSections.length).toBe(1);
+    expect(form.fields.fieldSections[0].field.value).toBe('medium1');
   });
 
   afterEach(() => {

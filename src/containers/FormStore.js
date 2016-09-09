@@ -31,16 +31,6 @@ export default class FormStore {
     base[name] = new FieldStore();
   }
 
-  pushField(context) {
-    const base = traverse(this.fields, context);
-    base.push(new FieldStore());
-  }
-
-  pushSection(context) {
-    const base = traverse(this.fields, context);
-    base.push({});
-  }
-
   /**
    * @protected
    * @param name: string - name of the array field
@@ -63,5 +53,33 @@ export default class FormStore {
   removeField(name, context) {
     const base = traverse(this.fields, context);
     delete base[name];
+  }
+
+  push(context, deep) {
+    const base = traverse(this.fields, context);
+    if (deep) {
+      base.push({});
+    } else {
+      base.push(new FieldStore());
+    }
+  }
+
+  pop(context) {
+    const base = traverse(this.fields, context);
+    base.pop();
+  }
+
+  unshift(context, deep) {
+    const base = traverse(this.fields, context);
+    if (deep) {
+      base.unshift({});
+    } else {
+      base.unshift(new FieldStore());
+    }
+  }
+
+  shift(context) {
+    const base = traverse(this.fields, context);
+    base.shift();
   }
 }
