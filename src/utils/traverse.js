@@ -27,7 +27,7 @@ export function traverseInit(fields, context = '') {
   const path = R.init(context.split('.')).join('.');
 
   if (path === '') {
-    return null;
+    return fields;
   }
 
   return traverse(fields, path);

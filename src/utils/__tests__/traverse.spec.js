@@ -49,7 +49,7 @@ describe('#traverse', () => {
   it('should find a field in flat fields', () => {
     const result = traverse(flat, 'people[1]');
 
-    expect(result).toEqual({ value: 'test2' });
+    expect(result).toEqual(flat.people[1]);
   });
 
   it('should not find a field in flat fields', () => {
@@ -61,7 +61,7 @@ describe('#traverse', () => {
   it('should find a field in deep fields', () => {
     const result = traverse(deep, 'doges[0].foods[0].nutrition[1]');
 
-    expect(result).toEqual({ value: '420kcal' });
+    expect(result).toEqual(deep.doges[0].foods[0].nutrition[1]);
   });
 
   it('should not find a field in deep fields', () => {
@@ -75,20 +75,13 @@ describe('#traverseInit', () => {
   it('should not find a field in flat fields', () => {
     const result = traverseInit(flat, 'people[1]');
 
-    expect(result).toBeNull();
+    expect(result).toEqual(flat);
   });
 
   it('should find a field in deep fields', () => {
     const result = traverseInit(deep, 'doges[0].foods[0].nutrition[1]');
 
-    expect(result).toEqual({
-      value: 'bone',
-      nutrition: [{
-        value: '1337kcal',
-      }, {
-        value: '420kcal',
-      }],
-    });
+    expect(result).toEqual(deep.doges[0].foods[0]);
   });
 
   it('should not find a field in deep fields', () => {
