@@ -11,13 +11,13 @@ const Form = props =>
     <h2>My form:</h2>
     <h4>first field</h4>
     <Field
-      id="test"
+      name="test"
       defaultValue="default"
       component={Input}
     />
     <h4>second field</h4>
     <Field
-      id="test2"
+      name="test2"
       validate={value => value.length < 5 ? 'too short' : null}
       placeholder="longer than 5 chars"
       component={Input}
@@ -26,7 +26,7 @@ const Form = props =>
     {array.map((word, i) =>
       <Field
         key={i}
-        id={`array-${i}-${word}`}
+        name={`array-${i}-${word}`}
         component={Input}
       />
     )}
