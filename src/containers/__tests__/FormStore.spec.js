@@ -10,6 +10,9 @@ jest.unmock('mobx');
 const fields = {
   field1: { value: 'test' },
   fieldArray: [
+    { value: 'array1' },
+  ],
+  fieldSections: [
     { field: { value: 'medium0' } },
     { field: { value: 'medium1' } },
   ],
@@ -20,26 +23,35 @@ describe('#FormStore', () => {
 
   beforeEach(() => {
     form = new FormStore();
+    form.fields = fields;
   });
-  //
-  // it('should add a field', () => {
-  //   form.addField('field', '');
-  //
-  //   expect(form.fields.field).toBeDefined();
-  // });
-  //
-  // it('should add an array field', () => {
-  //   form.addFieldArray('fieldArray', '');
-  //
-  //   expect(form.fields.fieldArray).toEqual([]);
-  // });
-  //
-  // it('should add a field into an array field', () => {
-  //   form.addFieldArray('fieldArray', '');
-  //   form.addField('field', 'fieldArray[0]');
-  //
-  //   expect(form.fields.fieldArray[0]).toEqual([]);
-  // });
+
+  // TODO: add 'values' and 'errors'
+
+  it('should add a field directly', () => {
+    form.addField('field2', '');
+
+    expect(form.fields.field2).toBeDefined();
+  });
+
+  it('should add a field deeply', () => {
+    form.addField('field1', 'fieldSections#1');
+
+    expect(form.fields.fieldSections[1].field1).toBeDefined();
+  });
+
+  it('should push a field', () => {
+    form.pushField('fieldArray');
+
+    expect(form.fields.fieldArray.length).toBe(2);
+  });
+
+  it('should push a section', () => {
+    form.pushSection('fieldSections');
+
+    expect(form.fields.fieldSections.length).toBe(3);
+    expect(form.fields.fieldSections[2]).toEqual({});
+  });
 
   afterEach(() => {
     form = null;

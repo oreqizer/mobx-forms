@@ -3,7 +3,7 @@ import invariant from 'invariant';
 import R from 'ramda';
 
 import FieldStore from './FieldStore';
-import { traverse } from '../utils/traverse';
+import traverse from '../utils/traverse';
 import mapDeep from '../utils/mapDeep';
 
 export default class FormStore {
@@ -29,6 +29,16 @@ export default class FormStore {
       `[mobx-forms] Tried to mount a Field '${name}' twice. Names must be unique!`
     );
     base[name] = new FieldStore();
+  }
+
+  pushField(context) {
+    const base = traverse(this.fields, context);
+    base.push(new FieldStore());
+  }
+
+  pushSection(context) {
+    const base = traverse(this.fields, context);
+    base.push({});
   }
 
   /**
