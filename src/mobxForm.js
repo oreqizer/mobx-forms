@@ -15,13 +15,14 @@ import { MOBX_FORMS } from './utils/consts';
  * @prop options.cleanup: ?bool - shall the form be destroyed on unmount?
  */
 const mobxForm = options => {
-  invariant(options.form, '[mobxForms] "form" option is required on the "mobxForm" decorator.');
+  invariant(options.form, '[mobx-forms] "form" option is required on the "mobxForm" decorator.');
 
   return WrappedComponent => {
     class FormWrap extends Component {
       getChildContext() {
         return {
           _mobxForm: this.props.mobxForms.forms[options.form],
+          _mobxFormContext: '',
         };
       }
 
@@ -50,6 +51,7 @@ const mobxForm = options => {
 
     FormWrap.childContextTypes = {
       _mobxForm: PropTypes.instanceOf(FormStore).isRequired,
+      _mobxFormContext: PropTypes.string.isRequired,
     };
 
     return inject(MOBX_FORMS)(FormWrap);

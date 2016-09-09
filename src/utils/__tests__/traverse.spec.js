@@ -1,91 +1,69 @@
-import { nameIndex, traverse, traverseInit } from '../traverse';
+import traverse from '../traverse';
 
 jest.unmock('../traverse');
 jest.unmock('ramda');
 
-const part = 'people[1]';
-
-const partLong = 'doges[1337]';
-
-describe('#nameIndex', () => {
-  it('should partition part correctly', () => {
-    const { name, index } = nameIndex(part);
-
-    expect(name).toBe('people');
-    expect(index).toBe(1);
-  });
-
-  it('should partition part with big index correctly', () => {
-    const { name, index } = nameIndex(partLong);
-
-    expect(name).toBe('doges');
-    expect(index).toBe(1337);
-  });
-});
-
 const flat = {
+  group: { value: 'gym' },
   people: [{
-    value: 'test',
+    name: { value: 'test' },
   }, {
-    value: 'test2',
+    name: { value: 'test2' },
   }],
 };
 
 const deep = {
   doges: [{
-    value: 'doge',
+    name: { value: 'doge' },
     foods: [{
-      value: 'bone',
-      nutrition: [{
-        value: '1337kcal',
-      }, {
-        value: '420kcal',
-      }],
+      name: { value: 'meat' },
+      types: [
+        { value: 'steak' },
+        { value: 'wing' },
+      ],
     }],
   }],
 };
 
 describe('#traverse', () => {
-  it('should find a field in flat fields', () => {
-    const result = traverse(flat, 'people[1]');
-
-    expect(result).toEqual(flat.people[1]);
-  });
-
-  it('should not find a field in flat fields', () => {
-    const result = traverse(flat, 'people[2]');
-
-    expect(result).toBeNull();
-  });
-
-  it('should find a field in deep fields', () => {
-    const result = traverse(deep, 'doges[0].foods[0].nutrition[1]');
-
-    expect(result).toEqual(deep.doges[0].foods[0].nutrition[1]);
-  });
-
-  it('should not find a field in deep fields', () => {
-    const result = traverse(deep, 'doges[0].people[0].nutrition[1]');
-
-    expect(result).toBeNull();
-  });
-});
-
-describe('#traverseInit', () => {
-  it('should not find a field in flat fields', () => {
-    const result = traverseInit(flat, 'people[1]');
+  it('should return root if no context supplied', () => {
+    const result = traverse(flat, '');
 
     expect(result).toEqual(flat);
   });
 
-  it('should find a field in deep fields', () => {
-    const result = traverseInit(deep, 'doges[0].foods[0].nutrition[1]');
+  it('should find a member in flat fields', () => {
+    const result = traverse(flat, 'group');
 
-    expect(result).toEqual(deep.doges[0].foods[0]);
+    expect(result).toEqual(flat.group);
   });
 
-  it('should not find a field in deep fields', () => {
-    const result = traverseInit(deep, 'doges[0].people[0].nutrition[1]');
+  it('should find fields in flat fields', () => {
+    const result = traverse(flat, 'people#1');
+
+    expect(result).toEqual(flat.people[1]);
+  });
+
+  it('should not find fields in flat fields', () => {
+    const result = traverse(flat, 'people#2');
+
+    expect(result).toBeNull();
+  });
+
+  it('should find fields in deep fields', () => {
+    const result = traverse(deep, 'doges#0.foods#0.types#1');
+
+    expect(result).toEqual(deep.doges[0].foods[0].types[1]);
+  });
+
+  it('should find a member in deep fields', () => {
+    const result = traverse(deep, 'doges#0.foods');
+
+    expect(result).toEqual(deep.doges[0].foods);
+  });
+
+  it('should not find fields in deep fields', () => {
+    const result = traverse(deep, 'doges#0.people#0.nutrition#1');
 
     expect(result).toBeNull();
   });

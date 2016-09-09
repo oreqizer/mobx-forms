@@ -1,34 +1,28 @@
 import R from 'ramda';
 
-export const nameIndex = part => ({
-  name: R.match(/\w+/, part)[0],
-  index: Number(R.match(/\d+/, part)[0]),
-});
+function maybeHash(form, path) {
+  const [name, index] = path.split('#');
 
-export function traverse(fields, context = '') {
+  return index ? R.path([name, index], form) : R.prop(name, form);
+}
+
+export default function traverse(form, context) {
+  if (context === '') {
+    return form;
+  }
+
   const path = context.split('.');
   const head = R.head(path);
   const tail = R.tail(path);
 
-  const { name, index } = nameIndex(head);
-  const field = R.path([name, index], fields);
-  if (!field) {
+  const fields = maybeHash(form, head);
+  if (!fields) {
     return null;
   }
 
   if (tail.length > 0) {
-    return traverse(field, tail.join('.'));
+    return traverse(fields, tail.join('.'));
   }
 
-  return field;
-}
-
-export function traverseInit(fields, context = '') {
-  const path = R.init(context.split('.')).join('.');
-
-  if (path === '') {
-    return fields;
-  }
-
-  return traverse(fields, path);
+  return fields;
 }

@@ -20,12 +20,15 @@ export default class Field extends Component {
 
   static contextTypes = {
     _mobxForm: PropTypes.instanceOf(FormStore).isRequired,
+    _mobxFormContext: PropTypes.string.isRequired,
   };
 
   componentWillMount() {
     const { name, defaultValue, validate } = this.props;
     this.form = this.context._mobxForm; // eslint-disable-line no-underscore-dangle
-    this.form.addField(name);
+    this.context = this.context._mobxFormContext; // eslint-disable-line no-underscore-dangle
+
+    this.form.addField(name, this.context);
     this.field = this.form.fields[name];
 
     if (defaultValue) {
@@ -40,7 +43,7 @@ export default class Field extends Component {
 
   componentWillUnmount() {
     const { name } = this.props;
-    this.form.removeField(name);
+    this.form.removeField(name, this.context);
   }
 
   handleChange(ev) {
