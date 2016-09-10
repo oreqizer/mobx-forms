@@ -1,8 +1,5 @@
 import traverse from '../traverse';
 
-jest.unmock('../traverse');
-jest.unmock('ramda');
-
 const flat = {
   group: { value: 'gym' },
   people: [{

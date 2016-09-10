@@ -1,9 +1,5 @@
 import prepareProps from '../prepareProps';
 
-jest.unmock('../prepareProps');
-jest.unmock('../consts');
-jest.unmock('ramda');
-
 const onChange = id => id;
 const onFocus = id => id;
 const onBlur = id => id;

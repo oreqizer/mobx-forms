@@ -1,11 +1,7 @@
 import FormStore from '../FormStore';
 import FieldStore from '../FieldStore';
 
-jest.unmock('../FormStore');
-jest.unmock('../../utils/traverse');
-jest.unmock('../../utils/mapForm');
-jest.unmock('ramda');
-jest.unmock('mobx');
+jest.mock('../../containers/FieldStore');
 
 describe('#FormStore', () => {
   let form = null;

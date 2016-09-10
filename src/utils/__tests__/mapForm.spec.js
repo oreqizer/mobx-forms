@@ -4,8 +4,7 @@ import { mapDeep, mapFlat } from '../mapForm';
 
 import FieldStore from '../../containers/FieldStore';
 
-jest.unmock('../mapForm');
-jest.unmock('ramda');
+jest.mock('../../containers/FieldStore');
 
 const flat = {
   field1: new FieldStore({ value: 'flat0' }),

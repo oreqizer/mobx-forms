@@ -1,7 +1,5 @@
 import getValue from '../getValue';
 
-jest.unmock('../getValue');
-
 const preventDefault = id => id;
 const stopPropagation = id => id;
 

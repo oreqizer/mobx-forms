@@ -1,4 +1,4 @@
-const getSelectedValues = (options = []) => options
+const getSelectedValues = options => options
     .filter(option => option.selected)
     .map(option => option.value);
 
