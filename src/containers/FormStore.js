@@ -4,7 +4,7 @@ import R from 'ramda';
 
 import FieldStore from './FieldStore';
 import traverse from '../utils/traverse';
-import mapDeep from '../utils/mapDeep';
+import { mapDeep } from '../utils/mapForm';
 
 export default class FormStore {
   @observable fields = {};

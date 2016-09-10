@@ -1,9 +1,9 @@
 import FormStore from '../FormStore';
+import FieldStore from '../FieldStore';
 
 jest.unmock('../FormStore');
-jest.unmock('../FieldStore');
 jest.unmock('../../utils/traverse');
-jest.unmock('../../utils/mapDeep');
+jest.unmock('../../utils/mapForm');
 jest.unmock('ramda');
 jest.unmock('mobx');
 
@@ -13,18 +13,42 @@ describe('#FormStore', () => {
   beforeEach(() => {
     form = new FormStore();
     form.fields = {
-      field1: { value: 'test' },
+      field1: new FieldStore({ value: 'test', error: null }),
       fieldArray: [
-        { value: 'array1' },
+        new FieldStore({ value: 'array1', error: 'short' }),
       ],
       fieldSections: [
-        { field: { value: 'medium0' } },
-        { field: { value: 'medium1' } },
+        { field: new FieldStore({ value: 'medium0', error: 'long' }) },
+        { field: new FieldStore({ value: 'medium1', error: null }) },
       ],
     };
   });
 
-  // TODO: add 'values' and 'errors'
+  it('should return all values', () => {
+    expect(form.values).toEqual({
+      field1: 'test',
+      fieldArray: [
+        'array1',
+      ],
+      fieldSections: [
+        { field: 'medium0' },
+        { field: 'medium1' },
+      ],
+    });
+  });
+
+  it('should return all errors', () => {
+    expect(form.errors).toEqual({
+      field1: null,
+      fieldArray: [
+        'short',
+      ],
+      fieldSections: [
+        { field: 'long' },
+        { field: null },
+      ],
+    });
+  });
 
   it('should add a field directly', () => {
     form.addField('field2', '');
@@ -36,6 +60,30 @@ describe('#FormStore', () => {
     form.addField('field1', 'fieldSections#1');
 
     expect(form.fields.fieldSections[1].field1).toBeDefined();
+  });
+
+  it('should add a field array directly', () => {
+    form.addFieldArray('field2', '');
+
+    expect(form.fields.field2).toEqual([]);
+  });
+
+  it('should add a field array deeply', () => {
+    form.addFieldArray('field1', 'fieldSections#1');
+
+    expect(form.fields.fieldSections[1].field1).toEqual([]);
+  });
+
+  it('should remove a field directly', () => {
+    form.removeField('field1', '');
+
+    expect(form.fields.field1).toBeUndefined();
+  });
+
+  it('should remove a field deeply', () => {
+    form.removeField('field', 'fieldSections#1');
+
+    expect(form.fields.fieldSections[1].field).toBeUndefined();
   });
 
   it('should push a field', () => {
