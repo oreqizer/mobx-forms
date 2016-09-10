@@ -1,6 +1,8 @@
 import { observable, computed } from 'mobx';
 
 export default class FieldStore {
+  __mobxField = true;
+
   @observable value = '';
   @observable touched = false;
   @observable active = false;

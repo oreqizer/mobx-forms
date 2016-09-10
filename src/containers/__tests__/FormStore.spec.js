@@ -1,7 +1,7 @@
 import FormStore from '../FormStore';
 import FieldStore from '../FieldStore';
 
-jest.mock('../../containers/FieldStore');
+jest.mock('../FieldStore');
 
 describe('#FormStore', () => {
   let form = null;
@@ -44,6 +44,10 @@ describe('#FormStore', () => {
         { field: null },
       ],
     });
+  });
+
+  it('should mark a from as invalid', () => {
+    expect(form.valid).toBe(false);
   });
 
   it('should add a field directly', () => {

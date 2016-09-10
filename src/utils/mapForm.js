@@ -1,15 +1,15 @@
 /* eslint-disable no-confusing-arrow */
 import R from 'ramda';
 
-import FieldStore from '../containers/FieldStore';
+const isField = R.has('__mobxField');
 
 export const mapDeep = (fn, form) => R.map(val =>
-  val instanceof FieldStore ?
+  isField(val) ?
   fn(val) :
   mapDeep(fn, val), form);
 
 const toArrays = R.map(val =>
-  val instanceof FieldStore ?
+  isField(val) ?
   val :
   toArrays(R.values(val)));
 

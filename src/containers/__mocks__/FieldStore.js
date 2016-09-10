@@ -1,4 +1,6 @@
 export default class FieldStore {
+  __mobxField = true;
+
   value = '';
   error = null;
 
