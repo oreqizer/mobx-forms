@@ -1,45 +1,60 @@
-import { Component, PropTypes } from 'react';
-
-import FormStore from './containers/FormStore';
+import React, { Component, PropTypes } from 'react';
+import R from 'ramda';
 
 export default class FieldArray extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
-    children: PropTypes.arrayOf(PropTypes.node).isRequired,
+    component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
+    // ---
+    flat: PropTypes.bool,
   };
 
   static contextTypes = {
-    _mobxForm: PropTypes.instanceOf(FormStore).isRequired,
-    _mobxFormContext: PropTypes.string.isRequired,
+    mobxForms: PropTypes.object.isRequired,
   };
 
   static childContextTypes = {
-    _mobxFormContext: PropTypes.string.isRequired,
+    mobxForms: PropTypes.object.isRequired,
   };
 
   getChildContext() {
     const { name } = this.props;
-    const context = this.context._mobxFormContext; // eslint-disable-line no-underscore-dangle
+    const { form, context } = this.context.mobxForms;
 
     return {
-      _mobxFormContext: `${context}.${name}`,
+      form,
+      context: `${context}.${name}`,
     };
   }
 
   componentWillMount() {
     const { name } = this.props;
-    this.form = this.context._mobxForm; // eslint-disable-line no-underscore-dangle
-    this.context = this.context._mobxFormContext; // eslint-disable-line no-underscore-dangle
+    const { form, context } = this.context.mobxForms;
 
-    this.form.addFieldArray(name, this.context);
+    form.addFieldArray(name, context);
   }
 
   componentWillUnmount() {
     const { name } = this.props;
-    this.form.removeFieldArray(name, this.context);
+    const { form, context } = this.context.mobxForms;
+
+    form.removeField(name, context);
   }
 
   render() {
-    return this.props.children;
+    const { component, name, flat, ...rest } = this.props;
+    const { form, context } = this.context.mobxForms;
+
+    const fields = {
+      map: (fn) => form.map(context, fn),
+      push: () => flat ? form.push(context, name) : form.pushDeep(context),
+      pop: () => form.pop(context),
+      unshift: () => flat ? form.unshift(context, name) : form.unshiftDeep(context),
+      shift: () => form.shift(context),
+    };
+
+    return React.createElement(component, R.merge(rest, {
+      fields,
+    }));
   }
 }

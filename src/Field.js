@@ -13,23 +13,20 @@ export default class Field extends Component {
     name: PropTypes.string.isRequired,
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
     // ---
-    type: PropTypes.string,
     validate: PropTypes.func,
     defaultValue: PropTypes.string,
   };
 
   static contextTypes = {
-    _mobxForm: PropTypes.instanceOf(FormStore).isRequired,
-    _mobxFormContext: PropTypes.string.isRequired,
+    mobxForms: PropTypes.object.isRequired,
   };
 
   componentWillMount() {
     const { name, defaultValue, validate } = this.props;
-    this.form = this.context._mobxForm; // eslint-disable-line no-underscore-dangle
-    this.context = this.context._mobxFormContext; // eslint-disable-line no-underscore-dangle
+    const { form, context } = this.context.mobxForms;
 
-    this.form.addField(name, this.context);
-    this.field = this.form.fields[name];
+    form.addField(name, context);
+    this.field = form.fields[name];
 
     if (defaultValue) {
       this.field.value = defaultValue;
@@ -43,7 +40,8 @@ export default class Field extends Component {
 
   componentWillUnmount() {
     const { name } = this.props;
-    this.form.removeField(name, this.context);
+    const { form, context } = this.context.mobxForms;
+    form.removeField(name, context);
   }
 
   handleChange(ev) {
@@ -52,11 +50,12 @@ export default class Field extends Component {
 
   handleFocus() {
     this.field.active = true;
-    this.field.touched = true;
+    this.field.visited = true;
   }
 
   handleBlur() {
     this.field.active = false;
+    this.field.touched = true;
   }
 
   render() {

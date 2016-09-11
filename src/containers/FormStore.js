@@ -7,8 +7,6 @@ import traverse from '../utils/traverse';
 import { mapDeep, mapFlat } from '../utils/mapForm';
 
 export default class FormStore {
-  __mobxForm = true;
-
   @observable fields = {};
 
   @computed get values() {
@@ -23,25 +21,15 @@ export default class FormStore {
     return R.all(R.equals(null), mapFlat(R.prop('error'), toJS(this.fields)));
   }
 
-  /**
-   * @protected
-   * @param name: string - name of the field
-   * @param context: string - path to the field base
-   */
   addField(name, context) {
     const base = traverse(this.fields, context);
     invariant(
       !base[name],
       `[mobx-forms] Tried to mount a Field '${name}' twice. Names must be unique!`
     );
-    base[name] = new FieldStore();
+    base[name] = new FieldStore(name);
   }
 
-  /**
-   * @protected
-   * @param name: string - name of the array field
-   * @param context: string - path to the field base
-   */
   addFieldArray(name, context) {
     const base = traverse(this.fields, context);
     invariant(
@@ -51,23 +39,27 @@ export default class FormStore {
     base[name] = [];
   }
 
-  /**
-   * @protected
-   * @param name: string - name of the field
-   * @param context: string - path to the field base
-   */
   removeField(name, context) {
     const base = traverse(this.fields, context);
     delete base[name];
   }
 
-  push(context, deep) {
+  // Array functions
+  // ---
+
+  map(context, fn) {
     const base = traverse(this.fields, context);
-    if (deep) {
-      base.push({});
-    } else {
-      base.push(new FieldStore());
-    }
+    return R.map(fn, R.map(R.prop('name'), base));
+  }
+
+  push(context, name) {
+    const base = traverse(this.fields, context);
+    base.push(new FieldStore(name));
+  }
+
+  pushDeep(context) {
+    const base = traverse(this.fields, context);
+    base.push({});
   }
 
   pop(context) {
@@ -75,13 +67,14 @@ export default class FormStore {
     base.pop();
   }
 
-  unshift(context, deep) {
+  unshift(context, name) {
     const base = traverse(this.fields, context);
-    if (deep) {
-      base.unshift({});
-    } else {
-      base.unshift(new FieldStore());
-    }
+    base.unshift(new FieldStore(name));
+  }
+
+  unshiftDeep(context) {
+    const base = traverse(this.fields, context);
+    base.unshift({});
   }
 
   shift(context) {

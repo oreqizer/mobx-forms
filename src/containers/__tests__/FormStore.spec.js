@@ -87,6 +87,12 @@ describe('#FormStore', () => {
   });
 
   it('should push a field', () => {
+    const result = form.map('fieldArray', id => id);
+
+    expect(result).toEqual(['test']);
+  });
+
+  it('should push a field', () => {
     form.push('fieldArray');
 
     expect(form.fields.fieldArray.length).toBe(2);
@@ -94,7 +100,7 @@ describe('#FormStore', () => {
   });
 
   it('should push a field section', () => {
-    form.push('fieldSections', true);
+    form.pushDeep('fieldSections');
 
     expect(form.fields.fieldSections.length).toBe(3);
     expect(form.fields.fieldSections[2]).toEqual({});
@@ -115,7 +121,7 @@ describe('#FormStore', () => {
   });
 
   it('should unshift a field section', () => {
-    form.unshift('fieldSections', true);
+    form.unshiftDeep('fieldSections');
 
     expect(form.fields.fieldSections.length).toBe(3);
     expect(form.fields.fieldSections[0]).toEqual({});
@@ -126,9 +132,5 @@ describe('#FormStore', () => {
 
     expect(form.fields.fieldSections.length).toBe(1);
     expect(form.fields.fieldSections[0].field.value).toBe('medium1');
-  });
-
-  afterEach(() => {
-    form = null;
   });
 });

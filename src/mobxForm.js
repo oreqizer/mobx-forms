@@ -4,7 +4,6 @@ import invariant from 'invariant';
 import R from 'ramda';
 
 import FormsStore from './FormsStore';
-import FormStore from './containers/FormStore';
 import { MOBX_FORMS } from './utils/consts';
 
 /**
@@ -21,8 +20,10 @@ const mobxForm = options => {
     class FormWrap extends Component {
       getChildContext() {
         return {
-          _mobxForm: this.props.mobxForms.forms[options.form],
-          _mobxFormContext: '',
+          mobxForms: {
+            form: this.props.mobxForms.forms[options.form],
+            context: '',
+          },
         };
       }
 
@@ -50,8 +51,7 @@ const mobxForm = options => {
     };
 
     FormWrap.childContextTypes = {
-      _mobxForm: PropTypes.instanceOf(FormStore).isRequired,
-      _mobxFormContext: PropTypes.string.isRequired,
+      mobxForms: PropTypes.object.isRequired,
     };
 
     return inject(MOBX_FORMS)(FormWrap);

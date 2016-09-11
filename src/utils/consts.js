@@ -23,11 +23,10 @@ export const INPUT_PROPS = [
 
 export const META_PROPS = [
   'error',
-  'valid',
-  'pristine',
   'dirty',
-  'active',
+  'visited',
   'touched',
+  'active',
 ];
 
 export const IGNORE_PROPS = [
