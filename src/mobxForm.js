@@ -13,7 +13,6 @@ import contextShape from './utils/contextShape';
  *
  * @param options
  * @prop options.form: string - the form's name
- * @prop options.cleanup: ?bool - shall the form be destroyed on unmount?
  */
 const mobxForm = options => {
   invariant(options.form, '[mobx-forms] "form" option is required on the "mobxForm" decorator.');
@@ -35,9 +34,7 @@ const mobxForm = options => {
       }
 
       componentWillUnmount() {
-        if (options.cleanup) {
-          this.props.mobxForms.removeForm(options.form);
-        }
+        this.props.mobxForms.removeForm(options.form);
       }
 
       render() {
