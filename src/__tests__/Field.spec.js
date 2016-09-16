@@ -82,6 +82,19 @@ describe('#Field', () => {
     expect(field.prop('meta')).toEqual(rawMeta);
   });
 
+  it('should not mount a flat field with an index', () => {
+    const form = new FormStore();
+
+    expect(() => shallow(
+      <Field
+        name="test"
+        index={0}
+        component={Component}
+      />,
+      getContext(form, '', false),
+    )).toThrowError(/"index" can only be passed to components inside/);
+  });
+
   it('should not mount an array field without an index', () => {
     const form = new FormStore();
     form.addFieldArray('', 'array');

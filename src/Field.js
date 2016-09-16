@@ -42,7 +42,12 @@ export default class Field extends Component {
 
     const { form, context, flatArray } = this.context.mobxForms;
 
-    if (context !== '') {
+    if (context === '') {
+      invariant(
+        !Number.isInteger(index),
+        '[mobx-forms] "index" can only be passed to components inside ArrayField'
+      );
+    } else {
       invariant(
         Number.isInteger(index),
         '[mobx-forms] "index" must be passed to ArrayField components'

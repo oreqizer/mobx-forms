@@ -15,6 +15,8 @@ export default class FieldArray extends Component {
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
     // defaulted:
     flat: PropTypes.bool.isRequired,
+    // optional:
+    index: PropTypes.number,
   };
 
   static defaultProps = {
@@ -30,46 +32,67 @@ export default class FieldArray extends Component {
   };
 
   getChildContext() {
-    const { name, flat } = this.props;
+    const { name, index, flat } = this.props;
     const { form, context } = this.context.mobxForms;
 
     return {
-      form,
-      context: context === '' ? name : `${context}.${name}`,
-      flatArray: flat,
+      mobxForms: {
+        form,
+        context: context === '' ? name : `${context}#${index}.${name}`,
+        flatArray: flat,
+      },
     };
   }
 
   componentWillMount() {
-    const { name } = this.props;
+    const { name, index } = this.props;
 
     invariant(
       this.context.mobxForms,
       '[mobx-forms] FieldArray must be in a component decorated with "mobxForm"'
     );
 
-    const { form, context } = this.context.mobxForms;
+    const { form, context, flatArray } = this.context.mobxForms;
 
-    form.addFieldArray(context, name);
+    if (context === '') {
+      invariant(
+        !Number.isInteger(index),
+        '[mobx-forms] "index" can only be passed to components inside ArrayField'
+      );
+    } else {
+      invariant(
+        Number.isInteger(index),
+        '[mobx-forms] "index" must be passed to ArrayField components'
+      );
+    }
+
+    this.pos = Number.isInteger(index) ? `${context}#${index}` : context;
+
+    invariant(
+      !flatArray,
+      '[mobx-forms] FieldArray cannot be located within a flat FieldArray'
+    );
+
+    form.addFieldArray(this.pos, name);
   }
 
   componentWillUnmount() {
     const { name } = this.props;
-    const { form, context } = this.context.mobxForms;
+    const { form } = this.context.mobxForms;
 
-    form.removeField(context, name);
+    form.removeField(this.pos, name);
   }
 
   render() {
     const { component, flat, ...rest } = this.props;
-    const { form, context } = this.context.mobxForms;
+    const { form } = this.context.mobxForms;
 
     const fields = {
-      map: (fn) => form.map(context, fn),
-      push: () => form.push(context, flat ? null : {}),
-      pop: () => form.pop(context),
-      unshift: () => form.unshift(context, flat ? null : {}),
-      shift: () => form.shift(context),
+      map: (fn) => form.map(this.pos, fn),
+      push: () => form.push(this.pos, flat ? null : {}),
+      pop: () => form.pop(this.pos),
+      unshift: () => form.unshift(this.pos, flat ? null : {}),
+      shift: () => form.shift(this.pos),
     };
 
     return React.createElement(component, R.merge(R.omit(ARRAY_IGNORE_PROPS, rest), {
