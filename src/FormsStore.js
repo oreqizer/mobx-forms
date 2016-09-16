@@ -1,6 +1,8 @@
 import { observable } from 'mobx';
+import invariant from 'invariant';
 
-import Form from './containers/FormStore';
+import FormStore from './containers/FormStore';
+
 
 export default class FormsStore {
   @observable forms = {};
@@ -10,9 +12,11 @@ export default class FormsStore {
    * @param name: string - name of the form
    */
   addForm(name) {
-    if (!this.forms[name]) {
-      this.forms[name] = new Form();
-    }
+    invariant(
+      !this.forms[name],
+      `[mobx-forms] Tried to add a Form '${name}' twice. Form names must be unique!`
+    );
+    this.forms[name] = new FormStore();
   }
 
   /**

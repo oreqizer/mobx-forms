@@ -12,9 +12,10 @@ export default class FieldArray extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
-    // ---
+    // default:
     validate: PropTypes.func.isRequired,
     defaultValue: PropTypes.string.isRequired,
+    // optional:
     flat: PropTypes.bool,
   };
 

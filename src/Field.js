@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { observer } from 'mobx-react';
 import R from 'ramda';
+import invariant from 'invariant';
 
 import FieldStore from './containers/FieldStore';
 
@@ -13,9 +14,11 @@ export default class Field extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
-    // ---
+    // default:
     validate: PropTypes.func.isRequired,
     defaultValue: PropTypes.string.isRequired,
+    // optional:
+    index: PropTypes.number,
   };
 
   static defaultProps = {
@@ -28,23 +31,31 @@ export default class Field extends Component {
   };
 
   componentWillMount() {
-    const { name, defaultValue, validate } = this.props;
+    const { name, index, defaultValue, validate } = this.props;
     const { form, context } = this.context.mobxForms;
 
+    if (typeof index === 'number') {
+      invariant(
+        context !== '',
+        '[mobx-forms] "index" is a reserved property for FieldArray children.'
+      );
+    }
+
+    this.pos = typeof index === 'number' ? `${context}#${index}` : context;
     this.field = new FieldStore({
       name,
       defaultValue,
       validate,
     });
 
-    form.addField(context, name, this.field);
+    form.addField(this.pos, name, this.field);
   }
 
   componentWillUnmount() {
     const { name } = this.props;
-    const { form, context } = this.context.mobxForms;
+    const { form } = this.context.mobxForms;
 
-    form.removeField(context, name);
+    form.removeField(this.pos, name);
   }
 
   handleChange(ev) {
