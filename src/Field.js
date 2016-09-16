@@ -32,6 +32,12 @@ export default class Field extends Component {
 
   componentWillMount() {
     const { name, index, defaultValue, validate } = this.props;
+
+    invariant(
+      this.context.mobxForms,
+      '[mobx-forms] Field must be in a component decorated with "mobxForms"'
+    );
+
     const { form, context } = this.context.mobxForms;
 
     if (typeof index === 'number') {

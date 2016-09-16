@@ -34,6 +34,7 @@ export const IGNORE_PROPS = [
   ...META_PROPS,
   'component',
   'defaultValue',
+  'index',
   'normalize',
   'validate',
 ];
