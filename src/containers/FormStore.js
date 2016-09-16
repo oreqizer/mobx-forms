@@ -3,8 +3,10 @@ import invariant from 'invariant';
 import R from 'ramda';
 
 import FieldStore from './FieldStore';
+
 import traverse from '../utils/traverse';
 import { mapDeep, mapFlat } from '../utils/mapForm';
+
 
 export default class FormStore {
   @observable fields = {};
@@ -21,16 +23,16 @@ export default class FormStore {
     return R.all(R.equals(null), mapFlat(R.prop('error'), toJS(this.fields)));
   }
 
-  addField(name, context) {
+  addField(context, name, field) {
     const base = traverse(this.fields, context);
     invariant(
       !base[name],
       `[mobx-forms] Tried to mount a Field '${name}' twice. Names must be unique!`
     );
-    base[name] = new FieldStore(name);
+    base[name] = field;
   }
 
-  addFieldArray(name, context) {
+  addFieldArray(context, name) {
     const base = traverse(this.fields, context);
     invariant(
       !base[name],
@@ -39,7 +41,7 @@ export default class FormStore {
     base[name] = [];
   }
 
-  removeField(name, context) {
+  removeField(context, name) {
     const base = traverse(this.fields, context);
     delete base[name];
   }
@@ -52,14 +54,9 @@ export default class FormStore {
     return R.map(fn, R.map(R.prop('name'), base));
   }
 
-  push(context, name) {
+  push(context, field) {
     const base = traverse(this.fields, context);
-    base.push(new FieldStore(name));
-  }
-
-  pushDeep(context) {
-    const base = traverse(this.fields, context);
-    base.push({});
+    base.push(field);
   }
 
   pop(context) {
@@ -67,14 +64,9 @@ export default class FormStore {
     base.pop();
   }
 
-  unshift(context, name) {
+  unshift(context, field) {
     const base = traverse(this.fields, context);
-    base.unshift(new FieldStore(name));
-  }
-
-  unshiftDeep(context) {
-    const base = traverse(this.fields, context);
-    base.unshift({});
+    base.unshift(field);
   }
 
   shift(context) {

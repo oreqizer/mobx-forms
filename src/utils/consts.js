@@ -22,17 +22,24 @@ export const INPUT_PROPS = [
 ];
 
 export const META_PROPS = [
-  'error',
-  'dirty',
-  'visited',
-  'touched',
   'active',
+  'dirty',
+  'error',
+  'touched',
+  'visited',
 ];
 
 export const IGNORE_PROPS = [
   ...INPUT_PROPS,
   ...META_PROPS,
   'component',
-  'validate',
+  'defaultValue',
   'normalize',
+  'validate',
+];
+
+export const ARRAY_IGNORE_PROPS = [
+  'name',
+  'validate',
+  'defaultValue',
 ];

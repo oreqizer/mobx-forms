@@ -4,7 +4,10 @@ describe('#FieldStore', () => {
   let field = null;
 
   beforeEach(() => {
-    field = new FieldStore();
+    field = new FieldStore({
+      validate: () => null,
+      defaultValue: '',
+    });
   });
 
   it('should initialize properly', () => {

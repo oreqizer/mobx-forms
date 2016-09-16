@@ -8,10 +8,8 @@ export default class FieldStore {
   @observable touched = false;
   @observable active = false;
 
-  constructor(name) {
-    this.name = name;
-    this.defaultValue = '';
-    this.validate = () => null;
+  constructor(input) {
+    Object.assign(this, input);
   }
 
   @computed get error() {

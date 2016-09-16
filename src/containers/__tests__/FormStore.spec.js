@@ -51,37 +51,37 @@ describe('#FormStore', () => {
   });
 
   it('should add a field directly', () => {
-    form.addField('field2', '');
+    form.addField('', 'field2', new FieldStore());
 
     expect(form.fields.field2).toBeDefined();
   });
 
   it('should add a field deeply', () => {
-    form.addField('field1', 'fieldSections#1');
+    form.addField('fieldSections#1', 'field1', new FieldStore());
 
     expect(form.fields.fieldSections[1].field1).toBeDefined();
   });
 
   it('should add a field array directly', () => {
-    form.addFieldArray('field2', '');
+    form.addFieldArray('', 'field2');
 
     expect(form.fields.field2).toEqual([]);
   });
 
   it('should add a field array deeply', () => {
-    form.addFieldArray('field1', 'fieldSections#1');
+    form.addFieldArray('fieldSections#1', 'field1');
 
     expect(form.fields.fieldSections[1].field1).toEqual([]);
   });
 
   it('should remove a field directly', () => {
-    form.removeField('field1', '');
+    form.removeField('', 'field1');
 
     expect(form.fields.field1).toBeUndefined();
   });
 
   it('should remove a field deeply', () => {
-    form.removeField('field', 'fieldSections#1');
+    form.removeField('fieldSections#1', 'field');
 
     expect(form.fields.fieldSections[1].field).toBeUndefined();
   });
@@ -93,14 +93,14 @@ describe('#FormStore', () => {
   });
 
   it('should push a field', () => {
-    form.push('fieldArray');
+    form.push('fieldArray', new FieldStore());
 
     expect(form.fields.fieldArray.length).toBe(2);
     expect(form.fields.fieldArray[1].value).toBe('');
   });
 
   it('should push a field section', () => {
-    form.pushDeep('fieldSections');
+    form.push('fieldSections', {});
 
     expect(form.fields.fieldSections.length).toBe(3);
     expect(form.fields.fieldSections[2]).toEqual({});
@@ -114,14 +114,14 @@ describe('#FormStore', () => {
   });
 
   it('should unshift a field', () => {
-    form.unshift('fieldArray');
+    form.unshift('fieldArray', new FieldStore());
 
     expect(form.fields.fieldArray.length).toBe(2);
     expect(form.fields.fieldArray[0].value).toBe('');
   });
 
   it('should unshift a field section', () => {
-    form.unshiftDeep('fieldSections');
+    form.unshift('fieldSections', {});
 
     expect(form.fields.fieldSections.length).toBe(3);
     expect(form.fields.fieldSections[0]).toEqual({});

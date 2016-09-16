@@ -2,10 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { observer } from 'mobx-react';
 import R from 'ramda';
 
-import FormStore from './containers/FormStore';
+import FieldStore from './containers/FieldStore';
 
 import prepareProps from './utils/prepareProps';
 import getValue from './utils/getValue';
+
 
 @observer
 export default class Field extends Component {
@@ -13,8 +14,13 @@ export default class Field extends Component {
     name: PropTypes.string.isRequired,
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
     // ---
-    validate: PropTypes.func,
-    defaultValue: PropTypes.string,
+    validate: PropTypes.func.isRequired,
+    defaultValue: PropTypes.string.isRequired,
+  };
+
+  static defaultProps = {
+    validate: () => null,
+    defaultValue: '',
   };
 
   static contextTypes = {
@@ -25,23 +31,20 @@ export default class Field extends Component {
     const { name, defaultValue, validate } = this.props;
     const { form, context } = this.context.mobxForms;
 
-    form.addField(name, context);
-    this.field = form.fields[name];
+    this.field = new FieldStore({
+      name,
+      defaultValue,
+      validate,
+    });
 
-    if (defaultValue) {
-      this.field.value = defaultValue;
-      this.field.defaultValue = defaultValue;
-    }
-
-    if (validate) {
-      this.field.validate = validate;
-    }
+    form.addField(context, name, this.field);
   }
 
   componentWillUnmount() {
     const { name } = this.props;
     const { form, context } = this.context.mobxForms;
-    form.removeField(name, context);
+
+    form.removeField(context, name);
   }
 
   handleChange(ev) {
