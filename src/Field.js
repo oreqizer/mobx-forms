@@ -8,6 +8,8 @@ import FieldStore from './containers/FieldStore';
 import prepareProps from './utils/prepareProps';
 import getValue from './utils/getValue';
 
+import contextShape from './utils/contextShape';
+
 
 @observer
 export default class Field extends Component {
@@ -27,7 +29,7 @@ export default class Field extends Component {
   };
 
   static contextTypes = {
-    mobxForms: PropTypes.object.isRequired,
+    mobxForms: PropTypes.shape(contextShape).isRequired,
   };
 
   componentWillMount() {
@@ -38,23 +40,27 @@ export default class Field extends Component {
       '[mobx-forms] Field must be in a component decorated with "mobxForms"'
     );
 
-    const { form, context } = this.context.mobxForms;
+    const { form, context, flatArray } = this.context.mobxForms;
 
-    if (typeof index === 'number') {
+    if (context !== '') {
       invariant(
-        context !== '',
-        '[mobx-forms] "index" is a reserved property for FieldArray children.'
+        Number.isInteger(index),
+        '[mobx-forms] "index" must be passed to ArrayField components'
       );
     }
 
-    this.pos = typeof index === 'number' ? `${context}#${index}` : context;
+    this.pos = (!flatArray && Number.isInteger(index)) ? `${context}#${index}` : context;
     this.field = new FieldStore({
       name,
       defaultValue,
       validate,
     });
 
-    form.addField(this.pos, name, this.field);
+    if (flatArray && Number.isInteger(index)) {
+      form.addField(this.pos, index, this.field);
+    } else {
+      form.addField(this.pos, name, this.field);
+    }
   }
 
   componentWillUnmount() {

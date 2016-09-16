@@ -25,11 +25,12 @@ const Component = props => (
   </div>
 );
 
-const getContext = (form, context) => ({
+const getContext = (form, context, flatArray) => ({
   context: {
     mobxForms: {
       form,
       context,
+      flatArray,
     },
   },
 });
@@ -50,7 +51,7 @@ describe('#Field', () => {
         name="test"
         component="input"
       />,
-      getContext(new FormStore(), ''),
+      getContext(new FormStore(), '', false),
     );
 
     expect(field.name()).toBe('input');
@@ -69,7 +70,7 @@ describe('#Field', () => {
         name="test"
         component={Component}
       />,
-      getContext(new FormStore(), ''),
+      getContext(new FormStore(), '', false),
     );
 
     expect(field.name()).toBe('Component');
@@ -81,7 +82,38 @@ describe('#Field', () => {
     expect(field.prop('meta')).toEqual(rawMeta);
   });
 
-  it('should mount an array field', () => {
+  it('should not mount an array field without an index', () => {
+    const form = new FormStore();
+    form.addFieldArray('', 'array');
+    form.push('array', null);
+
+    expect(() => shallow(
+      <Field
+        name="test"
+        component={Component}
+      />,
+      getContext(form, 'array', false),
+    )).toThrowError(/"index" must be passed to ArrayField/);
+  });
+
+  it('should mount a flat array field', () => {
+    const form = new FormStore();
+    form.addFieldArray('', 'array');
+    form.push('array', null);
+
+    const field = shallow(
+      <Field
+        name="test"
+        index={0}
+        component={Component}
+      />,
+      getContext(form, 'array', true),
+    );
+
+    expect(field.context('mobxForms').form.fields.array[0]).toBeDefined();
+  });
+
+  it('should mount a deep array field', () => {
     const form = new FormStore();
     form.addFieldArray('', 'array');
     form.push('array', {});
@@ -92,7 +124,7 @@ describe('#Field', () => {
         index={0}
         component={Component}
       />,
-      getContext(form, 'array'),
+      getContext(form, 'array', false),
     );
 
     expect(field.context('mobxForms').form.fields.array[0].test).toBeDefined();
@@ -105,7 +137,7 @@ describe('#Field', () => {
         name="test"
         component="input"
       />,
-      getContext(form, ''),
+      getContext(form, '', false),
     );
 
     expect(form.fields.test).toBeDefined();
@@ -126,7 +158,7 @@ describe('#Field', () => {
         index={0}
         component="input"
       />,
-      getContext(form, 'array'),
+      getContext(form, 'array', false),
     );
 
     expect(form.fields.array[0].test).toBeDefined();
@@ -136,26 +168,13 @@ describe('#Field', () => {
     expect(form.fields.array[0].test).toBeUndefined();
   });
 
-  it('should not mount an indexed field without an array', () => {
-    const form = new FormStore();
-
-    expect(() => shallow(
-      <Field
-        name="test"
-        index={0}
-        component={Component}
-      />,
-      getContext(form, ''),
-    )).toThrowError(/"index" is a reserved property/);
-  });
-
   it('should handle an onChange on a basic field', () => {
     const field = mount(
       <Field
         name="test"
         component="input"
       />,
-      getContext(new FormStore(), ''),
+      getContext(new FormStore(), '', false),
     );
 
     expect(field.find('input').prop('value')).toBe('');
@@ -171,7 +190,7 @@ describe('#Field', () => {
         name="test"
         component={Component}
       />,
-      getContext(new FormStore(), ''),
+      getContext(new FormStore(), '', false),
     );
 
     expect(field.find(Component).prop('input').value).toBe('');
@@ -195,7 +214,7 @@ describe('#Field', () => {
         name="test"
         component={Component}
       />,
-      getContext(new FormStore(), ''),
+      getContext(new FormStore(), '', false),
     );
 
     expect(field.find(Component).prop('meta')).toEqual(rawMeta);
@@ -217,7 +236,7 @@ describe('#Field', () => {
         name="test"
         component={Component}
       />,
-      getContext(new FormStore(), ''),
+      getContext(new FormStore(), '', false),
     );
 
     expect(field.find(Component).prop('meta')).toEqual(rawMeta);

@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { observer } from 'mobx-react';
 import R from 'ramda';
-
-import FieldStore from './containers/FieldStore';
+import invariant from 'invariant';
 
 import { ARRAY_IGNORE_PROPS } from './utils/consts';
+
+import contextShape from './utils/contextShape';
 
 
 @observer
@@ -12,38 +13,41 @@ export default class FieldArray extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
-    // default:
-    validate: PropTypes.func.isRequired,
-    defaultValue: PropTypes.string.isRequired,
-    // optional:
-    flat: PropTypes.bool,
+    // defaulted:
+    flat: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
-    validate: () => null,
-    defaultValue: '',
+    flat: false,
   };
 
   static contextTypes = {
-    mobxForms: PropTypes.object.isRequired,
+    mobxForms: PropTypes.shape(contextShape).isRequired,
   };
 
   static childContextTypes = {
-    mobxForms: PropTypes.object.isRequired,
+    mobxForms: PropTypes.shape(contextShape).isRequired,
   };
 
   getChildContext() {
-    const { name } = this.props;
+    const { name, flat } = this.props;
     const { form, context } = this.context.mobxForms;
 
     return {
       form,
-      context: `${context}.${name}`,
+      context: context === '' ? name : `${context}.${name}`,
+      flatArray: flat,
     };
   }
 
   componentWillMount() {
     const { name } = this.props;
+
+    invariant(
+      this.context.mobxForms,
+      '[mobx-forms] FieldArray must be in a component decorated with "mobxForm"'
+    );
+
     const { form, context } = this.context.mobxForms;
 
     form.addFieldArray(context, name);
@@ -56,25 +60,15 @@ export default class FieldArray extends Component {
     form.removeField(context, name);
   }
 
-  getNewField() {
-    const { name, validate, defaultValue } = this.props;
-
-    return new FieldStore({
-      name,
-      validate,
-      defaultValue,
-    });
-  }
-
   render() {
     const { component, flat, ...rest } = this.props;
     const { form, context } = this.context.mobxForms;
 
     const fields = {
       map: (fn) => form.map(context, fn),
-      push: () => form.push(context, flat ? this.getNewField() : {}),
+      push: () => form.push(context, flat ? null : {}),
       pop: () => form.pop(context),
-      unshift: () => form.unshift(context, flat ? this.getNewField() : {}),
+      unshift: () => form.unshift(context, flat ? null : {}),
       shift: () => form.shift(context),
     };
 

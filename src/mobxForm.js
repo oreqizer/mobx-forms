@@ -6,6 +6,8 @@ import R from 'ramda';
 import FormsStore from './FormsStore';
 import { MOBX_FORMS } from './utils/consts';
 
+import contextShape from './utils/contextShape';
+
 /**
  * Decorator for a component that will be the root of a form.
  *
@@ -23,6 +25,7 @@ const mobxForm = options => {
           mobxForms: {
             form: this.props.mobxForms.forms[options.form],
             context: '',
+            flatArray: false,
           },
         };
       }
@@ -51,7 +54,7 @@ const mobxForm = options => {
     };
 
     FormWrap.childContextTypes = {
-      mobxForms: PropTypes.object.isRequired,
+      mobxForms: PropTypes.shape(contextShape).isRequired,
     };
 
     return inject(MOBX_FORMS)(FormWrap);

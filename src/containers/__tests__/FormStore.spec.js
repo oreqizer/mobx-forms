@@ -86,20 +86,19 @@ describe('#FormStore', () => {
     expect(form.fields.fieldSections[1].field).toBeUndefined();
   });
 
-  it('should push a field', () => {
+  it('should map a field array', () => {
     const result = form.map('fieldArray', id => id);
 
-    expect(result).toEqual(['test']);
+    expect(result).toEqual([0]);
   });
 
-  it('should push a field', () => {
-    form.push('fieldArray', new FieldStore());
+  it('should push an empty field', () => {
+    form.push('fieldArray', null);
 
     expect(form.fields.fieldArray.length).toBe(2);
-    expect(form.fields.fieldArray[1].value).toBe('');
   });
 
-  it('should push a field section', () => {
+  it('should push an object field', () => {
     form.push('fieldSections', {});
 
     expect(form.fields.fieldSections.length).toBe(3);
@@ -113,14 +112,13 @@ describe('#FormStore', () => {
     expect(form.fields.fieldSections[0].field.value).toBe('medium0');
   });
 
-  it('should unshift a field', () => {
-    form.unshift('fieldArray', new FieldStore());
+  it('should unshift an empty field', () => {
+    form.unshift('fieldArray', null);
 
     expect(form.fields.fieldArray.length).toBe(2);
-    expect(form.fields.fieldArray[0].value).toBe('');
   });
 
-  it('should unshift a field section', () => {
+  it('should unshift an object field', () => {
     form.unshift('fieldSections', {});
 
     expect(form.fields.fieldSections.length).toBe(3);
