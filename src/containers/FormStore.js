@@ -49,7 +49,7 @@ export default class FormStore {
 
   map(context, fn) {
     const base = traverse(this.fields, context);
-    return R.map(fn, R.map((_, i) => i, base));
+    return R.map(fn, R.addIndex(R.map)((_, i) => i, base));
   }
 
   push(context, field) {

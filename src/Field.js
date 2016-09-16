@@ -37,7 +37,7 @@ export default class Field extends Component {
 
     invariant(
       this.context.mobxForms,
-      '[mobx-forms] Field must be in a component decorated with "mobxForms"'
+      '[mobx-forms] Field must be in a component decorated with "mobxForm"'
     );
 
     const { form, context, flatArray } = this.context.mobxForms;
