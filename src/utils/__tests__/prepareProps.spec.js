@@ -1,9 +1,5 @@
 import prepareProps from '../prepareProps';
 
-jest.unmock('../prepareProps');
-jest.unmock('../consts');
-jest.unmock('ramda');
-
 const onChange = id => id;
 const onFocus = id => id;
 const onBlur = id => id;
@@ -20,9 +16,8 @@ const props = {
   // meta
   // ---
   error: 'not enough peanuts',
-  valid: false,
   dirty: false,
-  pristine: true,
+  visited: false,
   touched: true,
   active: false,
 
@@ -50,9 +45,8 @@ describe('#prepareProps', () => {
   it('should separate meta props', () => {
     const result = prepareProps(props);
     expect(result.meta.error).toBe('not enough peanuts');
-    expect(result.meta.valid).toBe(false);
     expect(result.meta.dirty).toBe(false);
-    expect(result.meta.pristine).toBe(true);
+    expect(result.meta.visited).toBe(false);
     expect(result.meta.touched).toBe(true);
     expect(result.meta.active).toBe(false);
   });

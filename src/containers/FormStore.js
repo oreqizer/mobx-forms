@@ -1,34 +1,74 @@
-import { observable, computed } from 'mobx';
+import { observable, computed, toJS } from 'mobx';
+import invariant from 'invariant';
 import R from 'ramda';
 
-import FieldStore from './FieldStore';
+import traverse from '../utils/traverse';
+import { mapDeep, mapFlat } from '../utils/mapForm';
+
 
 export default class FormStore {
   @observable fields = {};
 
   @computed get values() {
-    return R.map(R.prop('value'), this.fields);
+    return mapDeep(R.prop('value'), toJS(this.fields));
   }
 
   @computed get errors() {
-    return R.map(R.prop('error'), this.fields);
+    return mapDeep(R.prop('error'), toJS(this.fields));
   }
 
-  /**
-   * @protected
-   * @param name: string - name of the field
-   */
-  addField(name) {
-    if (!this.fields[name]) {
-      this.fields[name] = new FieldStore();
-    }
+  @computed get valid() {
+    return R.all(R.equals(null), mapFlat(R.prop('error'), toJS(this.fields)));
   }
 
-  /**
-   * @protected
-   * @param name: string - name of the field
-   */
-  removeField(name) {
-    delete this.fields[name];
+  addField(context, name, field) {
+    const base = traverse(this.fields, context);
+    invariant(
+      !base[name],
+      `[mobx-forms] Tried to mount a Field '${name}' twice. Names must be unique!`
+    );
+    base[name] = field;
+  }
+
+  addFieldArray(context, name) {
+    const base = traverse(this.fields, context);
+    invariant(
+      !base[name],
+      `[mobx-forms] Tried to mount a FieldArray '${name}' twice. Names must be unique!`
+    );
+    base[name] = [];
+  }
+
+  removeField(context, name) {
+    const base = traverse(this.fields, context);
+    delete base[name];
+  }
+
+  // Array functions
+  // ---
+
+  map(context, fn) {
+    const base = traverse(this.fields, context);
+    return R.map(fn, R.addIndex(R.map)((_, i) => i, base));
+  }
+
+  push(context, field) {
+    const base = traverse(this.fields, context);
+    base.push(field);
+  }
+
+  pop(context) {
+    const base = traverse(this.fields, context);
+    base.pop();
+  }
+
+  unshift(context, field) {
+    const base = traverse(this.fields, context);
+    base.unshift(field);
+  }
+
+  shift(context) {
+    const base = traverse(this.fields, context);
+    base.shift();
   }
 }

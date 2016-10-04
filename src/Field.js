@@ -1,46 +1,78 @@
 import React, { Component, PropTypes } from 'react';
 import { observer } from 'mobx-react';
 import R from 'ramda';
+import invariant from 'invariant';
 
-import FormStore from './containers/FormStore';
+import FieldStore from './containers/FieldStore';
 
 import prepareProps from './utils/prepareProps';
 import getValue from './utils/getValue';
 
+import contextShape from './utils/contextShape';
+
+
 @observer
 export default class Field extends Component {
   static propTypes = {
-    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
-    // ---
-    type: PropTypes.string,
-    validate: PropTypes.func,
-    defaultValue: PropTypes.string,
+    // default:
+    validate: PropTypes.func.isRequired,
+    defaultValue: PropTypes.string.isRequired,
+    // optional:
+    index: PropTypes.number,
+  };
+
+  static defaultProps = {
+    validate: () => null,
+    defaultValue: '',
   };
 
   static contextTypes = {
-    _mobxForm: PropTypes.instanceOf(FormStore).isRequired,
+    mobxForms: PropTypes.shape(contextShape).isRequired,
   };
 
   componentWillMount() {
-    const { id, defaultValue, validate } = this.props;
-    this.form = this.context._mobxForm; // eslint-disable-line no-underscore-dangle
-    this.form.addField(id);
-    this.field = this.form.fields[id];
+    const { name, index, defaultValue, validate } = this.props;
 
-    if (defaultValue) {
-      this.field.value = defaultValue;
-      this.field.defaultValue = defaultValue;
+    invariant(
+      this.context.mobxForms,
+      '[mobx-forms] Field must be in a component decorated with "mobxForm"'
+    );
+
+    const { form, context, flatArray } = this.context.mobxForms;
+
+    if (context === '') {
+      invariant(
+        !Number.isInteger(index),
+        '[mobx-forms] "index" can only be passed to components inside ArrayField'
+      );
+    } else {
+      invariant(
+        Number.isInteger(index),
+        '[mobx-forms] "index" must be passed to ArrayField components'
+      );
     }
 
-    if (validate) {
-      this.field.validate = validate;
+    this.pos = (!flatArray && Number.isInteger(index)) ? `${context}#${index}` : context;
+    this.field = new FieldStore({
+      name,
+      defaultValue,
+      validate,
+    });
+
+    if (flatArray && Number.isInteger(index)) {
+      form.addField(this.pos, index, this.field);
+    } else {
+      form.addField(this.pos, name, this.field);
     }
   }
 
   componentWillUnmount() {
-    const { id } = this.props;
-    this.form.removeField(id);
+    const { name } = this.props;
+    const { form } = this.context.mobxForms;
+
+    form.removeField(this.pos, name);
   }
 
   handleChange(ev) {
@@ -49,11 +81,12 @@ export default class Field extends Component {
 
   handleFocus() {
     this.field.active = true;
-    this.field.touched = true;
+    this.field.visited = true;
   }
 
   handleBlur() {
     this.field.active = false;
+    this.field.touched = true;
   }
 
   render() {

@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'mobx-react';
+import { FormsStore } from 'mobx-forms';
 
-import { FormsStore } from '../src';
-import Form from './Form';
-import Form2 from './Form2';
+import Form from './src/Form';
+import Form2 from './src/Form2';
 
 const Root = () =>
   <Provider mobxForms={new FormsStore()}>

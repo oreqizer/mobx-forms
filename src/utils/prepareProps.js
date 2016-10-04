@@ -1,4 +1,3 @@
-// TODO: write tests/flow annotations
 import R from 'ramda';
 
 import { INPUT_PROPS, META_PROPS, IGNORE_PROPS } from './consts';

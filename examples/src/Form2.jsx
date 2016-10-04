@@ -1,23 +1,22 @@
 import React from 'react';
-
-import { mobxForm, Field } from '../src';
+import { mobxForm, Field } from 'mobx-forms';
 
 const Form = props =>
   <div>
     <h2>My form 2 (native inputs):</h2>
     input
     <Field
-      id="test"
+      name="test"
       component="input"
     />
     textarea
     <Field
-      id="test2"
+      name="test2"
       component="textarea"
     />
     checkbox
     <Field
-      id="test3"
+      name="test3"
       component="input"
       type="checkbox"
     />

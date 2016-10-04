@@ -4,24 +4,28 @@ import invariant from 'invariant';
 import R from 'ramda';
 
 import FormsStore from './FormsStore';
-import FormStore from './containers/FormStore';
 import { MOBX_FORMS } from './utils/consts';
+
+import contextShape from './utils/contextShape';
 
 /**
  * Decorator for a component that will be the root of a form.
  *
  * @param options
  * @prop options.form: string - the form's name
- * @prop options.cleanup: ?bool - shall the form be destroyed on unmount?
  */
 const mobxForm = options => {
-  invariant(options.form, '[mobxForms] "form" option is required on the "mobxForm" decorator.');
+  invariant(options.form, '[mobx-forms] "form" option is required on the "mobxForm" decorator.');
 
   return WrappedComponent => {
     class FormWrap extends Component {
       getChildContext() {
         return {
-          _mobxForm: this.props.mobxForms.forms[options.form],
+          mobxForms: {
+            form: this.props.mobxForms.forms[options.form],
+            context: '',
+            flatArray: false,
+          },
         };
       }
 
@@ -30,9 +34,7 @@ const mobxForm = options => {
       }
 
       componentWillUnmount() {
-        if (options.cleanup) {
-          this.props.mobxForms.removeForm(options.form);
-        }
+        this.props.mobxForms.removeForm(options.form);
       }
 
       render() {
@@ -49,7 +51,7 @@ const mobxForm = options => {
     };
 
     FormWrap.childContextTypes = {
-      _mobxForm: PropTypes.instanceOf(FormStore).isRequired,
+      mobxForms: PropTypes.shape(contextShape).isRequired,
     };
 
     return inject(MOBX_FORMS)(FormWrap);
