@@ -57,6 +57,7 @@ export default class Field extends Component {
     this.pos = (!flatArray && Number.isInteger(index)) ? `${context}#${index}` : context;
     this.field = new FieldStore({
       name,
+      value: defaultValue,
       defaultValue,
       validate,
     });
