@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'mobx-react';
-import { FormsStore } from 'mobx-forms';
+import { FormsStore } from '../lib';
 
 import Form from './src/Form';
 import Form2 from './src/Form2';

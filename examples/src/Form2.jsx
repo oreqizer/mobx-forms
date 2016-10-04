@@ -1,5 +1,5 @@
 import React from 'react';
-import { mobxForm, Field } from 'mobx-forms';
+import { mobxForm, Field } from '../../lib';
 
 const Form = props =>
   <div>
