@@ -5,11 +5,12 @@ import { mobxForm, Field, FieldArray } from '../../lib';
 
 import Input from './Input';
 
-const InputArray = props => (
+const InputArray = observer(props => (
   <div>
     {props.fields.map((index) =>
       <Field
         name="flatfield"
+        key={index}
         index={index}
         component={Input}
       />
@@ -21,7 +22,7 @@ const InputArray = props => (
       Remove field
     </button>
   </div>
-);
+));
 
 const Form = props => (
   <div>

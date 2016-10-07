@@ -45,7 +45,7 @@ export default class FieldArray extends Component {
   }
 
   componentWillMount() {
-    const { name, index } = this.props;
+    const { name, index, flat } = this.props;
 
     invariant(
       this.context.mobxForms,
@@ -68,6 +68,13 @@ export default class FieldArray extends Component {
 
     this.pos = Number.isInteger(index) ? `${context}#${index}` : '';
     this.location = Number.isInteger(index) ? `${context}#${index}.${name}` : name;
+    this.fields = {
+      map: (fn) => form.map(this.location, fn),
+      push: () => form.push(this.location, flat ? null : {}),
+      pop: () => form.pop(this.location),
+      unshift: () => form.unshift(this.location, flat ? null : {}),
+      shift: () => form.shift(this.location),
+    };
 
     invariant(
       !flatArray,
@@ -85,19 +92,10 @@ export default class FieldArray extends Component {
   }
 
   render() {
-    const { component, flat, ...rest } = this.props;
-    const { form } = this.context.mobxForms;
-
-    const fields = {
-      map: (fn) => form.map(this.location, fn),
-      push: () => form.push(this.location, flat ? null : {}),
-      pop: () => form.pop(this.location),
-      unshift: () => form.unshift(this.location, flat ? null : {}),
-      shift: () => form.shift(this.location),
-    };
+    const { component, ...rest } = this.props;
 
     return React.createElement(component, R.merge(R.omit(ARRAY_IGNORE_PROPS, rest), {
-      fields,
+      fields: this.fields,
     }));
   }
 }

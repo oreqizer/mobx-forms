@@ -36,7 +36,7 @@ export default class FormStore {
       !base[name],
       `[mobx-forms] Tried to mount a FieldArray '${name}' twice. Names must be unique!`
     );
-    base[name] = [];
+    base[name] = observable([]);
   }
 
   removeField(context, name) {

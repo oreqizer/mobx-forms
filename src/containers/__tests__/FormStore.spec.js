@@ -65,13 +65,13 @@ describe('#FormStore', () => {
   it('should add a field array directly', () => {
     form.addFieldArray('', 'field2');
 
-    expect(form.fields.field2).toEqual([]);
+    expect(form.fields.field2).toBeDefined();
   });
 
   it('should add a field array deeply', () => {
     form.addFieldArray('fieldSections#1', 'field1');
 
-    expect(form.fields.fieldSections[1].field1).toEqual([]);
+    expect(form.fields.fieldSections[1].field1).toBeDefined();
   });
 
   it('should remove a field directly', () => {
