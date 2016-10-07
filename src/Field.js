@@ -32,6 +32,14 @@ export default class Field extends Component {
     mobxForms: PropTypes.shape(contextShape).isRequired,
   };
 
+  constructor(props) {
+    super(props);
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+  }
+
   componentWillMount() {
     const { name, index, defaultValue, validate } = this.props;
 
@@ -97,9 +105,9 @@ export default class Field extends Component {
   render() {
     const { component, ...props } = this.props;
 
-    props.onChange = ev => this.handleChange(ev);
-    props.onFocus = ev => this.handleFocus(ev);
-    props.onBlur = ev => this.handleBlur(ev);
+    props.onChange = this.handleChange;
+    props.onFocus = this.handleFocus;
+    props.onBlur = this.handleBlur;
 
     const { input, meta, custom } = prepareProps(R.merge(props, this.field.props));
 
