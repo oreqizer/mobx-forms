@@ -14,10 +14,10 @@ import contextShape from './utils/contextShape';
  * @param options
  * @prop options.form: string - the form's name
  */
-const mobxForm = options => {
+const mobxForm = (options) => {
   invariant(options.form, '[mobx-forms] "form" option is required on the "mobxForm" decorator.');
 
-  return WrappedComponent => {
+  return (WrappedComponent) => {
     class FormWrap extends Component {
       getChildContext() {
         return {

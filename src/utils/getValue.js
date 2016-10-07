@@ -4,7 +4,7 @@ const getSelectedValues = options => options
 
 const isEvent = ev => Boolean(ev && ev.preventDefault && ev.stopPropagation);
 
-const getValue = ev => {
+const getValue = (ev) => {
   if (!isEvent(ev)) {
     return ev;
   }

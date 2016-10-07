@@ -2,7 +2,7 @@ import R from 'ramda';
 
 import { INPUT_PROPS, META_PROPS, IGNORE_PROPS } from './consts';
 
-const maybeCheckProps = all => {
+const maybeCheckProps = (all) => {
   if (typeof all.value === 'boolean') {
     return R.merge(all, { checked: all.value });
   }

@@ -69,7 +69,7 @@ export default class FieldArray extends Component {
     this.pos = Number.isInteger(index) ? `${context}#${index}` : '';
     this.location = Number.isInteger(index) ? `${context}#${index}.${name}` : name;
     this.fields = {
-      map: (fn) => form.map(this.location, fn),
+      map: fn => form.map(this.location, fn),
       push: () => form.push(this.location, flat ? null : {}),
       pop: () => form.pop(this.location),
       unshift: () => form.unshift(this.location, flat ? null : {}),
