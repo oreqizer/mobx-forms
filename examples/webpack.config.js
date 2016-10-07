@@ -10,7 +10,7 @@ const config = {
     ],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
   },
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),

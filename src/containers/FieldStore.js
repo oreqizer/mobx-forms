@@ -1,23 +1,17 @@
-import { observable, computed } from 'mobx';
+import { observable } from 'mobx';
 
 export default class FieldStore {
   __mobxField = true;
 
   @observable value = '';
+  @observable error = null;
   @observable visited = false;
   @observable touched = false;
   @observable active = false;
+  @observable dirty = false;
 
   constructor(input) {
     Object.assign(this, input);
-  }
-
-  @computed get error() {
-    return this.validate(this.value);
-  }
-
-  @computed get dirty() {
-    return this.value !== this.defaultValue;
   }
 
   get props() {

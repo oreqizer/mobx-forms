@@ -5,7 +5,7 @@ import { mobxForm, Field, FieldArray } from '../../lib';
 
 import Input from './Input';
 
-const InputArray = observer(props => (
+const InputArray = observer(props =>
   <div>
     {props.fields.map((index) =>
       <Field
@@ -22,7 +22,35 @@ const InputArray = observer(props => (
       Remove field
     </button>
   </div>
-));
+);
+
+const DeepArray = observer(props =>
+  <div>
+    {props.fields.map(index =>
+      <div key={index}>
+        name:
+        <Field
+          name="name"
+          index={index}
+          component={Input}
+        />
+        <br />
+        surname:
+        <Field
+          name="surname"
+          index={index}
+          component={Input}
+        />
+      </div>
+    )}
+    <button onClick={props.fields.push}>
+      Add fields
+    </button>
+    <button onClick={props.fields.pop}>
+      Remove fields
+    </button>
+  </div>
+);
 
 const Form = props => (
   <div>
@@ -42,9 +70,14 @@ const Form = props => (
     />
     <h4>flat FieldArray:</h4>
     <FieldArray
-      name="array"
+      name="flatarray"
       component={InputArray}
       flat
+    />
+    <h4>deep FieldArray:</h4>
+    <FieldArray
+      name="deeparray"
+      component={DeepArray}
     />
     <br />
     <div>---</div>

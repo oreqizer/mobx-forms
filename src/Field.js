@@ -58,8 +58,7 @@ export default class Field extends Component {
     this.field = new FieldStore({
       name,
       value: defaultValue,
-      defaultValue,
-      validate,
+      error: validate(defaultValue),
     });
 
     if (flatArray && Number.isInteger(index)) {
@@ -77,7 +76,12 @@ export default class Field extends Component {
   }
 
   handleChange(ev) {
-    this.field.value = getValue(ev);
+    const { validate, defaultValue } = this.props;
+
+    const value = getValue(ev);
+    this.field.value = value;
+    this.field.error = validate(value);
+    this.field.dirty = value !== defaultValue;
   }
 
   handleFocus() {
