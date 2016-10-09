@@ -18,6 +18,11 @@
     "clean": "rimraf lib dist",
     "prepublish": "npm run clean && npm test && npm run lint && npm run build"
   },
+  "jest": {
+    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "scriptPreprocessor": "<rootDir>/etc/ts-preprocessor.js",
+    "testRegex": "/__tests__/.*\\.spec\\.(ts|tsx)$"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oreqizer/mobx-forms.git"
