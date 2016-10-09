@@ -1,8 +1,10 @@
 {
     "extends": ["tslint:latest", "tslint-react"],
     "rules": {
+        "member-access": false,
         "no-consecutive-blank-lines": false,
-        "ordered-imports": [false],
+        "object-literal-sort-keys": false,
+        "ordered-imports": false,
         "quotemark": [true, "jsx-double"]
     }
 }
