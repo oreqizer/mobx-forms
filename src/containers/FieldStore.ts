@@ -3,18 +3,17 @@ import { observable } from 'mobx';
 interface Input {
   value: string;
   error: string | null;
-  dirty: string;
 }
 
 export default class FieldStore {
   __mobxField = true;
 
-  @observable value = '';
-  @observable error = null;
-  @observable visited = false;
-  @observable touched = false;
-  @observable active = false;
-  @observable dirty = false;
+  @observable value: string = '';
+  @observable error: string | null = null;
+  @observable visited: boolean = false;
+  @observable touched: boolean = false;
+  @observable active: boolean = false;
+  @observable dirty: boolean = false;
 
   constructor(input: Input) {
     Object.assign(this, input);

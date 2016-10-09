@@ -4,12 +4,12 @@ import * as invariant from 'invariant';
 import FormStore from './containers/FormStore';
 
 
-interface Forms {
+interface IForms {
   [key: string]: FormStore;
 }
 
 export default class FormsStore {
-  @observable forms: Forms = {};
+  @observable forms: IForms = {};
 
   /**
    * @protected

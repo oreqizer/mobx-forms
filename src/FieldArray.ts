@@ -1,35 +1,50 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
 import { observer } from 'mobx-react';
-import R from 'ramda';
-import invariant from 'invariant';
+import * as R from 'ramda';
+import * as invariant from 'invariant';
 
 import { ARRAY_IGNORE_PROPS } from './utils/consts';
 
 import contextShape from './utils/contextShape';
+import { IMobxForms } from './utils/types';
 
+
+interface IProps {
+  name: string;
+  component: React.ComponentClass<any>;
+  // defaulted:
+  flat: boolean;
+  // optional:
+  index: number | undefined;
+}
+
+interface IFields {
+  map: Function;
+  push: Function;
+  pop: Function;
+  unshift: Function;
+  shift: Function;
+}
 
 @observer
-export default class FieldArray extends Component {
-  static propTypes = {
-    name: PropTypes.string.isRequired,
-    component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
-    // defaulted:
-    flat: PropTypes.bool.isRequired,
-    // optional:
-    index: PropTypes.number,
-  };
-
+export default class FieldArray extends React.Component<IProps, void> {
   static defaultProps = {
     flat: false,
   };
 
   static contextTypes = {
-    mobxForms: PropTypes.shape(contextShape).isRequired,
+    mobxForms: React.PropTypes.shape(contextShape).isRequired,
   };
 
   static childContextTypes = {
-    mobxForms: PropTypes.shape(contextShape).isRequired,
+    mobxForms: React.PropTypes.shape(contextShape).isRequired,
   };
+
+  context: IMobxForms;
+
+  pos: string;
+  location: string;
+  fields: IFields;
 
   getChildContext() {
     const { name, index, flat } = this.props;
@@ -38,7 +53,7 @@ export default class FieldArray extends Component {
     return {
       mobxForms: {
         form,
-        context: Number.isInteger(index) ? `${context}#${index}.${name}` : name,
+        context: (index && Number.isInteger(index)) ? `${context}#${index}.${name}` : name,
         flatArray: flat,
       },
     };
@@ -54,22 +69,23 @@ export default class FieldArray extends Component {
 
     const { form, context, flatArray } = this.context.mobxForms;
 
+    const validIndex = index && Number.isInteger(index);
     if (context === '') {
       invariant(
-        !Number.isInteger(index),
+        !validIndex,
         '[mobx-forms] "index" can only be passed to components inside ArrayField'
       );
     } else {
       invariant(
-        Number.isInteger(index),
+        validIndex,
         '[mobx-forms] "index" must be passed to ArrayField components'
       );
     }
 
-    this.pos = Number.isInteger(index) ? `${context}#${index}` : '';
-    this.location = Number.isInteger(index) ? `${context}#${index}.${name}` : name;
+    this.pos = validIndex ? `${context}#${index}` : '';
+    this.location = validIndex ? `${context}#${index}.${name}` : name;
     this.fields = {
-      map: fn => form.map(this.location, fn),
+      map: (fn: (index: number) => any) => form.map(this.location, fn),
       push: () => form.push(this.location, flat ? null : {}),
       pop: () => form.pop(this.location),
       unshift: () => form.unshift(this.location, flat ? null : {}),

@@ -5,6 +5,8 @@ import * as R from 'ramda';
 import traverse from '../utils/traverse';
 import { mapDeep, mapFlat } from '../utils/mapForm';
 
+import FieldStore from './FieldStore';
+
 
 export default class FormStore {
   @observable fields = {};
@@ -21,7 +23,7 @@ export default class FormStore {
     return R.all(R.equals(null), mapFlat(R.prop('error'), toJS(this.fields)));
   }
 
-  addField(context, name, field) {
+  addField(context: string, name: string, field: FieldStore) {
     const base = traverse(this.fields, context);
     invariant(
       !base[name],
@@ -30,7 +32,7 @@ export default class FormStore {
     base[name] = field;
   }
 
-  addFieldArray(context, name) {
+  addFieldArray(context: string, name: string) {
     const base = traverse(this.fields, context);
     invariant(
       !base[name],
@@ -39,7 +41,7 @@ export default class FormStore {
     base[name] = observable([]);
   }
 
-  removeField(context, name) {
+  removeField(context: string, name: string) {
     const base = traverse(this.fields, context);
     delete base[name];
   }
@@ -47,27 +49,27 @@ export default class FormStore {
   // Array functions
   // ---
 
-  map(context, fn) {
+  map<T>(context: string, fn: (x: number) => T): Array<T> {
     const base = traverse(this.fields, context);
     return R.map(fn, R.addIndex(R.map)((_, i) => i, base));
   }
 
-  push(context, field) {
+  push(context: string, field: null | {}) {
     const base = traverse(this.fields, context);
     base.push(field);
   }
 
-  pop(context) {
+  pop(context: string) {
     const base = traverse(this.fields, context);
     base.pop();
   }
 
-  unshift(context, field) {
+  unshift(context: string, field: null | {}) {
     const base = traverse(this.fields, context);
     base.unshift(field);
   }
 
-  shift(context) {
+  shift(context: string) {
     const base = traverse(this.fields, context);
     base.shift();
   }

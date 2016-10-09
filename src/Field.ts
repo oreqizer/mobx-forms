@@ -9,20 +9,34 @@ import prepareProps from './utils/prepareProps';
 import getValue from './utils/getValue';
 
 import contextShape from './utils/contextShape';
+import { IMobxForms } from './utils/types';
 
+
+interface IProps {
+  name: string;
+  component: React.ComponentClass<any> | string;
+  index?: number;
+  validate: (value: string) => string | null;
+  defaultValue: string;
+}
 
 @observer
-export default class Field extends React.Component {
+export default class Field extends React.Component<IProps, void> {
   static defaultProps = {
     validate: () => null,
     defaultValue: '',
   };
 
   static contextTypes = {
-    mobxForms: PropTypes.shape(contextShape).isRequired,
+    mobxForms: React.PropTypes.shape(contextShape).isRequired,
   };
 
-  constructor(props) {
+  context: IMobxForms;
+
+  field: FieldStore;
+  pos: string;
+
+  constructor(props: IProps) {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
@@ -40,26 +54,26 @@ export default class Field extends React.Component {
 
     const { form, context, flatArray } = this.context.mobxForms;
 
+    const validIndex = index && Number.isInteger(index);
     if (context === '') {
       invariant(
-        !Number.isInteger(index),
+        !validIndex,
         '[mobx-forms] "index" can only be passed to components inside ArrayField'
       );
     } else {
       invariant(
-        Number.isInteger(index),
+        validIndex,
         '[mobx-forms] "index" must be passed to ArrayField components'
       );
     }
 
-    this.pos = (!flatArray && Number.isInteger(index)) ? `${context}#${index}` : context;
+    this.pos = (!flatArray && validIndex) ? `${context}#${index}` : context;
     this.field = new FieldStore({
-      name,
       value: defaultValue,
       error: validate(defaultValue),
     });
 
-    if (flatArray && Number.isInteger(index)) {
+    if (flatArray && validIndex) {
       form.addField(this.pos, index, this.field);
     } else {
       form.addField(this.pos, name, this.field);
@@ -73,7 +87,7 @@ export default class Field extends React.Component {
     form.removeField(this.pos, name);
   }
 
-  handleChange(ev) {
+  handleChange(ev: React.SyntheticEvent<HTMLInputElement | HTMLSelectElement>) {  // TODO alias or whatnot
     const { validate, defaultValue } = this.props;
 
     const value = getValue(ev);
@@ -92,7 +106,7 @@ export default class Field extends React.Component {
     this.field.touched = true;
   }
 
-  render() {
+  render() {  // TODO consider dropping 'string' option, create separate component
     const { component } = this.props;
 
     const props = R.merge({
