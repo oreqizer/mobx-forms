@@ -23,7 +23,7 @@ export default class FormStore {
     return R.all(R.equals(null), mapFlat(R.prop('error'), toJS(this.fields)));
   }
 
-  addField(context: string, name: string, field: FieldStore) {
+  addField(context: string, name: string | number, field: FieldStore) {
     const base = traverse(this.fields, context);
     invariant(
       !base[name],
@@ -41,7 +41,7 @@ export default class FormStore {
     base[name] = observable([]);
   }
 
-  removeField(context: string, name: string) {
+  removeField(context: string, name: string | number) {
     const base = traverse(this.fields, context);
     delete base[name];
   }

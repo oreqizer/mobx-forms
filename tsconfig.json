@@ -4,7 +4,7 @@
     "module": "commonjs",
     "target": "es6",
     "jsx": "react",
-    "noImplicitAny": true,
+//    "noImplicitAny": true,
     "experimentalDecorators": true,
     "strictNullChecks": true
   },

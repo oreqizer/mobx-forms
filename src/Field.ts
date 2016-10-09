@@ -84,7 +84,7 @@ export default class Field extends React.Component<IProps, void> {
     const { name } = this.props;
     const { form } = this.context.mobxForms;
 
-    form.removeField(this.pos, name);
+    form.removeField(this.pos, name);  // TODO also index. put to this.loc or whatever
   }
 
   handleChange(ev: React.SyntheticEvent<HTMLInputElement | HTMLSelectElement>) {  // TODO alias or whatnot
