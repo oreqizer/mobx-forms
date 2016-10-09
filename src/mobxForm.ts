@@ -1,24 +1,36 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
 import { inject } from 'mobx-react';
-import invariant from 'invariant';
-import R from 'ramda';
+import * as invariant from 'invariant';
+import * as R from 'ramda';
 
 import FormsStore from './FormsStore';
+import FormStore from './containers/FormStore';
 import { MOBX_FORMS } from './utils/consts';
 
 import contextShape from './utils/contextShape';
 
-/**
- * Decorator for a component that will be the root of a form.
- *
- * @param options
- * @prop options.form: string - the form's name
- */
-const mobxForm = (options) => {
+
+interface Options {
+  form: string,
+}
+
+interface WrappedProps {
+  mobxForms: FormsStore
+}
+
+interface DecoratedProps {
+  form: FormStore,
+}
+
+const mobxForm = (options: Options) => {
   invariant(options.form, '[mobx-forms] "form" option is required on the "mobxForm" decorator.');
 
-  return (WrappedComponent) => {
-    class FormWrap extends Component {
+  return (WrappedComponent: React.ComponentClass<DecoratedProps>) => {
+    class FormWrap extends React.Component<WrappedProps, void> {
+      static childContextTypes = {
+        mobxForms: React.PropTypes.shape(contextShape).isRequired,
+      };
+
       getChildContext() {
         return {
           mobxForms: {
@@ -40,19 +52,11 @@ const mobxForm = (options) => {
       render() {
         const props = R.omit([MOBX_FORMS], this.props);
 
-        props[options.form] = this.props.mobxForms.forms[options.form];
-
-        return React.createElement(WrappedComponent, props);
+        return React.createElement(WrappedComponent, R.merge(props, {
+          form: this.props.mobxForms.forms[options.form],
+        }));
       }
     }
-
-    FormWrap.propTypes = {
-      mobxForms: PropTypes.instanceOf(FormsStore).isRequired,
-    };
-
-    FormWrap.childContextTypes = {
-      mobxForms: PropTypes.shape(contextShape).isRequired,
-    };
 
     return inject(MOBX_FORMS)(FormWrap);
   };
