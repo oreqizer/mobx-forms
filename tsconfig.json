@@ -1,19 +1,18 @@
 {
   "compilerOptions": {
-    "outDir": "dist/",
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "experimentalDecorators": true,
-    "strictNullChecks": true,
+    "outDir": "lib/",
     "module": "commonjs",
     "target": "es6",
-    "jsx": "react"
+    "jsx": "react",
+    "noImplicitAny": true,
+    "experimentalDecorators": true,
+    "strictNullChecks": true
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "**/*.spec.{ts,tsx}"
+    "**/__tests__"
   ]
 }

@@ -41,6 +41,7 @@ export const IGNORE_PROPS = [
 
 export const ARRAY_IGNORE_PROPS = [
   'name',
+  'component',
   'validate',
   'defaultValue',
 ];

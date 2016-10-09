@@ -3,30 +3,30 @@ import { inject } from 'mobx-react';
 import * as invariant from 'invariant';
 import * as R from 'ramda';
 
-import FormsStore from './FormsStore';
 import FormStore from './containers/FormStore';
+import FormsStore from './FormsStore';
 import { MOBX_FORMS } from './utils/consts';
 
 import contextShape from './utils/contextShape';
 
 
-interface Options {
+interface IOptions {
   form: string;
 }
 
-interface WrappedProps {
+interface IWrappedProps {
   mobxForms: FormsStore;
 }
 
-interface DecoratedProps {
+interface IDecoratedProps {
   form: FormStore;
 }
 
-const mobxForm = (options: Options) => {
+const mobxForm = (options: IOptions) => {
   invariant(options.form, '[mobx-forms] "form" option is required on the "mobxForm" decorator.');
 
-  return (WrappedComponent: React.ComponentClass<DecoratedProps>) => {
-    class FormWrap extends React.Component<WrappedProps, void> {
+  return (WrappedComponent: React.ComponentClass<IDecoratedProps>) => {
+    class FormWrap extends React.Component<IWrappedProps, void> {
       static childContextTypes = {
         mobxForms: React.PropTypes.shape(contextShape).isRequired,
       };

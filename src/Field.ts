@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import * as React from 'react';
 import { observer } from 'mobx-react';
-import R from 'ramda';
-import invariant from 'invariant';
+import * as R from 'ramda';
+import * as invariant from 'invariant';
 
 import FieldStore from './containers/FieldStore';
 
@@ -12,17 +12,7 @@ import contextShape from './utils/contextShape';
 
 
 @observer
-export default class Field extends Component {
-  static propTypes = {
-    name: PropTypes.string.isRequired,
-    component: PropTypes.oneOfType([PropTypes.func, PropTypes.string]).isRequired,
-    // default:
-    validate: PropTypes.func.isRequired,
-    defaultValue: PropTypes.string.isRequired,
-    // optional:
-    index: PropTypes.number,
-  };
-
+export default class Field extends React.Component {
   static defaultProps = {
     validate: () => null,
     defaultValue: '',
@@ -103,11 +93,13 @@ export default class Field extends Component {
   }
 
   render() {
-    const { component, ...props } = this.props;
+    const { component } = this.props;
 
-    props.onChange = this.handleChange;
-    props.onFocus = this.handleFocus;
-    props.onBlur = this.handleBlur;
+    const props = R.merge({
+      onBlur: this.handleBlur,
+      onChange: this.handleChange,
+      onFocus: this.handleFocus,
+    }, R.omit(["component"], this.props));
 
     const { input, meta, custom } = prepareProps(R.merge(props, this.field.props));
 

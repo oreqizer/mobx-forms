@@ -92,9 +92,11 @@ export default class FieldArray extends Component {
   }
 
   render() {
-    const { component, ...rest } = this.props;
+    const { component } = this.props;
 
-    return React.createElement(component, R.merge(R.omit(ARRAY_IGNORE_PROPS, rest), {
+    const rest = R.omit(ARRAY_IGNORE_PROPS, this.props);
+
+    return React.createElement(component, R.merge(rest, {
       fields: this.fields,
     }));
   }

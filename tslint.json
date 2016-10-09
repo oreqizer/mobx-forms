@@ -1,6 +1,8 @@
 {
     "extends": ["tslint:latest", "tslint-react"],
     "rules": {
+        "no-consecutive-blank-lines": false,
+        "ordered-imports": [false],
         "quotemark": [true, "jsx-double"]
     }
 }

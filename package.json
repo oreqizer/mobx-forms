@@ -11,7 +11,7 @@
     "eslint": "eslint src/ --ext .ts,.tsx",
     "tslint": "tslint src/**.{ts,tsx}",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min",
-    "build:lib": "babel src --out-dir lib --ignore **/__tests__/",
+    "build:lib": "tsc",
     "build:umd": "webpack src/index.ts dist/mobx-forms.js",
     "build:umd:min": "NODE_ENV=production webpack src/index.ts dist/mobx-forms.min.js",
     "build:examples": "webpack examples/index.jsx examples/bundle.js --config examples/webpack.config.js",
