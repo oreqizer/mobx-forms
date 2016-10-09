@@ -1,5 +1,11 @@
 import { observable } from 'mobx';
 
+interface Input {
+  value: string;
+  error: string | null;
+  dirty: string;
+}
+
 export default class FieldStore {
   __mobxField = true;
 
@@ -10,7 +16,7 @@ export default class FieldStore {
   @observable active = false;
   @observable dirty = false;
 
-  constructor(input) {
+  constructor(input: Input) {
     Object.assign(this, input);
   }
 

@@ -27,10 +27,9 @@ const props = {
   wow: 'so test',
 };
 
-const props2 = {
-  ...props,
+const props2 = Object.assign({}, props, {
   value: true,
-};
+});
 
 describe('#prepareProps', () => {
   it('should separate input props', () => {

@@ -11,15 +11,15 @@ import contextShape from './utils/contextShape';
 
 
 interface Options {
-  form: string,
+  form: string;
 }
 
 interface WrappedProps {
-  mobxForms: FormsStore
+  mobxForms: FormsStore;
 }
 
 interface DecoratedProps {
-  form: FormStore,
+  form: FormStore;
 }
 
 const mobxForm = (options: Options) => {

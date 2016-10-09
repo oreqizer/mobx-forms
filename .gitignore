@@ -6,4 +6,4 @@ coverage
 lib
 dist
 bundle.js
-npm-debug.log
+npm-debug.txt

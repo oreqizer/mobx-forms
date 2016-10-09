@@ -4,7 +4,7 @@ import/no-extraneous-dependencies,
 react/jsx-filename-extension,
 react/prop-types,
 */
-import React from 'react';
+import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import Field from '../Field';
@@ -21,7 +21,13 @@ const rawMeta = {
 
 const Component = props => (
   <div>
-    <input type="text" {...props.input} />
+    <input
+        type="text"
+        value={props.input.value}
+        onChange={props.input.onChange}
+        onFocus={props.input.onFocus}
+        onBlur={props.input.onBlur}
+    />
   </div>
 );
 

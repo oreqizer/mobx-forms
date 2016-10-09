@@ -5,7 +5,7 @@ import FormStore from './containers/FormStore';
 
 
 interface Forms {
-  [key: string]: FormStore
+  [key: string]: FormStore;
 }
 
 export default class FormsStore {

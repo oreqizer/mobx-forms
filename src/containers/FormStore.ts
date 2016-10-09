@@ -1,6 +1,6 @@
 import { observable, computed, toJS } from 'mobx';
-import invariant from 'invariant';
-import R from 'ramda';
+import * as invariant from 'invariant';
+import * as R from 'ramda';
 
 import traverse from '../utils/traverse';
 import { mapDeep, mapFlat } from '../utils/mapForm';
