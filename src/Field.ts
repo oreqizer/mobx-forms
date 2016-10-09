@@ -96,9 +96,9 @@ export default class Field extends React.Component {
     const { component } = this.props;
 
     const props = R.merge({
-      onBlur: this.handleBlur,
       onChange: this.handleChange,
       onFocus: this.handleFocus,
+      onBlur: this.handleBlur,
     }, R.omit(["component"], this.props));
 
     const { input, meta, custom } = prepareProps(R.merge(props, this.field.props));
