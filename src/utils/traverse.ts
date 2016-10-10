@@ -1,12 +1,12 @@
-import R from 'ramda';
+import * as R from 'ramda';
 
-function maybeHash(form, path) {
+function maybeHash(form: Object, path: string): Object | null {
   const [name, index] = path.split('#');
 
   return index ? R.path([name, index], form) : R.prop(name, form);
 }
 
-export default function traverse(form, context) {
+export default function traverse(form: Object, context: string): Object | null {
   if (context === '') {
     return form;
   }

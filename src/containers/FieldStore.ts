@@ -1,12 +1,15 @@
 import { observable } from 'mobx';
 
+import { IFieldProps } from '../utils/types';
+
+
 interface Input {
   value: string;
   error: string | null;
 }
 
 export default class FieldStore {
-  __mobxField = true;
+  __mobxField = true;  // tslint:disable-line variable-name
 
   @observable value: string = '';
   @observable error: string | null = null;
@@ -19,7 +22,7 @@ export default class FieldStore {
     Object.assign(this, input);
   }
 
-  get props() {
+  get props(): IFieldProps {
     return {
       value: this.value,
       visited: this.visited,

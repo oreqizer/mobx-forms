@@ -9,7 +9,7 @@ import prepareProps from './utils/prepareProps';
 import getValue from './utils/getValue';
 
 import contextShape from './utils/contextShape';
-import { IMobxForms } from './utils/types';
+import { IMobxForms, SynthEvent } from './utils/types';
 
 
 interface IProps {
@@ -69,7 +69,7 @@ export default class Field extends React.Component<IProps, void> {
     }
 
     this.position = (!flatArray && validIndex) ? `${context}#${index}` : context;
-    this.key = (flatArray && validIndex) ? index : name;
+    this.key = (flatArray && index && validIndex) ? index : name;
     this.field = new FieldStore({
       value: defaultValue,
       error: validate(defaultValue),
@@ -84,7 +84,7 @@ export default class Field extends React.Component<IProps, void> {
     form.removeField(this.position, this.key);
   }
 
-  handleChange(ev: React.SyntheticEvent<HTMLInputElement | HTMLSelectElement>) {  // TODO alias or whatnot
+  handleChange(ev: SynthEvent) {
     const { validate, defaultValue } = this.props;
 
     const value = getValue(ev);
@@ -103,7 +103,7 @@ export default class Field extends React.Component<IProps, void> {
     this.field.touched = true;
   }
 
-  render() {  // TODO consider dropping 'string' option, create separate component
+  render(): JSX.Element {
     const { component } = this.props;
 
     const props = R.merge({

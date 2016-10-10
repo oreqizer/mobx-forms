@@ -7,3 +7,14 @@ export interface IMobxForms { // TODO move to .ts.d
     flatArray: boolean;
   };
 }
+
+export interface IFieldProps {
+  value: string | boolean;
+  visited: boolean;
+  touched: boolean;
+  active: boolean;
+  error: string | null;
+  dirty: boolean;
+}
+
+export type SynthEvent = React.SyntheticEvent<HTMLInputElement | HTMLSelectElement>;
