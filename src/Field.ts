@@ -55,7 +55,7 @@ export default class Field extends React.Component<IProps, void> {
 
     const { form, context, flatArray } = this.context.mobxForms;
 
-    const validIndex = index && Number.isInteger(index);
+    const validIndex = Boolean(index && Number.isInteger(index));
     if (context === '') {
       invariant(
         !validIndex,
