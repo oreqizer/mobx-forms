@@ -1,17 +1,17 @@
 import { observable } from 'mobx';
 
-import { IFieldProps } from '../utils/types';
+import { IFieldProps, Value } from '../utils/types';
 
 
 interface Input {
-  value: string;
+  value: Value;
   error: string | null;
 }
 
 export default class FieldStore {
   __mobxField = true;  // tslint:disable-line variable-name
 
-  @observable value: string = '';
+  @observable value: Value = '';
   @observable error: string | null = null;
   @observable visited: boolean = false;
   @observable touched: boolean = false;

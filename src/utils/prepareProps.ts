@@ -1,10 +1,11 @@
 import * as R from 'ramda';
 
 import { INPUT_PROPS, META_PROPS, IGNORE_PROPS } from './consts';
+import { Value } from './types';
 
 
 interface IAll {
-  value: string | boolean;
+  value: Value;
   checked?: boolean;
 }
 

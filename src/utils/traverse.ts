@@ -1,12 +1,16 @@
 import * as R from 'ramda';
 
-function maybeHash(form: Object, path: string): Object | null {
+import { FormObject, FormArray } from './types';
+
+type Form = FormObject | FormArray;
+
+function maybeHash(form: Form, path: string): Form | null {
   const [name, index] = path.split('#');
 
-  return index ? R.path([name, index], form) : R.prop(name, form);
+  return index ? R.path<Form>([name, index], form) : R.prop<Form>(name, form);
 }
 
-export default function traverse(form: Object, context: string): Object | null {
+export default function traverse(form: Form, context: string): Form {
   if (context === '') {
     return form;
   }
@@ -17,7 +21,7 @@ export default function traverse(form: Object, context: string): Object | null {
 
   const fields = maybeHash(form, head);
   if (!fields) {
-    return null;
+    return form;
   }
 
   if (tail.length > 0) {

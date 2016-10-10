@@ -1,31 +1,27 @@
-const getSelectedValues = options => options
+import { SynthEvent, Value } from './types';
+
+
+type Target = HTMLInputElement | HTMLSelectElement;
+
+const getSelectedValues = (options: HTMLOptionsCollection): string[] => Array.from(options)
     .filter(option => option.selected)
     .map(option => option.value);
 
-const isEvent = ev => Boolean(ev && ev.preventDefault && ev.stopPropagation);
+const getValue = (ev: SynthEvent): Value => {
+  const target = ev.target as Target;
 
-const getValue = (ev) => {
-  if (!isEvent(ev)) {
-    return ev;
-  }
-
-  const {
-    target: { type, value, checked, files, options },
-    dataTransfer,
-  } = ev;
-
-  switch (type) {
+  switch (target.type) {
     case 'checkbox':
-      return checked;
+      return (target as HTMLInputElement).checked;
     case 'file':
-      return files || (dataTransfer && dataTransfer.files);
+      return (target as HTMLInputElement).files;
     case 'select-multiple':
-      return getSelectedValues(options);
+      return getSelectedValues((target as HTMLSelectElement).options);
     case 'range':
     case 'number':
-      return Number(value);
+      return Number(target.value);
     default:
-      return value;
+      return target.value;
   }
 };
 

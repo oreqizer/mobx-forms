@@ -9,14 +9,14 @@ import prepareProps from './utils/prepareProps';
 import getValue from './utils/getValue';
 
 import contextShape from './utils/contextShape';
-import { IMobxForms, SynthEvent } from './utils/types';
+import { IMobxForms, SynthEvent, Value } from './utils/types';
 
 
 interface IProps {
   name: string;
   component: React.ComponentClass<any> | string;
   index?: number;
-  validate: (value: string) => string | null;
+  validate: (value: Value) => string | null;
   defaultValue: string;
 }
 

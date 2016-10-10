@@ -6,20 +6,21 @@ import traverse from '../utils/traverse';
 import { mapDeep, mapFlat } from '../utils/mapForm';
 
 import FieldStore from './FieldStore';
+import { FormObject } from '../utils/types';
 
 
 export default class FormStore {
-  @observable fields = {};
+  @observable fields: FormObject = {};
 
-  @computed get values() {
+  @computed get values(): Object {
     return mapDeep(R.prop('value'), toJS(this.fields));
   }
 
-  @computed get errors() {
+  @computed get errors(): Object {
     return mapDeep(R.prop('error'), toJS(this.fields));
   }
 
-  @computed get valid() {
+  @computed get valid(): boolean {
     return R.all(R.equals(null), mapFlat(R.prop('error'), toJS(this.fields)));
   }
 
@@ -49,9 +50,12 @@ export default class FormStore {
   // Array functions
   // ---
 
-  map<T>(context: string, fn: (x: number) => T): Array<T> {
+  map<T>(context: string, fn: (x: number) => T): Array<T> | null {
     const base = traverse(this.fields, context);
-    return R.map(fn, R.addIndex(R.map)((_, i) => i, base));
+    if (base instanceof Array) {
+      return R.map(fn, R.addIndex(R.map)((_, i) => i, base));
+    }
+    return null;
   }
 
   push(context: string, field: null | {}) {

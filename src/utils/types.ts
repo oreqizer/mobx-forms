@@ -1,6 +1,9 @@
 import FormStore from '../containers/FormStore';
+import FieldStore from '../containers/FieldStore';
 
-export interface IMobxForms { // TODO move to .ts.d
+// TODO move all to .d.ts
+
+export interface IMobxForms {
   mobxForms: {
     form: FormStore;
     context: string;
@@ -9,7 +12,7 @@ export interface IMobxForms { // TODO move to .ts.d
 }
 
 export interface IFieldProps {
-  value: string | boolean;
+  value: Value;
   visited: boolean;
   touched: boolean;
   active: boolean;
@@ -18,3 +21,9 @@ export interface IFieldProps {
 }
 
 export type SynthEvent = React.SyntheticEvent<HTMLInputElement | HTMLSelectElement>;
+
+export type Value = string | string[] | number | boolean | FileList | null;
+
+export type FormObject = { [key: string]: FieldStore | FormArray };
+
+export type FormArray = Array<FieldStore> | Array<FormObject>;
