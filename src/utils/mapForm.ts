@@ -1,18 +1,37 @@
+import { isObservableObject } from 'mobx';
 import * as R from 'ramda';
 
-const isField = R.has('__mobxField');
+import FieldStore from '../containers/FieldStore';
 
-export const mapDeep = (fn, form) => R.map(val =>
-  isField(val) ?
-  fn(val) :
-  mapDeep(fn, val), form);
+import { FormObject, FormElement } from './types';
 
-const toArrays = R.map(val =>
-  isField(val) ?
-  val :
-  toArrays(R.values(val)));
 
-export const mapFlat = (fn, form) => R.compose(
+type Input = FormElement | FieldStore;
+
+type DeepMapElem<T> = T | Array<T> | IDeepMap<T>;
+
+interface IDeepMap<T> {
+  [key: string]: DeepMapElem<T>;
+}
+
+export const mapDeep = <T>(fn: (f: FieldStore) => T, form: Input): IDeepMap<T> =>
+  R.mapObjIndexed((val: Input): DeepMapElem<T> => {
+    if (val instanceof FieldStore) {
+      return fn(val);
+    }
+
+    return mapDeep(fn, val);
+  }, form);
+
+const toArrays = R.map((val: Input): Input | Array<Input> => {
+  if (isObservableObject(val)) {
+    return R.values<Input>(val);
+  }
+
+  return val;
+});
+
+export const mapFlat = <T>(fn: (f: FieldStore) => T, form: FormObject): Array<T> => R.compose(
   R.map(fn),
   R.flatten,
   toArrays,
