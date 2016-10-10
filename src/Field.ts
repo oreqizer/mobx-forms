@@ -11,23 +11,19 @@ import getValue from './utils/getValue';
 import contextShape from './utils/contextShape';
 import { IMobxForms, SynthEvent, Value } from './utils/types';
 
+type Validate = (value: Value) => string | null;
 
 interface IProps {
   name: string;
   component: React.ComponentClass<any> | React.StatelessComponent<any> | string;
   index?: number;
-  validate?: (value: Value) => string | null;
+  validate?: Validate;
   defaultValue?: string;
-}
-
-interface IDefaultProps {
-  validate: (value: Value) => string | null;
-  defaultValue: string;
 }
 
 @observer
 export default class Field extends React.Component<IProps, void> {
-  static defaultProps: IDefaultProps = {
+  static defaultProps = {
     validate: () => null,
     defaultValue: '',
   };
@@ -76,8 +72,8 @@ export default class Field extends React.Component<IProps, void> {
     this.position = (!flatArray && validIndex) ? `${context}#${index}` : context;
     this.key = (flatArray && index && validIndex) ? index : name;
     this.field = new FieldStore({
-      value: defaultValue,
-      error: validate(defaultValue),
+      value: <string> defaultValue,
+      error: (<Validate> validate)(<string> defaultValue),
     });
 
     form.addField(this.position, this.key, this.field);
@@ -94,7 +90,7 @@ export default class Field extends React.Component<IProps, void> {
 
     const value = getValue(ev);
     this.field.value = value;
-    this.field.error = validate(value);
+    this.field.error = (<Validate> validate)(value);
     this.field.dirty = value !== defaultValue;
   }
 
