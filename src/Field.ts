@@ -33,8 +33,9 @@ export default class Field extends React.Component<IProps, void> {
 
   context: IMobxForms;
 
+  position: string;
+  key: string | number;
   field: FieldStore;
-  pos: string;
 
   constructor(props: IProps) {
     super(props);
@@ -67,24 +68,20 @@ export default class Field extends React.Component<IProps, void> {
       );
     }
 
-    this.pos = (!flatArray && validIndex) ? `${context}#${index}` : context;
+    this.position = (!flatArray && validIndex) ? `${context}#${index}` : context;
+    this.key = (flatArray && validIndex) ? index : name;
     this.field = new FieldStore({
       value: defaultValue,
       error: validate(defaultValue),
     });
 
-    if (flatArray && validIndex) {
-      form.addField(this.pos, index, this.field);
-    } else {
-      form.addField(this.pos, name, this.field);
-    }
+    form.addField(this.position, this.key, this.field);
   }
 
   componentWillUnmount() {
-    const { name } = this.props;
     const { form } = this.context.mobxForms;
 
-    form.removeField(this.pos, name);  // TODO also index. put to this.loc or whatever
+    form.removeField(this.position, this.key);
   }
 
   handleChange(ev: React.SyntheticEvent<HTMLInputElement | HTMLSelectElement>) {  // TODO alias or whatnot
@@ -113,7 +110,7 @@ export default class Field extends React.Component<IProps, void> {
       onChange: this.handleChange,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
-    }, R.omit(["component"], this.props));
+    }, R.omit(['component'], this.props));
 
     const { input, meta, custom } = prepareProps(R.merge(props, this.field.props));
 

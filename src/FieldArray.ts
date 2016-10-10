@@ -42,7 +42,7 @@ export default class FieldArray extends React.Component<IProps, void> {
 
   context: IMobxForms;
 
-  pos: string;
+  position: string;
   location: string;
   fields: IFields;
 
@@ -82,7 +82,7 @@ export default class FieldArray extends React.Component<IProps, void> {
       );
     }
 
-    this.pos = validIndex ? `${context}#${index}` : '';
+    this.position = validIndex ? `${context}#${index}` : '';
     this.location = validIndex ? `${context}#${index}.${name}` : name;
     this.fields = {
       map: (fn: (index: number) => any) => form.map(this.location, fn),
@@ -97,14 +97,14 @@ export default class FieldArray extends React.Component<IProps, void> {
       '[mobx-forms] FieldArray cannot be located within a flat FieldArray'
     );
 
-    form.addFieldArray(this.pos, name);
+    form.addFieldArray(this.position, name);
   }
 
   componentWillUnmount() {
     const { name } = this.props;
     const { form } = this.context.mobxForms;
 
-    form.removeField(this.pos, name);
+    form.removeField(this.position, name);
   }
 
   render() {
