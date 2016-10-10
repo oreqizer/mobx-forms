@@ -6,7 +6,7 @@ import traverse from '../utils/traverse';
 import { mapDeep, mapFlat } from '../utils/mapForm';
 
 import FieldStore from './FieldStore';
-import { FormObject } from '../utils/types';
+import { FormObject, FormElement } from '../utils/types';
 
 
 export default class FormStore {

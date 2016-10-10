@@ -1,16 +1,16 @@
 import * as R from 'ramda';
 
-import { FormObject, FormArray } from './types';
+import { FormElement } from './types';
 
-type Form = FormObject | FormArray;
-
-function maybeHash(form: Form, path: string): Form | null {
+function maybeHash(form: FormElement, path: string): FormElement | null {
   const [name, index] = path.split('#');
 
-  return index ? R.path<Form>([name, index], form) : R.prop<Form>(name, form);
+  return index
+      ? R.path<FormElement>([name, index], form)
+      : R.prop<FormElement>(name, form);
 }
 
-export default function traverse(form: Form, context: string): Form {
+export default function traverse(form: FormElement, context: string): FormElement {
   if (context === '') {
     return form;
   }

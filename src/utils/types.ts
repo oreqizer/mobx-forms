@@ -27,3 +27,5 @@ export type Value = string | string[] | number | boolean | FileList | null;
 export type FormObject = { [key: string]: FieldStore | FormArray };
 
 export type FormArray = Array<FieldStore> | Array<FormObject>;
+
+export type FormElement = FormObject | FormArray;
