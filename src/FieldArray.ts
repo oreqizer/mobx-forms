@@ -11,7 +11,7 @@ import { IMobxForms } from './utils/types';
 
 interface IProps {
   name: string;
-  component: React.ComponentClass<any>;
+  component: React.ComponentClass<any> | React.StatelessComponent<any>;
   // defaulted:
   flat: boolean;
   // optional:

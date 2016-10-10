@@ -14,15 +14,20 @@ import { IMobxForms, SynthEvent, Value } from './utils/types';
 
 interface IProps {
   name: string;
-  component: React.ComponentClass<any> | string;
+  component: React.ComponentClass<any> | React.StatelessComponent<any> | string;
   index?: number;
+  validate?: (value: Value) => string | null;
+  defaultValue?: string;
+}
+
+interface IDefaultProps {
   validate: (value: Value) => string | null;
   defaultValue: string;
 }
 
 @observer
 export default class Field extends React.Component<IProps, void> {
-  static defaultProps = {
+  static defaultProps: IDefaultProps = {
     validate: () => null,
     defaultValue: '',
   };

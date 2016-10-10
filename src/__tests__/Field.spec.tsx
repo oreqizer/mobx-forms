@@ -19,7 +19,7 @@ const rawMeta = {
   visited: false,
 };
 
-const Component = props => (
+const Component = (props: any) => (  // TODO type out type
   <div>
     <input
         type="text"
@@ -31,7 +31,7 @@ const Component = props => (
   </div>
 );
 
-const getContext = (form, context, flatArray) => ({
+const getContext = (form: FormStore, context: string, flatArray: boolean) => ({
   context: {
     mobxForms: {
       form,
@@ -120,7 +120,7 @@ describe('#Field', () => {
     form.addFieldArray('', 'array');
     form.push('array', null);
 
-    const field = shallow(
+    shallow(
       <Field
         name="test"
         index={0}
@@ -129,7 +129,7 @@ describe('#Field', () => {
       getContext(form, 'array', true),
     );
 
-    expect(field.context('mobxForms').form.fields.array[0]).toBeDefined();
+    expect(form.fields.array[0]).toBeDefined();
   });
 
   it('should mount a deep array field', () => {
@@ -137,7 +137,7 @@ describe('#Field', () => {
     form.addFieldArray('', 'array');
     form.push('array', {});
 
-    const field = shallow(
+    shallow(
       <Field
         name="test"
         index={0}
@@ -146,7 +146,7 @@ describe('#Field', () => {
       getContext(form, 'array', false),
     );
 
-    expect(field.context('mobxForms').form.fields.array[0].test).toBeDefined();
+    expect(form.fields.array[0].test).toBeDefined();
   });
 
   it('should unmount a basic field', () => {
