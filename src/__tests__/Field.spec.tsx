@@ -104,7 +104,7 @@ describe('#Field', () => {
   it('should not mount an array field without an index', () => {
     const form = new FormStore();
     form.addFieldArray('', 'array');
-    form.push('array', null);
+    form.push('array');
 
     expect(() => shallow(
       <Field
