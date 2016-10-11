@@ -24,8 +24,18 @@ export type SynthEvent = React.SyntheticEvent<HTMLInputElement | HTMLSelectEleme
 
 export type Value = string | string[] | number | boolean | FileList | null;
 
+// form
+
 export type FormObject = { [key: string]: FieldStore | FormArray };
 
 export type FormArray = Array<FieldStore> | Array<FormObject>;
 
 export type FormElement = FormObject | FormArray;
+
+// deep map
+
+export type DeepMapElem<T> = T | Array<T> | IDeepMap<T>;
+
+export interface IDeepMap<T> {
+  [key: string]: DeepMapElem<T>;
+}

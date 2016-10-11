@@ -19,7 +19,7 @@ const rawMeta = {
   visited: false,
 };
 
-const Component = (props: any) => (  // TODO type out type
+const Component = (props: any) => (
   <div>
     <input
         type="text"
@@ -116,7 +116,7 @@ describe('#Field', () => {
   });
 
   it('should mount a flat array field', () => {
-    const form = new FormStore();
+    const form: any = new FormStore();
     form.addFieldArray('', 'array');
     form.push('array', null);
 
@@ -133,7 +133,7 @@ describe('#Field', () => {
   });
 
   it('should mount a deep array field', () => {
-    const form = new FormStore();
+    const form: any = new FormStore();
     form.addFieldArray('', 'array');
     form.push('array', {});
 
@@ -150,7 +150,7 @@ describe('#Field', () => {
   });
 
   it('should unmount a basic field', () => {
-    const form = new FormStore();
+    const form: any = new FormStore();
     const field = mount(
       <Field
         name="test"
@@ -167,7 +167,7 @@ describe('#Field', () => {
   });
 
   it('should unmount an array field', () => {
-    const form = new FormStore();
+    const form: any = new FormStore();
     form.addFieldArray('', 'array');
     form.push('array', {});
 

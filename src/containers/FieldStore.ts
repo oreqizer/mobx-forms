@@ -4,13 +4,11 @@ import { IFieldProps, Value } from '../utils/types';
 
 
 interface Input {
-  value: Value;
-  error: string | null;
+  value?: Value;
+  error?: string | null;
 }
 
 export default class FieldStore {
-  __mobxField = true;  // tslint:disable-line variable-name
-
   @observable value: Value = '';
   @observable error: string | null = null;
   @observable visited: boolean = false;

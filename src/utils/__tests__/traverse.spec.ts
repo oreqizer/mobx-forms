@@ -1,25 +1,29 @@
+import { observable } from 'mobx';
 import traverse from '../traverse';
 
+import FieldStore from '../../containers/FieldStore';
+
+
 const flat = {
-  group: { value: 'gym' },
-  people: [{
-    name: { value: 'test' },
+  group: new FieldStore({ value: 'gym' }),
+  people: observable([{
+    name: new FieldStore({ value: 'test' }),
   }, {
-    name: { value: 'test2' },
-  }],
+    name: new FieldStore({ value: 'test2' }),
+  }]),
 };
 
 const deep = {
-  doges: [{
-    name: { value: 'doge' },
-    foods: [{
-      name: { value: 'meat' },
-      types: [
-        { value: 'steak' },
-        { value: 'wing' },
-      ],
-    }],
-  }],
+  doges: observable([{
+    name: new FieldStore({ value: 'doge' }),
+    foods: observable([{
+      name: new FieldStore({ value: 'meat' }),
+      types: observable([
+        new FieldStore({ value: 'steak' }),
+        new FieldStore({ value: 'wing' }),
+      ]),
+    }]),
+  }]),
 };
 
 describe('#traverse', () => {
@@ -41,10 +45,10 @@ describe('#traverse', () => {
     expect(result).toEqual(flat.people[1]);
   });
 
-  it('should not find fields in flat fields', () => {
+  it('should return latest match if no match is found', () => {
     const result = traverse(flat, 'people#2');
 
-    expect(result).toBeNull();
+    expect(result).toEqual(flat);
   });
 
   it('should find fields in deep fields', () => {
@@ -57,11 +61,5 @@ describe('#traverse', () => {
     const result = traverse(deep, 'doges#0.foods');
 
     expect(result).toEqual(deep.doges[0].foods);
-  });
-
-  it('should not find fields in deep fields', () => {
-    const result = traverse(deep, 'doges#0.people#0.nutrition#1');
-
-    expect(result).toBeNull();
   });
 });
