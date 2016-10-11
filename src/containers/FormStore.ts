@@ -16,32 +16,34 @@ export default class FormStore {
     return mapDeep<string>(R.prop('value'), mobx.toJS(this.fields));
   }
 
-  @mobx.computed get errors(): IDeepMap<string> {
-    return mapDeep<string>(R.prop('error'), mobx.toJS(this.fields));
+  @mobx.computed get errors(): IDeepMap<string | null> {
+    return mapDeep<string | null>(R.prop('error'), mobx.toJS(this.fields));
   }
 
   @mobx.computed get valid(): boolean {
-    return R.all(R.equals(null), mapFlat(R.prop('error'), mobx.toJS(this.fields)));
+    return R.all(
+        R.equals(null), mapFlat<string | null>(R.prop('error'), mobx.toJS(this.fields))
+    );
   }
 
   addField(context: string, name: string | number, field: FieldStore) {
     const base = traverse(this.fields, context);
     if (mobx.isObservableArray(base) && typeof name === 'number') {
       base[name] = field;
-    } else if (mobx.isObservableObject(base)) {
-      const baseObj = base as FormObject;
-      invariant(
+    }
+
+    const baseObj = <FormObject> base;
+    invariant(
         !baseObj[name],
         `[mobx-forms] Tried to mount a Field '${name}' twice. Names must be unique!`
-      );
-      baseObj[name] = field;
-    }
+    );
+    baseObj[name] = field;
   }
 
   addFieldArray(context: string, name: string) {
     const base = traverse(this.fields, context);
-    if (mobx.isObservableObject(base)) {
-      const baseObj = base as FormObject;
+    if (!mobx.isObservableArray(base)) {
+      const baseObj = <FormObject> base;
       invariant(
           !baseObj[name],
           `[mobx-forms] Tried to mount a FieldArray '${name}' twice. Names must be unique!`
@@ -54,10 +56,9 @@ export default class FormStore {
     const base = traverse(this.fields, context);
     if (mobx.isObservableArray(base) && typeof name === 'number') {
       delete base[name];
-    } else if (mobx.isObservableObject(base)) {
-      const baseObj = base as FormObject;
-      delete baseObj[name];
     }
+
+    delete (<FormObject> base)[name];
   }
 
   // Array functions
@@ -71,10 +72,10 @@ export default class FormStore {
     return [];
   }
 
-  push(context: string, field: null | {}) {
+  push(context: string) {
     const base = traverse(this.fields, context);
     if (mobx.isObservableArray(base)) {
-      base.push(field);
+      base.push({});
     }
   }
 
@@ -85,10 +86,10 @@ export default class FormStore {
     }
   }
 
-  unshift(context: string, field: null | {}) {
+  unshift(context: string) {
     const base = traverse(this.fields, context);
     if (mobx.isObservableArray(base)) {
-      base.unshift(field);
+      base.unshift({});
     }
   }
 

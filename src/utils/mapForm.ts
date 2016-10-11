@@ -21,22 +21,22 @@ interface IFieldsMap {
   [key: string]: FieldMapUnit;
 }
 
-const isField = R.has('__mobxField');
+const isField = (thing: any): thing is IFieldLike => R.has('__mobxField', thing);
 
 export const mapDeep = <T>(fn: (f: IFieldLike) => T, form: FieldMapDeep): IDeepMap<T> =>
     R.mapObjIndexed((val: FieldMapUnit): DeepMapElem<T> => {
       if (isField(val)) {
-        return fn(<IFieldLike> val);
+        return fn(val);
       }
 
-      return mapDeep(fn, <FieldMapDeep> val);
+      return mapDeep(fn, val);
     }, form);
 
 
 const toArrays = (form: FieldMapUnit[]): IFieldsArrays =>
     R.map((val: FieldMapUnit): IFieldsArrays | IFieldLike => {
       if (isField(val)) {
-        return <IFieldLike> val;
+        return val;
       }
 
       return toArrays(R.values<FieldMapUnit>(val));

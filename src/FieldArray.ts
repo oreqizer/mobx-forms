@@ -86,9 +86,9 @@ export default class FieldArray extends React.Component<IProps, void> {
     this.location = validIndex ? `${context}#${index}.${name}` : name;
     this.fields = {
       map: (fn: (index: number) => any) => form.map(this.location, fn),
-      push: () => form.push(this.location, flat ? null : {}),
+      push: () => form.push(this.location),
       pop: () => form.pop(this.location),
-      unshift: () => form.unshift(this.location, flat ? null : {}),
+      unshift: () => form.unshift(this.location),
       shift: () => form.shift(this.location),
     };
 
