@@ -1,36 +1,48 @@
 import * as R from 'ramda';
 
-import FieldStore from '../containers/FieldStore';
+import { IDeepMap, DeepMapElem } from './types';
 
-import { FormObject, FormElement, IDeepMap, DeepMapElem } from './types';
 
-type MapUnit<T> = FieldStore | Array<FieldStore> | Array<IMapInput<T>>;
-
-interface IMapInput<T> {
-  [key: string]: MapUnit<T>;
+interface IFieldLike {
+  __mobxField: boolean;
 }
 
-export const mapDeep = <T>(fn: (f: FieldStore) => T, form: Input): IDeepMap<T> =>
-    R.mapObjIndexed((val: Input): DeepMapElem<T> => {
-      if (val instanceof FieldStore) {
-        return fn(val);
+type FieldArrayUnit = IFieldLike | IFieldLike[] | IFieldsArrays;
+
+interface IFieldsArrays extends Array<FieldArrayUnit> {
+  [key: number]: FieldArrayUnit;
+}
+
+type FieldMapUnit = IFieldLike | IFieldLike[] | IFieldsMap[];
+
+type FieldMapDeep = IFieldsMap | IFieldsMap[] | IFieldLike[];
+
+interface IFieldsMap {
+  [key: string]: FieldMapUnit;
+}
+
+const isField = R.has('__mobxField');
+
+export const mapDeep = <T>(fn: (f: IFieldLike) => T, form: FieldMapDeep): IDeepMap<T> =>
+    R.mapObjIndexed((val: FieldMapUnit): DeepMapElem<T> => {
+      if (isField(val)) {
+        return fn(<IFieldLike> val);
       }
 
-      return mapDeep(fn, val);
+      return mapDeep(fn, <FieldMapDeep> val);
     }, form);
 
 
-const toArrays = <T>(form: Array<MapUnit<T>>) =>
-    R.map((val: MapUnit<T>): MapUnit<T> | Array<MapUnit<T>> => {
-      if (Array.isArray(val) || val instanceof FieldStore) {
-        return val;
+const toArrays = (form: FieldMapUnit[]): IFieldsArrays =>
+    R.map((val: FieldMapUnit): IFieldsArrays | IFieldLike => {
+      if (isField(val)) {
+        return <IFieldLike> val;
       }
 
-      const arr: Array<MapUnit<T>> = R.values<MapUnit<T>>(val);
-      return toArrays(arr);
+      return toArrays(R.values<FieldMapUnit>(val));
     }, form);
 
-export const mapFlat = <T>(fn: (f: FieldStore) => T, form: IMapInput<T>): Array<T> =>
+export const mapFlat = <T>(fn: (f: IFieldLike) => T, form: IFieldsMap): Array<T> =>
     R.compose(
       R.map(fn),
       R.flatten,

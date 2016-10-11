@@ -9,6 +9,8 @@ interface Input {
 }
 
 export default class FieldStore {
+  __mobxField = true;  // tslint:disable-line variable-name
+
   @observable value: Value = '';
   @observable error: string | null = null;
   @observable visited: boolean = false;
@@ -16,7 +18,7 @@ export default class FieldStore {
   @observable active: boolean = false;
   @observable dirty: boolean = false;
 
-  constructor(input: Input) {
+  constructor(input: Input = {}) {
     Object.assign(this, input);
   }
 
