@@ -13,42 +13,44 @@ const flat = {
 
 const medium = {
   field1: new FieldStore({ value: 'flat0' }),
-  fieldArray: observable([
+  fieldArray: [
     { field: new FieldStore({ value: 'medium0' }) },
     { field: new FieldStore({ value: 'medium1' }) },
-  ]),
-  flatArray: observable([
+  ],
+  flatArray: [
     new FieldStore({ value: 'array0' }),
     new FieldStore({ value: 'array1' }),
-  ]),
+  ],
 };
 
 const deep = {
   field1: new FieldStore({ value: 'flat0' }),
-  fieldArray: observable([
+  fieldArray: [
     {
       field: new FieldStore({ value: 'medium0' }),
-      nested: observable([]),
+      nested: [],
     },
     {
       field: new FieldStore({ value: 'medium1' }),
-      nested: observable([
+      nested: [
         new FieldStore({ value: 'deep0' }),
-      ]),
+      ],
     },
-  ]),
+  ],
 };
+
+const mapFn = R.prop('value');
 
 describe('#mapDeep', () => {
   it('should map a flat form', () => {
-    const result: any = mapDeep<string>(R.prop('value'), flat);
+    const result: any = mapDeep<string>(mapFn, flat);
 
     expect(result.field1).toBe('flat0');
     expect(result.field2).toBe('flat1');
   });
 
   it('should map a medium form', () => {
-    const result: any = mapDeep<string>(R.prop('value'), medium);
+    const result: any = mapDeep<string>(mapFn, medium);
 
     expect(result.field1).toBe('flat0');
     expect(result.fieldArray[0].field).toBe('medium0');
@@ -58,7 +60,7 @@ describe('#mapDeep', () => {
   });
 
   it('should map a deep form', () => {
-    const result: any = mapDeep<string>(R.prop('value'), deep);
+    const result: any = mapDeep<string>(mapFn, deep);
 
     expect(result.field1).toBe('flat0');
     expect(result.fieldArray[0].field).toBe('medium0');
@@ -69,19 +71,19 @@ describe('#mapDeep', () => {
 
 describe('#mapFlat', () => {
   it('should map a flat form', () => {
-    const result: any = mapFlat<string>(R.prop('value'), flat);
+    const result: any = mapFlat<string>(mapFn, flat);
 
     expect(result).toEqual(['flat0', 'flat1']);
   });
 
   it('should map a medium form', () => {
-    const result: any = mapFlat<string>(R.prop('value'), medium);
+    const result: any = mapFlat<string>(mapFn, medium);
 
     expect(result).toEqual(['flat0', 'medium0', 'medium1', 'array0', 'array1']);
   });
 
   it('should map a deep form', () => {
-    const result: any = mapFlat<string>(R.prop('value'), deep);
+    const result: any = mapFlat<string>(mapFn, deep);
 
     expect(result).toEqual(['flat0', 'medium0', 'medium1', 'deep0']);
   });
