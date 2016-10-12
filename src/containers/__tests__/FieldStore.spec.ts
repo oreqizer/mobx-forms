@@ -1,7 +1,7 @@
 import FieldStore from '../FieldStore';
 
 describe('#FieldStore', () => {
-  let field = null;
+  let field = new FieldStore();
 
   beforeEach(() => {
     field = new FieldStore();
