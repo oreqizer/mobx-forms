@@ -62,6 +62,12 @@ describe('#FormStore', () => {
     expect((<any> form).fields.fieldSections[1].field1).toBeDefined();
   });
 
+  it('should add an indexed field', () => {
+    form.addFieldIndex('fieldArray', 1, new FieldStore({ value: 'doges' }));
+
+    expect((<any> form).fields.fieldArray[1].value).toBe('doges');
+  });
+
   it('should add a field array directly', () => {
     form.addFieldArray('', 'field2');
 
@@ -84,6 +90,12 @@ describe('#FormStore', () => {
     form.removeField('fieldSections#1', 'field');
 
     expect((<any> form).fields.fieldSections[1].field).toBeUndefined();
+  });
+
+  it('should remove an indexed field', () => {
+    form.removeFieldIndex('fieldArray', 0);
+
+    expect((<any> form).fields.fieldArray[0].field).toBeUndefined();
   });
 
   it('should map a field array', () => {

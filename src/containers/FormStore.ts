@@ -26,12 +26,8 @@ export default class FormStore {
     );
   }
 
-  addField(context: string, name: string | number, field: FieldStore) {
+  addField(context: string, name: string, field: FieldStore) {
     const base = traverse(this.fields, context);
-    if (mobx.isObservableArray(base) && typeof name === 'number') {
-      base[name] = field;
-    }
-
     const baseObj = <FormObject> base;
     invariant(
         !baseObj[name],
@@ -40,25 +36,33 @@ export default class FormStore {
     baseObj[name] = field;
   }
 
-  addFieldArray(context: string, name: string) {
+  addFieldIndex(context: string, name: number, field: FieldStore) {
     const base = traverse(this.fields, context);
-    if (!mobx.isObservableArray(base)) {
-      const baseObj = <FormObject> base;
-      invariant(
-          !baseObj[name],
-          `[mobx-forms] Tried to mount a FieldArray '${name}' twice. Names must be unique!`
-      );
-      baseObj[name] = mobx.observable([]);
+    if (mobx.isObservableArray(base)) {
+      base[name] = field;
     }
   }
 
-  removeField(context: string, name: string | number) {
+  addFieldArray(context: string, name: string) {
     const base = traverse(this.fields, context);
-    if (mobx.isObservableArray(base) && typeof name === 'number') {
-      delete base[name];
-    }
+    const baseObj = <FormObject> base;
+    invariant(
+        !baseObj[name],
+        `[mobx-forms] Tried to mount a FieldArray '${name}' twice. Names must be unique!`
+    );
+    baseObj[name] = mobx.observable([]);
+  }
 
+  removeField(context: string, name: string) {
+    const base = traverse(this.fields, context);
     delete (<FormObject> base)[name];
+  }
+
+  removeFieldIndex(context: string, index: number) {
+    const base = traverse(this.fields, context);
+    if (mobx.isObservableArray(base)) {
+      base.splice(index, 1);
+    }
   }
 
   // Array functions

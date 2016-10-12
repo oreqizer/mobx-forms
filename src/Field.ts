@@ -11,6 +11,7 @@ import getValue from './utils/getValue';
 import contextShape from './utils/contextShape';
 import { IMobxForms, SynthEvent, Value } from './utils/types';
 
+
 type Validate = (value: Value) => string | null;
 
 interface IProps {
@@ -35,7 +36,6 @@ export default class Field extends React.Component<IProps, void> {
   context: IMobxForms;
 
   position: string;
-  key: string | number;
   field: FieldStore;
 
   constructor(props: IProps) {
@@ -56,33 +56,40 @@ export default class Field extends React.Component<IProps, void> {
 
     const { form, context, flatArray } = this.context.mobxForms;
 
-    const validIndex = Boolean(index && Number.isInteger(index));
     if (context === '') {
       invariant(
-        !validIndex,
+        typeof index !== 'number',
         '[mobx-forms] "index" can only be passed to components inside ArrayField'
       );
     } else {
       invariant(
-        validIndex,
+        typeof index === 'number',
         '[mobx-forms] "index" must be passed to ArrayField components'
       );
     }
 
-    this.position = (!flatArray && validIndex) ? `${context}#${index}` : context;
-    this.key = (flatArray && index && validIndex) ? index : name;
+    this.position = (!flatArray && typeof index === 'number') ? `${context}#${index}` : context;
     this.field = new FieldStore({
       value: <string> defaultValue,
       error: (<Validate> validate)(<string> defaultValue),
     });
 
-    form.addField(this.position, this.key, this.field);
+    if (flatArray && typeof index === 'number') {
+      form.addFieldIndex(this.position, index, this.field);
+    } else {
+      form.addField(this.position, name, this.field);
+    }
   }
 
   componentWillUnmount() {
-    const { form } = this.context.mobxForms;
+    const { index, name } = this.props;
+    const { form, flatArray } = this.context.mobxForms;
 
-    form.removeField(this.position, this.key);
+    if (flatArray && typeof index === 'number') {
+      form.removeFieldIndex(this.position, index);
+    } else {
+      form.removeField(this.position, name);
+    }
   }
 
   handleChange(ev: SynthEvent) {

@@ -118,7 +118,7 @@ describe('#Field', () => {
   it('should mount a flat array field', () => {
     const form: any = new FormStore();
     form.addFieldArray('', 'array');
-    form.push('array', null);
+    form.push('array');
 
     shallow(
       <Field
@@ -135,7 +135,7 @@ describe('#Field', () => {
   it('should mount a deep array field', () => {
     const form: any = new FormStore();
     form.addFieldArray('', 'array');
-    form.push('array', {});
+    form.push('array');
 
     shallow(
       <Field
@@ -169,7 +169,7 @@ describe('#Field', () => {
   it('should unmount an array field', () => {
     const form: any = new FormStore();
     form.addFieldArray('', 'array');
-    form.push('array', {});
+    form.push('array');
 
     const field = mount(
       <Field
@@ -180,11 +180,12 @@ describe('#Field', () => {
       getContext(form, 'array', false),
     );
 
+    expect(form.fields.array.length).toBe(1);
     expect(form.fields.array[0].test).toBeDefined();
 
     field.unmount();
 
-    expect(form.fields.array[0].test).toBeUndefined();
+    expect(form.fields.array.length).toBe(0);
   });
 
   it('should handle an onChange on a basic field', () => {

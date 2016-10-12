@@ -13,9 +13,9 @@ interface IProps {
   name: string;
   component: React.ComponentClass<any> | React.StatelessComponent<any>;
   // defaulted:
-  flat: boolean;
+  flat?: boolean;
   // optional:
-  index: number | undefined;
+  index?: number | undefined;
 }
 
 interface IFields {
@@ -53,14 +53,14 @@ export default class FieldArray extends React.Component<IProps, void> {
     return {
       mobxForms: {
         form,
-        context: (index && Number.isInteger(index)) ? `${context}#${index}.${name}` : name,
+        context: this.validIndex ? `${context}#${index}.${name}` : name,
         flatArray: flat,
       },
     };
   }
 
   componentWillMount() {
-    const { name, index, flat } = this.props;
+    const { name, index } = this.props;
 
     invariant(
       this.context.mobxForms,
@@ -69,21 +69,20 @@ export default class FieldArray extends React.Component<IProps, void> {
 
     const { form, context, flatArray } = this.context.mobxForms;
 
-    const validIndex = index && Number.isInteger(index);
     if (context === '') {
       invariant(
-        !validIndex,
+        !this.validIndex,
         '[mobx-forms] "index" can only be passed to components inside ArrayField'
       );
     } else {
       invariant(
-        validIndex,
+        this.validIndex,
         '[mobx-forms] "index" must be passed to ArrayField components'
       );
     }
 
-    this.position = validIndex ? `${context}#${index}` : '';
-    this.location = validIndex ? `${context}#${index}.${name}` : name;
+    this.position = this.validIndex ? `${context}#${index}` : '';
+    this.location = this.validIndex ? `${context}#${index}.${name}` : name;
     this.fields = {
       map: (fn: (index: number) => any) => form.map(this.location, fn),
       push: () => form.push(this.location),
@@ -105,6 +104,12 @@ export default class FieldArray extends React.Component<IProps, void> {
     const { form } = this.context.mobxForms;
 
     form.removeField(this.position, name);
+  }
+
+  get validIndex() {
+    const { index } = this.props;
+
+    return typeof index === 'number';
   }
 
   render() {
