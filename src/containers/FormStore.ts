@@ -60,6 +60,7 @@ export default class FormStore {
 
   removeFieldIndex(context: string, index: number) {
     const base = traverse(this.fields, context);
+
     if (mobx.isObservableArray(base)) {
       base.splice(index, 1);
     }

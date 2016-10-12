@@ -79,7 +79,6 @@ describe('#Field', () => {
       getContext(new FormStore(), '', false),
     );
 
-    expect(field.name()).toBe('Component');
     expect(field.prop('input').name).toBe('test');
     expect(field.prop('input').value).toBe('');
     expect(field.prop('input').onChange).toBeDefined();
@@ -166,7 +165,29 @@ describe('#Field', () => {
     expect(form.fields.test).toBeUndefined();
   });
 
-  it('should unmount an array field', () => {
+  it('should unmount a flat array field', () => {
+    const form: any = new FormStore();
+    form.addFieldArray('', 'array');
+    form.push('array');
+
+    const field = mount(
+      <Field
+        name="test"
+        index={0}
+        component="input"
+      />,
+      getContext(form, 'array', true),
+    );
+
+    expect(form.fields.array.length).toBe(1);
+    expect(form.fields.array[0]).toBeDefined();
+
+    field.unmount();
+
+    expect(form.fields.array.length).toBe(0);
+  });
+
+  it('should unmount a deep array field', () => {
     const form: any = new FormStore();
     form.addFieldArray('', 'array');
     form.push('array');
@@ -180,12 +201,11 @@ describe('#Field', () => {
       getContext(form, 'array', false),
     );
 
-    expect(form.fields.array.length).toBe(1);
     expect(form.fields.array[0].test).toBeDefined();
 
     field.unmount();
 
-    expect(form.fields.array.length).toBe(0);
+    expect(form.fields.array[0].test).toBeUndefined();
   });
 
   it('should handle an onChange on a basic field', () => {

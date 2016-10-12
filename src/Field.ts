@@ -68,7 +68,7 @@ export default class Field extends React.Component<IProps, void> {
       );
     }
 
-    this.position = (!flatArray && typeof index === 'number') ? `${context}#${index}` : context;
+    this.position = (!flatArray && (typeof index === 'number')) ? `${context}#${index}` : context;
     this.field = new FieldStore({
       value: <string> defaultValue,
       error: (<Validate> validate)(<string> defaultValue),
