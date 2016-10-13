@@ -3,13 +3,13 @@ import { observer } from 'mobx-react';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
+import { IMobxForms } from "./mobxForm";
 import FieldStore from './containers/FieldStore';
 
 import prepareProps from './utils/prepareProps';
-import getValue from './utils/getValue';
+import getValue, { Value, SynthEvent } from './utils/getValue';
 
 import contextShape from './utils/contextShape';
-import { IMobxForms, SynthEvent, Value } from './utils/types';
 
 
 type Validate = (value: Value) => string | null;

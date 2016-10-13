@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 
-import { IDeepMap, DeepMapElem } from './types';
+import { Mapped, IMappedObject } from './../types/Mapped';
 
 
 interface IFieldLike {
@@ -23,8 +23,8 @@ interface IFieldsMap {
 
 const isField = (thing: any): thing is IFieldLike => R.has('__mobxField', thing);
 
-export const mapDeep = <T>(fn: (f: IFieldLike) => T, form: FieldMapDeep): IDeepMap<T> =>
-    R.mapObjIndexed((val: FieldMapUnit): DeepMapElem<T> => {
+export const mapDeep = <T>(fn: (f: IFieldLike) => T, form: FieldMapDeep): IMappedObject<T> =>
+    R.mapObjIndexed((val: FieldMapUnit): Mapped<T> => {
       if (isField(val)) {
         return fn(val);
       }

@@ -3,10 +3,10 @@ import { observer } from 'mobx-react';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
-import { ARRAY_IGNORE_PROPS } from './utils/consts';
+import { IMobxForms } from "./mobxForm";
 
+import { ARRAY_IGNORE_PROPS } from './utils/consts';
 import contextShape from './utils/contextShape';
-import { IMobxForms } from './utils/types';
 
 
 interface IProps {

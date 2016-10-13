@@ -1,7 +1,11 @@
-import { SynthEvent, Value } from './types';
+import * as React from 'react';
 
+export type Target = HTMLInputElement | HTMLSelectElement;
 
-type Target = HTMLInputElement | HTMLSelectElement;
+export type SynthEvent = React.SyntheticEvent<Target>;
+
+export type Value = string | string[] | number | boolean | FileList | null;
+
 
 const isEvent = (thing: any): thing is SynthEvent =>
     Boolean(thing && thing.preventDefault && thing.stopPropagation);

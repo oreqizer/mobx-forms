@@ -6,17 +6,18 @@ import traverse from '../utils/traverse';
 import { mapDeep, mapFlat } from '../utils/mapForm';
 
 import FieldStore from './FieldStore';
-import { FormObject, IDeepMap } from '../utils/types';
+import { FormObject } from '../types/Form';
+import { IMappedObject } from '../types/Mapped';
 
 
 export default class FormStore {
   @mobx.observable fields: FormObject = {};
 
-  @mobx.computed get values(): IDeepMap<string> {
+  @mobx.computed get values(): IMappedObject<string> {
     return mapDeep<string>(R.prop('value'), mobx.toJS(this.fields));
   }
 
-  @mobx.computed get errors(): IDeepMap<string | null> {
+  @mobx.computed get errors(): IMappedObject<string | null> {
     return mapDeep<string | null>(R.prop('error'), mobx.toJS(this.fields));
   }
 

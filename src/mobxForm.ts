@@ -10,6 +10,14 @@ import { MOBX_FORMS } from './utils/consts';
 import contextShape from './utils/contextShape';
 
 
+export interface IMobxForms {
+  mobxForms: {
+    form: FormStore;
+    context: string;
+    flatArray: boolean;
+  };
+}
+
 interface IOptions {
   form: string;
 }

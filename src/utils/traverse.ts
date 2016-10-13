@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 
-import { FormElement } from './types';
+import { FormElement } from './../types/Form';
+
 
 function maybeHash(form: FormElement, path: string): FormElement | null {
   const [name, index] = path.split('#');

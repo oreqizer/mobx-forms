@@ -1,11 +1,19 @@
 import { observable } from 'mobx';
-
-import { IFieldProps, Value } from '../utils/types';
+import { Value } from "../utils/getValue";
 
 
 interface Input {
   value?: Value;
   error?: string | null;
+}
+
+export interface IFieldProps {
+  value: Value;
+  visited: boolean;
+  touched: boolean;
+  active: boolean;
+  error: string | null;
+  dirty: boolean;
 }
 
 export default class FieldStore {

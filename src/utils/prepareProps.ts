@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 
 import { INPUT_PROPS, META_PROPS, IGNORE_PROPS } from './consts';
-import { Value } from './types';
+import { Value } from './getValue';
 
 
 interface IAll {
