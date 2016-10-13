@@ -1,9 +1,9 @@
 import getValue from '../getValue';
 
-const preventDefault = id => id;
-const stopPropagation = id => id;
+const preventDefault = (id: any) => id;
+const stopPropagation = (id: any) => id;
 
-const evValue = value => ({
+const evValue = (value: any) => ({
   preventDefault,
   stopPropagation,
   target: {
@@ -12,7 +12,7 @@ const evValue = value => ({
   },
 });
 
-const evChecked = checked => ({
+const evChecked = (checked: boolean) => ({
   preventDefault,
   stopPropagation,
   target: {
@@ -21,7 +21,7 @@ const evChecked = checked => ({
   },
 });
 
-const evFiles = files => ({
+const evFiles = (files: string[]) => ({
   preventDefault,
   stopPropagation,
   target: {
@@ -30,18 +30,7 @@ const evFiles = files => ({
   },
 });
 
-const evFilesTransfer = files => ({
-  preventDefault,
-  stopPropagation,
-  target: {
-    type: 'file',
-  },
-  dataTransfer: {
-    files,
-  },
-});
-
-const evSelect = options => ({
+const evSelect = (options: Object[]) => ({
   preventDefault,
   stopPropagation,
   target: {
@@ -50,7 +39,7 @@ const evSelect = options => ({
   },
 });
 
-const evNumber = value => ({
+const evNumber = (value: number) => ({
   preventDefault,
   stopPropagation,
   target: {
@@ -59,7 +48,7 @@ const evNumber = value => ({
   },
 });
 
-const evRange = value => ({
+const evRange = (value: number) => ({
   preventDefault,
   stopPropagation,
   target: {
@@ -92,7 +81,6 @@ describe('#getValue', () => {
   it('should return files for files', () => {
     const files = ['lol', 'kek', 'bur'];
     expect(getValue(evFiles(files))).toEqual(files);
-    expect(getValue(evFilesTransfer(files))).toEqual(files);
   });
 
   it('should return options for select-multiple', () => {

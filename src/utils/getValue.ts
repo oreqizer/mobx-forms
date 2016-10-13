@@ -3,11 +3,18 @@ import { SynthEvent, Value } from './types';
 
 type Target = HTMLInputElement | HTMLSelectElement;
 
+const isEvent = (thing: any): thing is SynthEvent =>
+    Boolean(thing && thing.preventDefault && thing.stopPropagation);
+
 const getSelectedValues = (options: HTMLOptionsCollection): string[] => Array.from(options)
     .filter(option => option.selected)
     .map(option => option.value);
 
-const getValue = (ev: SynthEvent): Value => {
+const getValue = (ev: any): Value => {
+  if (!isEvent(ev)) {
+    return ev;
+  }
+
   const target = ev.target as Target;
 
   switch (target.type) {

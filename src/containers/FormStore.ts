@@ -28,12 +28,14 @@ export default class FormStore {
 
   addField(context: string, name: string, field: FieldStore) {
     const base = traverse(this.fields, context);
-    const baseObj = <FormObject> base;
-    invariant(
-        !baseObj[name],
-        `[mobx-forms] Tried to mount a Field '${name}' twice. Names must be unique!`
-    );
-    baseObj[name] = field;
+    if (mobx.isObservableObject(base)) {
+      const baseObj = <FormObject> base;
+      invariant(
+          !baseObj[name],
+          `[mobx-forms] Tried to mount a Field '${name}' twice. Names must be unique!`
+      );
+      baseObj[name] = field;
+    }
   }
 
   addFieldIndex(context: string, name: number, field: FieldStore) {
@@ -45,17 +47,21 @@ export default class FormStore {
 
   addFieldArray(context: string, name: string) {
     const base = traverse(this.fields, context);
-    const baseObj = <FormObject> base;
-    invariant(
-        !baseObj[name],
-        `[mobx-forms] Tried to mount a FieldArray '${name}' twice. Names must be unique!`
-    );
-    baseObj[name] = mobx.observable([]);
+    if (mobx.isObservableObject(base)) {
+      const baseObj = <FormObject> base;
+      invariant(
+          !baseObj[name],
+          `[mobx-forms] Tried to mount a FieldArray '${name}' twice. Names must be unique!`
+      );
+      baseObj[name] = mobx.observable([]);
+    }
   }
 
   removeField(context: string, name: string) {
     const base = traverse(this.fields, context);
-    delete (<FormObject> base)[name];
+    if (mobx.isObservableObject(base)) {
+      delete (<FormObject> base)[name];
+    }
   }
 
   removeFieldIndex(context: string, index: number) {
@@ -80,7 +86,7 @@ export default class FormStore {
   push(context: string) {
     const base = traverse(this.fields, context);
     if (mobx.isObservableArray(base)) {
-      base.push({});
+      base.push(mobx.observable({}));
     }
   }
 
@@ -94,7 +100,7 @@ export default class FormStore {
   unshift(context: string) {
     const base = traverse(this.fields, context);
     if (mobx.isObservableArray(base)) {
-      base.unshift({});
+      base.unshift(mobx.observable({}));
     }
   }
 

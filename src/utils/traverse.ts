@@ -10,7 +10,9 @@ function maybeHash(form: FormElement, path: string): FormElement | null {
       : R.prop<FormElement>(name, form);
 }
 
-export default function traverse(form: FormElement, context: string): FormElement {
+export default function traverse(
+    form: FormElement, context: string
+): FormElement | null {
   if (context === '') {
     return form;
   }
@@ -21,7 +23,7 @@ export default function traverse(form: FormElement, context: string): FormElemen
 
   const fields = maybeHash(form, head);
   if (!fields) {
-    return form;
+    return null;
   }
 
   if (tail.length > 0) {

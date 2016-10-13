@@ -95,7 +95,7 @@ describe('#FormStore', () => {
   it('should remove an indexed field', () => {
     form.removeFieldIndex('fieldArray', 0);
 
-    expect((<any> form).fields.fieldArray[0].field).toBeUndefined();
+    expect((<any> form).fields.fieldArray.length).toBe(0);
   });
 
   it('should map a field array', () => {

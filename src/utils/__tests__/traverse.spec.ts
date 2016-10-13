@@ -45,10 +45,10 @@ describe('#traverse', () => {
     expect(result).toEqual(flat.people[1]);
   });
 
-  it('should return latest match if no match is found', () => {
+  it('should return null if no match is found', () => {
     const result = traverse(flat, 'people#2');
 
-    expect(result).toEqual(flat);
+    expect(result).toBeNull();
   });
 
   it('should find fields in deep fields', () => {
