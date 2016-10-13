@@ -1,7 +1,5 @@
 import * as R from 'ramda';
 
-import { Mapped, IMappedObject } from './../types/Mapped';
-
 
 interface IFieldLike {
   __mobxField: boolean;
@@ -19,6 +17,12 @@ type FieldMapDeep = IFieldsMap | IFieldsMap[] | IFieldLike[];
 
 interface IFieldsMap {
   [key: string]: FieldMapUnit;
+}
+
+type Mapped<T> = T | Array<T> | IMappedObject<T>;
+
+export interface IMappedObject<T> {
+  [key: string]: Mapped<T>;
 }
 
 const isField = (thing: any): thing is IFieldLike => R.has('__mobxField', thing);

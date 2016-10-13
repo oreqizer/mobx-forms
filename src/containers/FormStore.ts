@@ -3,11 +3,10 @@ import * as invariant from 'invariant';
 import * as R from 'ramda';
 
 import traverse from '../utils/traverse';
-import { mapDeep, mapFlat } from '../utils/mapForm';
+import { mapDeep, mapFlat, IMappedObject } from '../utils/mapForm';
 
 import FieldStore from './FieldStore';
 import { FormObject } from '../types/Form';
-import { IMappedObject } from '../types/Mapped';
 
 
 export default class FormStore {
