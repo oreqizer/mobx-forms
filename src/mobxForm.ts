@@ -28,12 +28,14 @@ export interface IMobxForms {
   };
 }
 
-
 const mobxForm = (options: IOptions) => {
-  invariant(options.form, '[mobx-forms] "form" option is required on the "mobxForm" decorator.');
+  invariant(
+      options.form && typeof options.form === 'string',
+      '[mobx-forms] "form" is a required string on the "mobxForm" decorator.'
+  );
 
   return (WrappedComponent: React.ComponentClass<IDecoratedProps>) => {
-    class FormWrap extends React.Component<IWrappedProps, void> {
+    class MobxForm extends React.Component<IWrappedProps, void> {
       static childContextTypes = {
         mobxForms: React.PropTypes.shape({
           form: React.PropTypes.instanceOf(FormStore).isRequired,
@@ -41,6 +43,14 @@ const mobxForm = (options: IOptions) => {
           flatArray: React.PropTypes.bool.isRequired,
         }).isRequired,
       };
+
+      displayName: string;
+
+      constructor(props: IWrappedProps) {
+        super(props);
+
+        this.displayName = `MobxForm(${WrappedComponent.displayName})`;
+      }
 
       getChildContext() {
         return {
@@ -69,7 +79,7 @@ const mobxForm = (options: IOptions) => {
       }
     }
 
-    return inject(MOBX_FORMS)(FormWrap);
+    return inject(MOBX_FORMS)(MobxForm);
   };
 };
 
