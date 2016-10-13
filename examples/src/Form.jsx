@@ -82,10 +82,10 @@ const Form = props => (
     <br />
     <div>---</div>
     <br />
-    <button onClick={() => console.log(props.first.values)}>
+    <button onClick={() => console.log(props.form.values)}>
       values -> console
     </button>
-    <button onClick={() => console.log(props.first.errors)}>
+    <button onClick={() => console.log(props.form.errors)}>
       errors -> console
     </button>
   </div>

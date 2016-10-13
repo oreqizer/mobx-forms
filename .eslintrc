@@ -15,6 +15,8 @@
     "no-undef": "off",
     "import/no-unresolved": "off",
     "import/extensions": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    // see https://github.com/eslint/typescript-eslint-parser/issues/102
+    "keyword-spacing": "off"
   }
 }

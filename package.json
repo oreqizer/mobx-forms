@@ -19,7 +19,12 @@
     "prepublish": "npm run clean && npm test && npm run lint && npm run build"
   },
   "jest": {
-    "moduleFileExtensions": ["ts", "tsx", "js", "json"],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
     "scriptPreprocessor": "<rootDir>/etc/ts-preprocessor.js",
     "testRegex": "/__tests__/.*\\.spec\\.(ts|tsx)$"
   },
@@ -46,6 +51,11 @@
     "@types/ramda": "0.0.2",
     "@types/react": "^0.14.39",
     "@types/react-dom": "^0.14.17",
+    "babel": "^6.5.2",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-3": "^6.17.0",
     "enzyme": "^2.4.1",
     "eslint": "^3.7.1",
     "eslint-config-airbnb": "^12.0.0",
