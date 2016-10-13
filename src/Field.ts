@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
-import { IMobxForms } from "./mobxForm";
+import { IContext } from "./mobxForm";
 import FormStore from "./containers/FormStore";
 import FieldStore from './containers/FieldStore';
 
@@ -36,7 +36,7 @@ export default class Field extends React.Component<IProps, void> {
     }).isRequired,
   };
 
-  context: IMobxForms;
+  context: IContext;
 
   position: string;
   field: FieldStore;

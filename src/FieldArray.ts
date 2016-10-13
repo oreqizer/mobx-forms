@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import * as R from 'ramda';
 import * as invariant from 'invariant';
 
-import { IMobxForms } from "./mobxForm";
+import { IContext } from "./mobxForm";
 import FormStore from "./containers/FormStore";
 
 import { ARRAY_IGNORE_PROPS } from './utils/consts';
@@ -46,7 +46,7 @@ export default class FieldArray extends React.Component<IProps, void> {
     mobxForms: React.PropTypes.shape(contextShape).isRequired,
   };
 
-  context: IMobxForms;
+  context: IContext;
 
   position: string;
   location: string;

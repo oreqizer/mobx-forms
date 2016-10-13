@@ -5,7 +5,6 @@ import * as R from 'ramda';
 
 import FormStore from './containers/FormStore';
 import FormsStore from './FormsStore';
-import { MOBX_FORMS } from './utils/consts';
 
 
 export interface IOptions {
@@ -16,11 +15,7 @@ export interface IWrappedProps {
   mobxForms: FormsStore;
 }
 
-export interface IDecoratedProps {
-  form: FormStore;
-}
-
-export interface IMobxForms {
+export interface IContext {
   mobxForms: {
     form: FormStore;
     context: string;
@@ -28,13 +23,15 @@ export interface IMobxForms {
   };
 }
 
+export type WrappedComponent = React.ComponentClass<any> | React.StatelessComponent<any>;
+
 const mobxForm = (options: IOptions) => {
   invariant(
       options.form && typeof options.form === 'string',
       '[mobx-forms] "form" is a required string on the "mobxForm" decorator.'
   );
 
-  return (WrappedComponent: React.ComponentClass<IDecoratedProps>) => {
+  return (Wrapped: WrappedComponent): React.ComponentClass<any> => {
     class MobxForm extends React.Component<IWrappedProps, void> {
       static childContextTypes = {
         mobxForms: React.PropTypes.shape({
@@ -49,7 +46,7 @@ const mobxForm = (options: IOptions) => {
       constructor(props: IWrappedProps) {
         super(props);
 
-        this.displayName = `MobxForm(${WrappedComponent.displayName})`;
+        this.displayName = `MobxForm(${Wrapped.displayName})`;
       }
 
       getChildContext() {
@@ -71,15 +68,15 @@ const mobxForm = (options: IOptions) => {
       }
 
       render() {
-        const props = R.omit([MOBX_FORMS], this.props);
+        const props = R.omit(['mobxForms'], this.props);
 
-        return React.createElement(WrappedComponent, R.merge(props, {
+        return React.createElement(Wrapped, R.merge(props, {
           form: this.props.mobxForms.forms[options.form],
         }));
       }
     }
 
-    return inject(MOBX_FORMS)(MobxForm);
+    return inject('mobxForms')(MobxForm);
   };
 };
 
