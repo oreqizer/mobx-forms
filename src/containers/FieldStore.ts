@@ -2,7 +2,7 @@ import { observable } from 'mobx';
 import { Value } from "../utils/getValue";
 
 
-interface Input {
+export interface Input {
   value?: Value;
   error?: string | null;
 }

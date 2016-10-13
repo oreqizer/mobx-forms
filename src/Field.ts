@@ -4,17 +4,16 @@ import * as R from 'ramda';
 import * as invariant from 'invariant';
 
 import { IMobxForms } from "./mobxForm";
+import FormStore from "./containers/FormStore";
 import FieldStore from './containers/FieldStore';
 
 import prepareProps from './utils/prepareProps';
 import getValue, { Value, SynthEvent } from './utils/getValue';
 
-import contextShape from './utils/contextShape';
 
+export type Validate = (value: Value) => string | null;
 
-type Validate = (value: Value) => string | null;
-
-interface IProps {
+export interface IProps {
   name: string;
   component: React.ComponentClass<any> | React.StatelessComponent<any> | string;
   index?: number;
@@ -30,7 +29,11 @@ export default class Field extends React.Component<IProps, void> {
   };
 
   static contextTypes = {
-    mobxForms: React.PropTypes.shape(contextShape).isRequired,
+    mobxForms: React.PropTypes.shape({
+      form: React.PropTypes.instanceOf(FormStore).isRequired,
+      context: React.PropTypes.string.isRequired,
+      flatArray: React.PropTypes.bool.isRequired,
+    }).isRequired,
   };
 
   context: IMobxForms;

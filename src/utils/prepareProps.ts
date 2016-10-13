@@ -4,12 +4,12 @@ import { INPUT_PROPS, META_PROPS, IGNORE_PROPS } from './consts';
 import { Value } from './getValue';
 
 
-interface IAll {
+export interface IAll {
   value: Value;
   checked?: boolean;
 }
 
-interface ISeparated {
+export interface ISeparated {
   input: Object;
   meta: Object;
   custom: Object;

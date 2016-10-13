@@ -4,7 +4,7 @@ import * as invariant from 'invariant';
 import FormStore from './containers/FormStore';
 
 
-interface IForms {
+export interface IForms {
   [key: string]: FormStore;
 }
 

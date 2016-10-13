@@ -4,12 +4,12 @@ import * as R from 'ramda';
 import * as invariant from 'invariant';
 
 import { IMobxForms } from "./mobxForm";
+import FormStore from "./containers/FormStore";
 
 import { ARRAY_IGNORE_PROPS } from './utils/consts';
-import contextShape from './utils/contextShape';
 
 
-interface IProps {
+export interface IProps {
   name: string;
   component: React.ComponentClass<any> | React.StatelessComponent<any>;
   // defaulted:
@@ -18,13 +18,19 @@ interface IProps {
   index?: number | undefined;
 }
 
-interface IFields {
+export interface IFields {
   map: Function;
   push: Function;
   pop: Function;
   unshift: Function;
   shift: Function;
 }
+
+const contextShape = {
+  form: React.PropTypes.instanceOf(FormStore).isRequired,
+  context: React.PropTypes.string.isRequired,
+  flatArray: React.PropTypes.bool.isRequired,
+};
 
 @observer
 export default class FieldArray extends React.Component<IProps, void> {

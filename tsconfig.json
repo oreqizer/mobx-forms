@@ -4,8 +4,9 @@
     "module": "commonjs",
     "target": "es6",
     "jsx": "react",
-    "noImplicitAny": true,
+    "declaration": true,
     "experimentalDecorators": true,
+    "noImplicitAny": true,
     "strictNullChecks": true
   },
   "include": [

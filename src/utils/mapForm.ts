@@ -1,25 +1,31 @@
 import * as R from 'ramda';
 
 
-interface IFieldLike {
+export interface IFieldLike {
   __mobxField: boolean;
 }
 
-type FieldArrayUnit = IFieldLike | IFieldLike[] | IFieldsArrays;
+// Nested Field array
+// ---
+export type FieldArrayUnit = IFieldLike | IFieldLike[] | IFieldsArrays;
 
-interface IFieldsArrays extends Array<FieldArrayUnit> {
+export interface IFieldsArrays extends Array<FieldArrayUnit> {
   [key: number]: FieldArrayUnit;
 }
 
-type FieldMapUnit = IFieldLike | IFieldLike[] | IFieldsMap[];
+// Deep Field map
+// ---
+export type FieldMapUnit = IFieldLike | IFieldLike[] | IFieldsMap[];
 
-type FieldMapDeep = IFieldsMap | IFieldsMap[] | IFieldLike[];
+export type FieldMapDeep = IFieldsMap | IFieldsMap[] | IFieldLike[];
 
-interface IFieldsMap {
+export interface IFieldsMap {
   [key: string]: FieldMapUnit;
 }
 
-type Mapped<T> = T | Array<T> | IMappedObject<T>;
+// Deep mapping result
+// ---
+export type Mapped<T> = T | Array<T> | IMappedObject<T>;
 
 export interface IMappedObject<T> {
   [key: string]: Mapped<T>;

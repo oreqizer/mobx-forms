@@ -7,8 +7,18 @@ import FormStore from './containers/FormStore';
 import FormsStore from './FormsStore';
 import { MOBX_FORMS } from './utils/consts';
 
-import contextShape from './utils/contextShape';
 
+export interface IOptions {
+  form: string;
+}
+
+export interface IWrappedProps {
+  mobxForms: FormsStore;
+}
+
+export interface IDecoratedProps {
+  form: FormStore;
+}
 
 export interface IMobxForms {
   mobxForms: {
@@ -18,17 +28,6 @@ export interface IMobxForms {
   };
 }
 
-interface IOptions {
-  form: string;
-}
-
-interface IWrappedProps {
-  mobxForms: FormsStore;
-}
-
-interface IDecoratedProps {
-  form: FormStore;
-}
 
 const mobxForm = (options: IOptions) => {
   invariant(options.form, '[mobx-forms] "form" option is required on the "mobxForm" decorator.');
@@ -36,7 +35,11 @@ const mobxForm = (options: IOptions) => {
   return (WrappedComponent: React.ComponentClass<IDecoratedProps>) => {
     class FormWrap extends React.Component<IWrappedProps, void> {
       static childContextTypes = {
-        mobxForms: React.PropTypes.shape(contextShape).isRequired,
+        mobxForms: React.PropTypes.shape({
+          form: React.PropTypes.instanceOf(FormStore).isRequired,
+          context: React.PropTypes.string.isRequired,
+          flatArray: React.PropTypes.bool.isRequired,
+        }).isRequired,
       };
 
       getChildContext() {
