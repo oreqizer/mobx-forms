@@ -16,11 +16,11 @@ const config = {
   },
   module: {
     loaders: [
-      { test: /\.tsx?$/, loader: 'ts', exclude: /node_modules/ },
+      { test: /\.tsx?$/, loader: `babel!ts`, exclude: /node_modules/ },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx'],
+    extensions: ['.js', '.ts', '.tsx'],
   },
   output: {
     library: 'MobxForms',
