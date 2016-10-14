@@ -1,5 +1,5 @@
 {
-  "name": "mobx-forms",
+  "name": "mobxForms",
   "main": "dist/lib/index.d.ts",
   "out": "../mobx-forms.d.ts"
 }
