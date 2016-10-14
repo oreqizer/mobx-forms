@@ -4,14 +4,14 @@
   "description": "A simple form management for Mobx & React.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest --verbose",
+    "test": "jest --verbose --no-cache",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "lint": "npm run tslint && npm run eslint",
     "eslint": "eslint src/ --ext .ts,.tsx",
     "tslint": "tslint src/**.{ts,tsx}",
     "build": "npm run build:lib && npm run build:umd && npm run build:umd:min && npm run dts",
-    "build:lib": "tsc --outDir .tmp && babel --src .tmp --out-dir lib",
+    "build:lib": "tsc && babel lib --out-dir lib",
     "build:umd": "webpack src/index.ts dist/mobx-forms.js",
     "build:umd:min": "NODE_ENV=production webpack src/index.ts dist/mobx-forms.min.js",
     "build:examples": "webpack examples/index.jsx examples/bundle.js --config examples/webpack.config.js",
@@ -26,7 +26,7 @@
       "js",
       "json"
     ],
-    "scriptPreprocessor": "<rootDir>/etc/ts-preprocessor.js",
+    "scriptPreprocessor": "<rootDir>/jest-preprocessor.js",
     "testRegex": "/__tests__/.*\\.spec\\.(ts|tsx)$"
   },
   "repository": {
@@ -52,7 +52,8 @@
     "@types/ramda": "0.0.2",
     "@types/react": "^0.14.39",
     "@types/react-dom": "^0.14.17",
-    "babel": "^6.5.2",
+    "babel-cli": "^6.16.0",
+    "babel-jest": "^16.0.0",
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.16.0",
