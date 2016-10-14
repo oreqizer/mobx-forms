@@ -1,6 +1,4 @@
 /// <reference types="jest" />
-
-/* eslint-disable react/prop-types */
 import * as R from 'ramda';
 
 import { mapDeep, mapFlat } from '../mapForm';

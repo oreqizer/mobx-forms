@@ -1,6 +1,4 @@
 /// <reference types="jest" />
-
-/* eslint-disable react/prop-types */
 import prepareProps from '../prepareProps';
 
 const onChange = (id: any) => id;

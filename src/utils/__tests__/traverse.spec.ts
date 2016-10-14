@@ -1,6 +1,4 @@
 /// <reference types="jest" />
-
-/* eslint-disable react/prop-types */
 import { observable } from 'mobx';
 import traverse from '../traverse';
 

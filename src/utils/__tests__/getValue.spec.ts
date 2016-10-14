@@ -1,6 +1,4 @@
 /// <reference types="jest" />
-
-/* eslint-disable react/prop-types */
 import getValue from '../getValue';
 
 const preventDefault = (id: any) => id;
