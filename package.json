@@ -17,7 +17,7 @@
     "build:umd:min": "NODE_ENV=production webpack src/index.ts dist/mobx-forms.min.js",
     "build:examples": "webpack examples/index.jsx examples/bundle.js --config examples/webpack.config.js",
     "dts": "dts-bundle --configJson dts-bundle.json && rimraf dist/lib",
-    "docs": "typedoc --out docs/ --mode modules src/",
+    "docs": "typedoc --out docs/ --mode file src/",
     "clean": "rimraf lib dist",
     "prepublish": "npm run clean && npm test && npm run build"
   },

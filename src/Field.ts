@@ -22,45 +22,51 @@ export interface IProps {
 }
 
 /**
- * The Field component mounts a field on a form.
+ * The `Field` component mounts a field on a form.
  * If the forms are nested, the field will mount on the deepest one.
- * Field takes care of all the handling - change, focus and blur.
+ * `Field` takes care of all the handling - change, focus and blur.
  * Supplies all the necessary properties to the supplied component.
  *
- * Field takes the following components:
- * - name: string
- * - component: Class | Function | string
- * - defaultValue?: string
- * Use only in case Field is used inside a FieldArray:
- * - index?: number
- * Validation function, should return 'null' if OK, error message if not valid:
- * - validate?: (fn: string): string | null
- * ...any props you want the supplied component to receive.
+ * `Field` takes the following props:
+ * ```javascript
+ * name: string
+ * component: Class | Function | string
+ * defaultValue?: string
+ * // Use only in case Field is used inside a FieldArray:
+ * index?: number
+ * // Validation function, should return 'null' if OK, error message if not valid:
+ * validate?: (fn: string): string | null
+ * // ...any props you want the supplied component to receive.
+ * ```
  *
  * The component always recieves any custom supplied properties.
  * If the component is a string, it gets these props:
- * - value: string
- * - onChange: Function
- * - onFocus: Function
- * - onBlur: Function
- * ...any other properties you pass.
+ * ```javascript
+ * value: string
+ * onChange: Function
+ * onFocus: Function
+ * onBlur: Function
+ * // ...any other properties you pass.
+ * ```
  *
  * If the component's a React class/function, it gets:
- * - input: {
+ * ```javascript
+ * input: {
  *    value: string,
  *    onChange: Function,
  *    onFocus: Function,
  *    onBlur: Function,
- *    ...any properties belonging on React's built-in components.
+ *    // ...any properties belonging on React's built-in components.
  * }
- * - meta: {
+ * meta: {
  *    active: boolean,
  *    dirty: boolean,
  *    error: string | null,
  *    touched: boolean,
  *    visited: boolean,
  * }
- * ...any other properties you pass.
+ * // ...any other properties you pass.
+ * ```
  *
  * @class Field
  */
