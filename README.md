@@ -4,11 +4,14 @@ A simple form manager for [React](https://facebook.github.io/react/) and [Mobx](
 
 > Heavily inspired by and based on [Redux Form](https://github.com/erikras/redux-form)! Be sure to check it out if you're a Redux fan.
 
+## TODO
+
+- [ ] namespace types
+- [ ] add docs
+
 ## ROADMAP
 
 1. finish the api (mainly submitting/async validation)
-2. tests!
-3. docs!
 4. better README :blush:
 
 ### Installation

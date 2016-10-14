@@ -1,6 +1,11 @@
 import { observable } from 'mobx';
+
 import { Value } from "../utils/getValue";
 
+
+export interface IField {
+  __mobxField: boolean;
+}
 
 export interface Input {
   value?: Value;
@@ -16,7 +21,7 @@ export interface IFieldProps {
   dirty: boolean;
 }
 
-export default class FieldStore {
+export default class FieldStore implements IField {
   __mobxField = true;  // tslint:disable-line variable-name
 
   @observable value: Value = '';

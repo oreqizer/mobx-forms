@@ -3,7 +3,7 @@ import * as invariant from 'invariant';
 import * as R from 'ramda';
 
 import traverse from '../utils/traverse';
-import { mapDeep, mapFlat, IMappedObject } from '../utils/mapForm';
+import { mapDeep, mapFlat, IMappedWrap } from '../utils/mapForm';
 
 import FieldStore from './FieldStore';
 import { FormObject } from '../types/Form';
@@ -12,11 +12,11 @@ import { FormObject } from '../types/Form';
 export default class FormStore {
   @mobx.observable fields: FormObject = {};
 
-  @mobx.computed get values(): IMappedObject<string> {
+  @mobx.computed get values(): IMappedWrap<string> {
     return mapDeep<string>(R.prop('value'), mobx.toJS(this.fields));
   }
 
-  @mobx.computed get errors(): IMappedObject<string | null> {
+  @mobx.computed get errors(): IMappedWrap<string | null> {
     return mapDeep<string | null>(R.prop('error'), mobx.toJS(this.fields));
   }
 

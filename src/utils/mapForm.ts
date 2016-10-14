@@ -1,58 +1,52 @@
 import * as R from 'ramda';
 
+import { IField } from "../containers/FieldStore";
 
-export interface IFieldLike {
-  __mobxField: boolean;
-}
 
-// Nested Field array
+// Nested array
 // ---
-export type FieldArrayUnit = IFieldLike | IFieldLike[] | IFieldsArrays;
+export type ArrayUnit<T> = T | T[] | IArrays<T>;
 
-export interface IFieldsArrays extends Array<FieldArrayUnit> {
-  [key: number]: FieldArrayUnit;
-}
-
-// Deep Field map
-// ---
-export type FieldMapUnit = IFieldLike | IFieldLike[] | IFieldsMap[];
-
-export type FieldMapDeep = IFieldsMap | IFieldsMap[] | IFieldLike[];
-
-export interface IFieldsMap {
-  [key: string]: FieldMapUnit;
+export interface IArrays<T> extends Array<ArrayUnit<T>> {
+  [key: number]: ArrayUnit<T>;
 }
 
 // Deep mapping result
 // ---
-export type Mapped<T> = T | Array<T> | IMappedObject<T>;
+export type Mapped<T> = T | IMappedWrap<T>;
 
-export interface IMappedObject<T> {
+export type IMappedWrap<T> = IMappedObject<T> | IMappedArray<T>
+
+export interface IMappedArray<T> extends Array<Mapped<T>> {
+  [key: number]: Mapped<T>;
+}
+
+export interface IMappedObject<T> {  // TODO tell TS it has a 'map' method
   [key: string]: Mapped<T>;
 }
 
-const isField = (thing: any): thing is IFieldLike => R.has('__mobxField', thing);
+const isField = (thing: any): thing is IField => R.has('__mobxField', thing);
 
-export const mapDeep = <T>(fn: (f: IFieldLike) => T, form: FieldMapDeep): IMappedObject<T> =>
-    R.mapObjIndexed((val: FieldMapUnit): Mapped<T> => {
+export const mapDeep = <T>(fn: (f: IField) => T, form: IMappedWrap<IField>): IMappedWrap<T> =>
+    R.map((val: Mapped<IField>): Mapped<T> => {
       if (isField(val)) {
         return fn(val);
       }
 
       return mapDeep(fn, val);
-    }, form);
+    }, <any> form);  // see TODO above
 
 
-const toArrays = (form: FieldMapUnit[]): IFieldsArrays =>
-    R.map((val: FieldMapUnit): IFieldsArrays | IFieldLike => {
+const toArrays = (form: IMappedArray<IField>): IArrays<IField> =>
+    R.map((val: Mapped<IField>): IArrays<IField> | IField => {
       if (isField(val)) {
         return val;
       }
 
-      return toArrays(R.values<FieldMapUnit>(val));
+      return toArrays(R.values<Mapped<IField>>(val));
     }, form);
 
-export const mapFlat = <T>(fn: (f: IFieldLike) => T, form: IFieldsMap): Array<T> =>
+export const mapFlat = <T>(fn: (f: IField) => T, form: IMappedObject<IField>): Array<T> =>
     R.compose(
       R.map(fn),
       R.flatten,
