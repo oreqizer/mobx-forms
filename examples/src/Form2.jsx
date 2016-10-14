@@ -21,7 +21,7 @@ const Form = props =>
       type="checkbox"
     />
     <div>---</div>
-    <button onClick={() => console.log(props.second.values)}>
+    <button onClick={() => console.log(props.form.values)}>
       values -> console
     </button>
   </div>;

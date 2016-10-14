@@ -4,7 +4,7 @@ import/no-extraneous-dependencies,
 react/jsx-filename-extension,
 react/prop-types,
 */
-import React from 'react';
+import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 
 import Field from '../Field';
@@ -19,13 +19,19 @@ const rawMeta = {
   visited: false,
 };
 
-const Component = props => (
+const Component = (props: any) => (
   <div>
-    <input type="text" {...props.input} />
+    <input
+        type="text"
+        value={props.input.value}
+        onChange={props.input.onChange}
+        onFocus={props.input.onFocus}
+        onBlur={props.input.onBlur}
+    />
   </div>
 );
 
-const getContext = (form, context, flatArray) => ({
+const getContext = (form: FormStore, context: string, flatArray: boolean) => ({
   context: {
     mobxForms: {
       form,
@@ -73,7 +79,6 @@ describe('#Field', () => {
       getContext(new FormStore(), '', false),
     );
 
-    expect(field.name()).toBe('Component');
     expect(field.prop('input').name).toBe('test');
     expect(field.prop('input').value).toBe('');
     expect(field.prop('input').onChange).toBeDefined();
@@ -98,7 +103,7 @@ describe('#Field', () => {
   it('should not mount an array field without an index', () => {
     const form = new FormStore();
     form.addFieldArray('', 'array');
-    form.push('array', null);
+    form.push('array');
 
     expect(() => shallow(
       <Field
@@ -110,11 +115,11 @@ describe('#Field', () => {
   });
 
   it('should mount a flat array field', () => {
-    const form = new FormStore();
+    const form: any = new FormStore();
     form.addFieldArray('', 'array');
-    form.push('array', null);
+    form.push('array');
 
-    const field = shallow(
+    shallow(
       <Field
         name="test"
         index={0}
@@ -123,15 +128,15 @@ describe('#Field', () => {
       getContext(form, 'array', true),
     );
 
-    expect(field.context('mobxForms').form.fields.array[0]).toBeDefined();
+    expect(form.fields.array[0]).toBeDefined();
   });
 
   it('should mount a deep array field', () => {
-    const form = new FormStore();
+    const form: any = new FormStore();
     form.addFieldArray('', 'array');
-    form.push('array', {});
+    form.push('array');
 
-    const field = shallow(
+    shallow(
       <Field
         name="test"
         index={0}
@@ -140,11 +145,11 @@ describe('#Field', () => {
       getContext(form, 'array', false),
     );
 
-    expect(field.context('mobxForms').form.fields.array[0].test).toBeDefined();
+    expect(form.fields.array[0].test).toBeDefined();
   });
 
   it('should unmount a basic field', () => {
-    const form = new FormStore();
+    const form: any = new FormStore();
     const field = mount(
       <Field
         name="test"
@@ -160,10 +165,32 @@ describe('#Field', () => {
     expect(form.fields.test).toBeUndefined();
   });
 
-  it('should unmount an array field', () => {
-    const form = new FormStore();
+  it('should unmount a flat array field', () => {
+    const form: any = new FormStore();
     form.addFieldArray('', 'array');
-    form.push('array', {});
+    form.push('array');
+
+    const field = mount(
+      <Field
+        name="test"
+        index={0}
+        component="input"
+      />,
+      getContext(form, 'array', true),
+    );
+
+    expect(form.fields.array.length).toBe(1);
+    expect(form.fields.array[0]).toBeDefined();
+
+    field.unmount();
+
+    expect(form.fields.array.length).toBe(0);
+  });
+
+  it('should unmount a deep array field', () => {
+    const form: any = new FormStore();
+    form.addFieldArray('', 'array');
+    form.push('array');
 
     const field = mount(
       <Field

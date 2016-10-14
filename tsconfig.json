@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "lib/",
+    "module": "commonjs",
+    "target": "es6",
+    "jsx": "react",
+    "declaration": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true
+  },
+  "include": [
+    "src/index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/__tests__"
+  ]
+}

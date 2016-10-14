@@ -3,6 +3,7 @@
 .idea
 node_modules
 coverage
+.tmp
 lib
 dist
 bundle.js

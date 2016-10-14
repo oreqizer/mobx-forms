@@ -1,7 +1,7 @@
 import FormsStore from '../FormsStore';
 
 describe('#FormsStore', () => {
-  let store = null;
+  let store = new FormsStore();
 
   beforeEach(() => {
     store = new FormsStore();
@@ -10,13 +10,13 @@ describe('#FormsStore', () => {
   it('should add a form', () => {
     store.addForm('doge');
 
-    expect(store.forms.doge).toBeDefined();
+    expect((<any> store).forms.doge).toBeDefined();
   });
 
   it('should remove a form', () => {
     store.addForm('doge');
     store.removeForm('doge');
 
-    expect(store.forms.doge).toBeUndefined();
+    expect((<any> store).forms.doge).toBeUndefined();
   });
 });

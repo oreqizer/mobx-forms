@@ -4,8 +4,9 @@
  react/jsx-filename-extension,
  react/prop-types,
  */
-import React from 'react';
+import * as React from 'react';
 import { shallow, mount } from 'enzyme';
+import * as R from 'ramda';
 
 import FieldArray from '../FieldArray';
 
@@ -16,7 +17,7 @@ const Component = () => (
   <div className="Component" />
 );
 
-const getContext = (form, context, flatArray) => ({
+const getContext = (form: FormStore, context: string, flatArray: boolean) => ({
   context: {
     mobxForms: {
       form,
@@ -48,7 +49,7 @@ describe('#FieldArray', () => {
 
   it('should mount a basic FieldArray', () => {
     const context = getContext(new FormStore(), '', false);
-    const array = shallow(
+    const array: any = shallow(
       <FieldArray
         name="test"
         component={Component}
@@ -70,7 +71,7 @@ describe('#FieldArray', () => {
 
   it('should mount a deep FieldArray', () => {
     const context = getContext(new FormStore(), '', false);
-    const array = shallow(
+    const array: any = shallow(
       <FieldArray
         name="test"
         component={Component}
@@ -108,10 +109,10 @@ describe('#FieldArray', () => {
   it('should mount a FieldArray a level deep', () => {
     const form = new FormStore();
     form.addFieldArray('', 'deep');
-    form.push('deep', {});
+    form.push('deep');
 
     const context = getContext(form, 'deep', false);
-    const array = shallow(
+    const array: any = shallow(
       <FieldArray
         name="test"
         index={0}
@@ -129,12 +130,12 @@ describe('#FieldArray', () => {
   it('should mount a FieldArray two levels deep', () => {
     const form = new FormStore();
     form.addFieldArray('', 'deep');
-    form.push('deep', {});
+    form.push('deep');
     form.addFieldArray('deep#0', 'nested');
-    form.push('deep#0.nested', {});
+    form.push('deep#0.nested');
 
     const context = getContext(form, 'deep#0.nested', false);
-    const array = shallow(
+    const array: any = shallow(
       <FieldArray
         name="test"
         index={0}
@@ -150,9 +151,9 @@ describe('#FieldArray', () => {
   });
 
   it('should unmount a FieldArray', () => {
-    const form = new FormStore();
+    const form: any = new FormStore();
     form.addFieldArray('', 'deep');
-    form.push('deep', {});
+    form.push('deep');
 
     const array = mount(
       <FieldArray
@@ -170,7 +171,7 @@ describe('#FieldArray', () => {
   });
 
   it('should supply working functions in a flat FieldArray', () => {
-    const form = new FormStore();
+    const form: any = new FormStore();
 
     const array = shallow(
       <FieldArray
@@ -186,25 +187,25 @@ describe('#FieldArray', () => {
 
     fields.push();
     expect(form.fields.test.length).toBe(1);
-    expect(form.fields.test[0]).toBeNull();
+    expect(form.fields.test[0]).toEqual({});
 
-    form.addField('test', 0, new FieldStore());
+    form.addFieldIndex('test', 0, new FieldStore());
     fields.unshift();
     expect(form.fields.test.length).toBe(2);
-    expect(form.fields.test[0]).toBeNull();
+    expect(form.fields.test[0]).toEqual({});
 
-    expect(fields.map(id => id)).toEqual([0, 1]);
+    expect(fields.map(R.identity)).toEqual([0, 1]);
 
     fields.pop();
     expect(form.fields.test.length).toBe(1);
-    expect(form.fields.test[0]).toBeNull();
+    expect(form.fields.test[0]).toEqual({});
 
     fields.shift();
     expect(form.fields.test.length).toBe(0);
   });
 
   it('should supply working functions in a deep FieldArray', () => {
-    const form = new FormStore();
+    const form: any = new FormStore();
 
     const array = shallow(
       <FieldArray
@@ -226,7 +227,7 @@ describe('#FieldArray', () => {
     expect(form.fields.test.length).toBe(2);
     expect(form.fields.test[0]).toEqual({});
 
-    expect(fields.map(id => id)).toEqual([0, 1]);
+    expect(fields.map(R.identity)).toEqual([0, 1]);
 
     fields.pop();
     expect(form.fields.test.length).toBe(1);

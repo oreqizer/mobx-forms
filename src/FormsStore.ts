@@ -1,17 +1,21 @@
 import { observable } from 'mobx';
-import invariant from 'invariant';
+import * as invariant from 'invariant';
 
 import FormStore from './containers/FormStore';
 
 
+export interface IForms {
+  [key: string]: FormStore;
+}
+
 export default class FormsStore {
-  @observable forms = {};
+  @observable forms: IForms = {};
 
   /**
    * @protected
    * @param name: string - name of the form
    */
-  addForm(name) {
+  addForm(name: string) {
     invariant(
       !this.forms[name],
       `[mobx-forms] Tried to add a Form '${name}' twice. Form names must be unique!`
@@ -23,7 +27,7 @@ export default class FormsStore {
    * @protected
    * @param name: string - name of the form
    */
-  removeForm(name) {
+  removeForm(name: string) {
     delete this.forms[name];
   }
 }

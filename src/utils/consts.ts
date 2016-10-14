@@ -1,5 +1,3 @@
-export const MOBX_FORMS = 'mobxForms';
-
 export const INPUT_PROPS = [
   'autocomplete',
   'checked',
@@ -41,6 +39,7 @@ export const IGNORE_PROPS = [
 
 export const ARRAY_IGNORE_PROPS = [
   'name',
+  'component',
   'validate',
   'defaultValue',
 ];

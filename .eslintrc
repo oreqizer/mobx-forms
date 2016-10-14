@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint",
+  "parser": "typescript-eslint-parser",
   "extends": ["airbnb"],
   "env": {
     "node": true,
@@ -9,6 +9,14 @@
     "jest": true
   },
   "rules": {
-    "no-confusing-arrow": "off"
+    // conflicts with 'arrow body style'
+    "no-confusing-arrow": "off",
+    // due to TypeScript
+    "no-undef": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "react/prop-types": "off",
+    // see https://github.com/eslint/typescript-eslint-parser/issues/102
+    "keyword-spacing": "off"
   }
 }
