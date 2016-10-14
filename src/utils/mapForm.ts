@@ -21,7 +21,7 @@ export interface IMappedArray<T> extends Array<Mapped<T>> {
   [key: number]: Mapped<T>;
 }
 
-export interface IMappedObject<T> {  // TODO tell TS it has a 'map' method
+export interface IMappedObject<T> {  // TODO tell TS it has a 'map' method from Ramda
   [key: string]: Mapped<T>;
 }
 
