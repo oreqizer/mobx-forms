@@ -23,13 +23,13 @@ A simple form manager for [React](https://facebook.github.io/react/) and [Mobx](
 Use `Provider` from `mobx-react` and supply the form store to it as `mobxForms`.
 
 ```javascript
-import { FormStore } from 'mobx-forms';
+import { FormsStore } from 'mobx-forms';
 import { Provider } from 'mobx-react';
 
 import YourApp from './YourApp';
 
 const Root = () =>
-  <Provider mobxForms={new FormStore()}>
+  <Provider mobxForms={new FormsStore()}>
     <YourApp>
   </Provider>;
 
@@ -56,6 +56,6 @@ export default mobxForm({
 })(YourApp);
 ```
 
-That's it! You will get the form's instance as a prop (with the name you supplied to the decorator, `myForm` in this case).
+That's it! You will get the form's instance as a prop named `form`.
 
 Field accepts either a *string* or a *component*. It will receive the necessary properties.
