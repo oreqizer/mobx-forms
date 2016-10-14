@@ -39,23 +39,87 @@ export default Root;
 Initializing a form:
 
 ```javascript
+import React from 'react';
+import { observer } from 'mobx-react';
 
-import { mobxForm, Field } from 'mobx-forms';
+import { mobxForm, Field, FieldArray } from 'mobx-forms';
 
-const YourApp = props =>
+const Form = props => (
   <div>
     My field:
     <Field
       name="myField"
-      component="input"
+      component={Input}
     />
-  </div>;
-  
+    My flat array:
+    <FieldArray
+      name="flatarray"
+      component={FlatArray}
+      flat
+    />
+    My multi-field array:
+    <FieldArray
+      name="deeparray"
+      component={DeepArray}
+    />
+  </div>
+);
+
 export default mobxForm({
   form: 'myForm',
-})(YourApp);
+})(Form);
+```
+ 
+Example of a `FlatArray` and `DeepArray`:
+
+```javascript
+const FlatArray = observer(props =>
+  <div>
+    {props.fields.map((index) =>
+      <Field
+        name="flatfield"
+        key={index}
+        index={index}
+        component="input"
+      />
+    )}
+    <button onClick={props.fields.push}>
+      Add field
+    </button>
+    <button onClick={props.fields.pop}>
+      Remove field
+    </button>
+  </div>
+);
+
+const DeepArray = observer(props =>
+  <div>
+    {props.fields.map(index =>
+      <div key={index}>
+        name:
+        <Field
+          name="name"
+          index={index}
+          component={Input}
+        />
+        surname:
+        <Field
+          name="surname"
+          index={index}
+          component="input"
+        />
+      </div>
+    )}
+    <button onClick={props.fields.push}>
+      Add fields
+    </button>
+    <button onClick={props.fields.pop}>
+      Remove fields
+    </button>
+  </div>
+);
 ```
 
 That's it! You will get the form's instance as a prop named `form`.
 
-Field accepts either a *string* or a *component*. It will receive the necessary properties.
+`Field` accepts either a *string* or a *component*. It will receive the necessary properties. More detailed docs incoming.
