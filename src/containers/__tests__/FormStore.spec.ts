@@ -1,3 +1,6 @@
+/// <reference types="jest" />
+
+/* eslint-disable react/prop-types */
 import { observable } from 'mobx';
 import FormStore from '../FormStore';
 import FieldStore from '../FieldStore';

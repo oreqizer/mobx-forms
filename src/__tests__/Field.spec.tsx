@@ -1,9 +1,6 @@
-/*
-eslint-disable
-import/no-extraneous-dependencies,
-react/jsx-filename-extension,
-react/prop-types,
-*/
+/// <reference types="jest" />
+
+/* eslint-disable react/prop-types */
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 

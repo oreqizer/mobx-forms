@@ -1,3 +1,6 @@
+/// <reference types="jest" />
+
+/* eslint-disable react/prop-types */
 import FormsStore from '../FormsStore';
 
 describe('#FormsStore', () => {

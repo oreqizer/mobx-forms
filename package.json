@@ -51,8 +51,6 @@
     "@types/invariant": "^2.2.28",
     "@types/jest": "^15.1.32",
     "@types/ramda": "0.0.2",
-    "@types/react": "^0.14.39",
-    "@types/react-dom": "^0.14.17",
     "babel-cli": "^6.16.0",
     "babel-jest": "^16.0.0",
     "babel-loader": "^6.2.5",

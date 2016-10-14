@@ -25,6 +25,9 @@ export interface IContext {
 
 export type WrappedComponent = React.ComponentClass<any> | React.StatelessComponent<any>;
 
+const getName = (Wrapped: WrappedComponent): string =>
+  Wrapped.displayName || Wrapped.name || 'Component';
+
 const mobxForm = (options: IOptions) => {
   invariant(
       options.form && typeof options.form === 'string',
@@ -33,7 +36,7 @@ const mobxForm = (options: IOptions) => {
 
   return (Wrapped: WrappedComponent): React.ComponentClass<any> => {
     class MobxForm extends React.Component<IWrappedProps, void> {
-      static displayName = `MobxForm(${Wrapped.displayName})`;
+      static displayName: string;
 
       static childContextTypes = {
         mobxForms: React.PropTypes.shape({
@@ -70,7 +73,11 @@ const mobxForm = (options: IOptions) => {
       }
     }
 
-    return inject('mobxForms')(MobxForm);
+    const Injected = inject('mobxForms')(MobxForm);
+
+    Injected.displayName = `MobxForm(${getName(Wrapped)})`;
+
+    return Injected;
   };
 };
 
