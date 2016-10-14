@@ -27,6 +27,13 @@ export interface IMappedObject<T> {  // TODO tell TS it has a 'map' method from 
 
 const isField = (thing: any): thing is IField => R.has('__mobxField', thing);
 
+/**
+ * Recursively walks the whole form and maps each field. Maintains the forms tructure.
+ *
+ * @param fn Mapping function. Recieves a POJO version of FieldStore.
+ * @param form POJO version of FormStore's fields and it's innards.
+ * @returns The mapped POJO FormStore fields.
+ */
 export const mapDeep = <T>(fn: (f: IField) => T, form: MappedWrap<IField>): MappedWrap<T> =>
     R.map((val: Mapped<IField>): Mapped<T> => {
       if (isField(val)) {
@@ -46,6 +53,13 @@ const toArrays = (form: IMappedArray<IField>): IArrays<IField> =>
       return toArrays(R.values<Mapped<IField>>(val));
     }, form);
 
+/**
+ * Flattens the whole form to an array of fields, then applies the mapping function.
+ *
+ * @param fn Mapping function. Recieves a POJO version of FieldStore.
+ * @param form POJO version of FormStore's fields and it's innards.
+ * @returns All flattened and mapped FormStore's fields.
+ */
 export const mapFlat = <T>(fn: (f: IField) => T, form: IMappedObject<IField>): Array<T> =>
     R.compose(
       R.map(fn),

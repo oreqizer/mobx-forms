@@ -28,6 +28,14 @@ export type WrappedComponent = React.ComponentClass<any> | React.StatelessCompon
 const getName = (Wrapped: WrappedComponent): string =>
   Wrapped.displayName || Wrapped.name || 'Component';
 
+/**
+ * Creates a decorator for React components.
+ * The decorated component recieves a 'form' property.
+ * TODO: cherry-pick props from 'form'
+ *
+ * @param options Options object that configures the decorator.
+ * @returns React component decorator.
+ */
 const mobxForm = (options: IOptions) => {
   invariant(
       options.form && typeof options.form === 'string',
