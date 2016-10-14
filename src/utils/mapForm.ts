@@ -13,9 +13,9 @@ export interface IArrays<T> extends Array<ArrayUnit<T>> {
 
 // Deep mapping result
 // ---
-export type Mapped<T> = T | IMappedWrap<T>;
+export type Mapped<T> = T | MappedWrap<T>;
 
-export type IMappedWrap<T> = IMappedObject<T> | IMappedArray<T>
+export type MappedWrap<T> = IMappedObject<T> | IMappedArray<T>
 
 export interface IMappedArray<T> extends Array<Mapped<T>> {
   [key: number]: Mapped<T>;
@@ -27,7 +27,7 @@ export interface IMappedObject<T> {  // TODO tell TS it has a 'map' method from 
 
 const isField = (thing: any): thing is IField => R.has('__mobxField', thing);
 
-export const mapDeep = <T>(fn: (f: IField) => T, form: IMappedWrap<IField>): IMappedWrap<T> =>
+export const mapDeep = <T>(fn: (f: IField) => T, form: MappedWrap<IField>): MappedWrap<T> =>
     R.map((val: Mapped<IField>): Mapped<T> => {
       if (isField(val)) {
         return fn(val);

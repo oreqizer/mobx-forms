@@ -17,6 +17,7 @@
     "build:umd:min": "NODE_ENV=production webpack src/index.ts dist/mobx-forms.min.js",
     "build:examples": "webpack examples/index.jsx examples/bundle.js --config examples/webpack.config.js",
     "dts": "dts-bundle --configJson dts-bundle.json && rimraf dist/lib",
+    "docs": "typedoc --out docs/ --mode modules src/",
     "clean": "rimraf lib dist",
     "prepublish": "npm run clean && npm test && npm run build"
   },
@@ -71,6 +72,7 @@
     "ts-loader": "^0.9.0",
     "tslint": "^3.15.1",
     "tslint-react": "^1.0.0",
+    "typedoc": "^0.5.0",
     "typescript": "^2.0.3",
     "typescript-eslint-parser": "^0.4.0",
     "webpack": "^2.1.0-beta.25"
