@@ -18,7 +18,7 @@
     "build:examples": "webpack examples/index.jsx examples/bundle.js --config examples/webpack.config.js",
     "dts": "dts-bundle --configJson dts-bundle.json && rimraf dist/lib",
     "clean": "rimraf lib dist",
-    "prepublish": "npm run clean && npm test && npm run lint && npm run build"
+    "prepublish": "npm run clean && npm test && npm run build"
   },
   "jest": {
     "moduleFileExtensions": [
