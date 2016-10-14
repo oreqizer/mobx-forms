@@ -33,6 +33,8 @@ const mobxForm = (options: IOptions) => {
 
   return (Wrapped: WrappedComponent): React.ComponentClass<any> => {
     class MobxForm extends React.Component<IWrappedProps, void> {
+      static displayName = `MobxForm(${Wrapped.displayName})`;
+
       static childContextTypes = {
         mobxForms: React.PropTypes.shape({
           form: React.PropTypes.instanceOf(FormStore).isRequired,
@@ -40,14 +42,6 @@ const mobxForm = (options: IOptions) => {
           flatArray: React.PropTypes.bool.isRequired,
         }).isRequired,
       };
-
-      displayName: string;
-
-      constructor(props: IWrappedProps) {
-        super(props);
-
-        this.displayName = `MobxForm(${Wrapped.displayName})`;
-      }
 
       getChildContext() {
         return {
