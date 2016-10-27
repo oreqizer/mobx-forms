@@ -22,7 +22,7 @@ export interface IProps {
 }
 
 /**
- * The `Field` component mounts a field on a form.
+ * Mounts a field on a form.
  * If the forms are nested, the field will mount on the deepest one.
  * `Field` takes care of all the handling - change, focus and blur.
  * Supplies all the necessary properties to the supplied component.
@@ -67,8 +67,6 @@ export interface IProps {
  * }
  * // ...any other properties you pass.
  * ```
- *
- * @class Field
  */
 @observer
 export default class Field extends React.Component<IProps, void> {
