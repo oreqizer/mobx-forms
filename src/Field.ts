@@ -116,7 +116,6 @@ export default class Field extends React.Component<IProps, void> {
 
   render(): JSX.Element {
     const { component } = this.props;
-
     const props = R.merge({
       onChange: this.handleChange,
       onFocus: this.handleFocus,
@@ -129,6 +128,6 @@ export default class Field extends React.Component<IProps, void> {
       return React.createElement(component, R.merge(custom, input));
     }
 
-    return React.createElement(component, R.merge(custom, { input, meta }));
+    return React.createElement(component as React.ComponentClass<any>, R.merge(custom, { input, meta }));
   }
 }

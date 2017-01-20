@@ -67,7 +67,7 @@ const mobxForm = (options: IOptions) => {
       render() {
         const props = R.omit(['mobxForms'], this.props);
 
-        return React.createElement(Wrapped, R.merge(props, {
+        return React.createElement(Wrapped as React.ComponentClass<any>, R.merge(props, {
           form: this.props.mobxForms.forms[options.form],
         }));
       }

@@ -8,3 +8,4 @@ lib
 dist
 bundle.js
 npm-debug.log
+.vscode
